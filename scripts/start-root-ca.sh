@@ -27,7 +27,7 @@ set -e
 export FABRIC_CA_SERVER_HOME=$HOME/fabric-ca
 export FABRIC_CA_SERVER_TLS_ENABLED=true
 export FABRIC_CA_SERVER_CSR_CN=rca.${g}.deevo.com
-export FABRIC_CA_SERVER_CSR_HOSTS=rca-${g}
+export FABRIC_CA_SERVER_CSR_HOSTS=rca.${g}.deevo.com
 export FABRIC_CA_SERVER_DEBUG=true
 export BOOTSTRAP_USER_PASS=rca-${g}-admin:rca-${g}-adminpw
 export TARGET_CERTFILE=$DATA/${g}-ca-cert.pem

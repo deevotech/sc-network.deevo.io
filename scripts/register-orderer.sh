@@ -177,6 +177,9 @@ Profiles:
                 Organizations:
                     - *org1
                     - *org2
+                    - *org3
+                    - *org4
+                    - *org5
 
 
     # SampleSingleMSPChannel defines a channel with only the sample org as a
@@ -189,6 +192,9 @@ Profiles:
             Organizations:
                 - *org1
                 - *org2
+                - *org3
+                - *org4
+                - *org5
 
 ################################################################################
 #
@@ -229,7 +235,7 @@ Organizations:
         # cross-org gossip communication. Note, this value is only encoded in
         # the genesis block in the Application section context.
         AnchorPeers:
-            - Host: peer1-org1
+            - Host: peer0.org1.deevo.com
               Port: 7051
     - &org2
         # Name is the key by which this org will be referenced in channel
@@ -248,7 +254,64 @@ Organizations:
         # cross-org gossip communication. Note, this value is only encoded in
         # the genesis block in the Application section context.
         AnchorPeers:
-            - Host: peer1-org2
+            - Host: peer0.org2.deevo.com
+              Port: 7051
+    - &org3
+        # Name is the key by which this org will be referenced in channel
+        # configuration transactions.
+        # Name can include alphanumeric characters as well as dots and dashes.
+        Name: org3
+
+        # ID is the key by which this org's MSP definition will be referenced.
+        # ID can include alphanumeric characters as well as dots and dashes.
+        ID: org3MSP
+
+        # MSPDir is the filesystem path which contains the MSP configuration.
+        MSPDir: ${DATA}/orgs/org3/msp
+
+        # AnchorPeers defines the location of peers which can be used for
+        # cross-org gossip communication. Note, this value is only encoded in
+        # the genesis block in the Application section context.
+        AnchorPeers:
+            - Host: peer0.org3.deevo.com
+              Port: 7051
+- &org4
+        # Name is the key by which this org will be referenced in channel
+        # configuration transactions.
+        # Name can include alphanumeric characters as well as dots and dashes.
+        Name: org4
+
+        # ID is the key by which this org's MSP definition will be referenced.
+        # ID can include alphanumeric characters as well as dots and dashes.
+        ID: org4MSP
+
+        # MSPDir is the filesystem path which contains the MSP configuration.
+        MSPDir: ${DATA}/orgs/org4/msp
+
+        # AnchorPeers defines the location of peers which can be used for
+        # cross-org gossip communication. Note, this value is only encoded in
+        # the genesis block in the Application section context.
+        AnchorPeers:
+            - Host: peer0.org4.deevo.com
+              Port: 7051
+- &org5
+        # Name is the key by which this org will be referenced in channel
+        # configuration transactions.
+        # Name can include alphanumeric characters as well as dots and dashes.
+        Name: org5
+
+        # ID is the key by which this org's MSP definition will be referenced.
+        # ID can include alphanumeric characters as well as dots and dashes.
+        ID: org5MSP
+
+        # MSPDir is the filesystem path which contains the MSP configuration.
+        MSPDir: ${DATA}/orgs/org5/msp
+
+        # AnchorPeers defines the location of peers which can be used for
+        # cross-org gossip communication. Note, this value is only encoded in
+        # the genesis block in the Application section context.
+        AnchorPeers:
+            - Host: peer0.org5.deevo.com
               Port: 7051
 ################################################################################
 #
@@ -269,7 +332,7 @@ Orderer: &OrdererDefaults
     # participation in ordering. 
     # NOTE: In the solo case, this should be a one-item list.
     Addresses:
-        - orderer1-org0:7050
+        - orderer0.org0.deevo.com:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch.
     BatchTimeout: 2s

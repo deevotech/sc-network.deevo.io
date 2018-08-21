@@ -93,11 +93,11 @@ function initOrgVars {
    fi
    ORG=$1
    ORG_CONTAINER_NAME=${ORG//./-}
-   ROOT_CA_HOST=rca-${ORG}
-   ROOT_CA_NAME=rca-${ORG}
+   ROOT_CA_HOST=rca.${ORG}.deevo.com
+   ROOT_CA_NAME=rca.${ORG}.deevo.com
    ROOT_CA_LOGFILE=$LOGDIR/${ROOT_CA_NAME}.log
-   INT_CA_HOST=ica-${ORG}
-   INT_CA_NAME=ica-${ORG}
+   INT_CA_HOST=ica.${ORG}.deevo.com
+   INT_CA_NAME=ica.${ORG}.deevo.com
    INT_CA_LOGFILE=$LOGDIR/${INT_CA_NAME}.log
 
    # Root CA admin identity
@@ -150,8 +150,8 @@ function initOrdererVars {
    fi
    initOrgVars $1
    NUM=$2
-   ORDERER_HOST=orderer${NUM}-${ORG}
-   ORDERER_NAME=orderer${NUM}-${ORG}
+   ORDERER_HOST=orderer${NUM}.${ORG}.deevo.com
+   ORDERER_NAME=orderer${NUM}.${ORG}.deevo.com
    ORDERER_PASS=${ORDERER_NAME}pw
    ORDERER_NAME_PASS=${ORDERER_NAME}:${ORDERER_PASS}
    ORDERER_LOGFILE=$LOGDIR/${ORDERER_NAME}.log
@@ -199,8 +199,8 @@ function initPeerVars {
    fi
    initOrgVars $1
    NUM=$2
-   PEER_HOST=peer${NUM}-${ORG}
-   PEER_NAME=peer${NUM}-${ORG}
+   PEER_HOST=peer${NUM}.${ORG}.deevo.com
+   PEER_NAME=peer${NUM}.${ORG}.deevo.com
    PEER_PASS=${PEER_NAME}pw
    PEER_NAME_PASS=${PEER_NAME}:${PEER_PASS}
    PEER_LOGFILE=$LOGDIR/${PEER_NAME}.log
@@ -233,7 +233,7 @@ function initPeerVars {
    export CORE_PEER_GOSSIP_EXTERNALENDPOINT=$PEER_HOST:7051
    if [ $NUM -gt 1 ]; then
       # Point the non-anchor peers to the anchor peer, which is always the 1st peer
-      export CORE_PEER_GOSSIP_BOOTSTRAP=peer1-${ORG}:7051
+      export CORE_PEER_GOSSIP_BOOTSTRAP=peer1.${ORG}.deevo.com:7051
    fi
    export ORDERER_CONN_ARGS="$ORDERER_PORT_ARGS --keyfile $CORE_PEER_TLS_CLIENTKEY_FILE --certfile $CORE_PEER_TLS_CLIENTCERT_FILE"
 }

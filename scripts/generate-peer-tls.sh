@@ -31,18 +31,18 @@ source $(dirname "$0")/env.sh
 ORG=${g}
 mkdir -p ${DATA}
 initPeerVars $ORG ${n}
-export ENROLLMENT_URL=https://peer${n}-${ORG}:peer${n}-${ORG}pw@rca-${ORG}:7054
+export ENROLLMENT_URL=https://peer${n}.${ORG}.deevo.com:peer${n}.${ORG}.deevo.compw@rca.${ORG}.deevo.com:7054
 export PEER_HOME=${DATA}/${PEER_NAME}
 export CORE_PEER_TLS_CERT_FILE=${DATA}/${PEER_NAME}/tls/server.crt
 export CORE_PEER_TLS_KEY_FILE=${DATA}/${PEER_NAME}/tls/server.key
 export CORE_PEER_TLS_CLIENTROOTCAS_FILES=$DATA/${ORG}-ca-cert.pem
-export CORE_PEER_TLS_CLIENTCERT_FILE=$DATA/${PEER_NAME}/tls/peer${n}-${ORG}-client.crt
-export CORE_PEER_TLS_CLIENTKEY_FILE=$DATA/${PEER_NAME}/tls/peer${n}-${ORG}-client.key
+export CORE_PEER_TLS_CLIENTCERT_FILE=$DATA/${PEER_NAME}/tls/${PEER_NAME}-client.crt
+export CORE_PEER_TLS_CLIENTKEY_FILE=$DATA/${PEER_NAME}/tls/${PEER_NAME}-client.key
 export FABRIC_CA_CLIENT_TLS_CERTFILES=$DATA/${ORG}-ca-cert.pem
 export CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
 
 export CORE_PEER_TLS_ROOTCERT_FILE=${DATA}/${ORG}-ca-cert.pem
-export CORE_PEER_TLS_KEY_FILE=${DATA}/peer${n}-${ORG}/tls/server.key
+export CORE_PEER_TLS_KEY_FILE=${DATA}/${PEER_NAME}/tls/server.key
 export CORE_PEER_GOSSIP_ORGLEADER=false
 export CORE_PEER_LOCALMSPID=${ORG}MSP
 export CORE_PEER_TLS_ENABLED=true
