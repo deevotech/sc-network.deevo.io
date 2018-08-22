@@ -16,7 +16,7 @@ while getopts ":g:n:" o; do
     esac
 done
 shift $((OPTIND-1))
-if [ -z "${r}" ] ; then
+if [ -z "${d}" ] ; then
     usage
 fi
 # remove couchdb database
