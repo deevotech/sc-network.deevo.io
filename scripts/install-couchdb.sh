@@ -54,10 +54,10 @@ sudo mkdir /opt/couchdb/data
 sudo chmod 777 -R /opt/couchdb
 if [ ${d} -eq 1 ] ; then 
 	sudo cp ../localdeevo.ini /home/couchdb/etc/local.ini
+	echo "-name couchdb@${i}" >> ../vm.args
 else
 	sudo cp ../local.ini /home/couchdb/etc/local.ini
 fi
-echo "-name couchdb@${i}" >> ../vm.args
 sudo cp ../vm.args /home/couchdb/etc/vm.args
 sudo rm -rf /var/log/couchdb
 sudo mkdir /var/log/couchdb
