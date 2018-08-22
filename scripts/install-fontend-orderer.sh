@@ -56,7 +56,7 @@ export LC_ALL=C
 source ~/.bashrc
 source /etc/environment
 source ~/.profile
-export GOROOT=/opt/go && GOPATH=/opt/gopath && source /etc/environments && sudo ./devenv/setupUbuntuOnPPC64le.sh;
+export GOROOT=/opt/go && GOPATH=/opt/gopath && source /etc/environment && sudo ./devenv/setupUbuntuOnPPC64le.sh;
 export GOROOT=/opt/go && GOPATH=/opt/gopath && source ~/.profile && source ~/.bashrc && make dist-clean orderer configtxgen cryptogen;
 
 
