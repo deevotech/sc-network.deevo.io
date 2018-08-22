@@ -20,6 +20,6 @@ cd /opt/gopath/src/github.com/hyperledger/fabric-ca && \
 git checkout release-1.1 && \
 git pull && \
 cd /opt/gopath/src/github.com/hyperledger/fabric-ca && \
-export GOROOT=/opt/go && GOPATH=/opt/gopath && source /etc/environment && cd cmd/fabric-ca-server && go build;
+export GOROOT=/opt/go && GOPATH=/opt/gopath && source ~/.profile && cd cmd/fabric-ca-server && go build;
 cd /opt/gopath/src/github.com/hyperledger/fabric-ca && \
 export GOROOT=/opt/go && GOPATH=/opt/gopath && source ~/.profile && source ~/.bashrc && cd cmd/fabric-ca-client && go build;
