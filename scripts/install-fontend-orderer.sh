@@ -59,6 +59,7 @@ source /etc/environment && \
 source ~/.profile;
 cd /opt/gopath/src/github.com/hyperledger && \
 git clone git@github.com:datlv/hyperledger-fabric-bftsmart.git && \
+mv /opt/gopath/src/github.com/hyperledger/hyperledger-fabric-bftsmart /opt/gopath/src/github.com/hyperledger/fabric && \
 git checkout release-1.1 && \
 git pull && \
 cd /opt/gopath/src/github.com/hyperledger/fabric && \
