@@ -27,7 +27,7 @@ cd /tmp/juds/juds-master && \
 ./autoconf.sh && \
 ./configure && \
 make && \
-make install;
+sudo make install;
 sudo mkdir -p /opt && \
 sudo mkdir -p /opt/gopath/ && \
 sudo chmod 777 -R /opt/gopath && \
@@ -38,7 +38,7 @@ rm /tmp/hyperledger-bftsmart.zip
 rm -rf /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart
 wget https://github.com/datlv/hyperledger-fabric-bftsmart/archive/release-1.1.zip --output-document=/tmp/hyperledger-bftsmart.zip
 unzip /tmp/hyperledger-bftsmart.zip -d /opt/gopath/src/github.com/hyperledger/ && \
-mv /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart-release-1.1 /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart && \
+mv /opt/gopath/src/github.com/hyperledger/hyperledger-fabric-bftsmart-release-1.1 /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart && \
 cd /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart && \
 ant clean && \
 ant;
