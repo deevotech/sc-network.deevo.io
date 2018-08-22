@@ -35,10 +35,10 @@ mkdir -p /opt/gopath/src && \
 mkdir -p /opt/gopath/src/github.com && \
 mkdir -p /opt/gopath/src/github.com/hyperledger;
 rm /tmp/hyperledger-bftsmart.zip
-rm -rf /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart
-wget https://github.com/datlv/hyperledger-fabric-bftsmart/archive/release-1.1.zip --output-document=/tmp/hyperledger-bftsmart.zip
-unzip /tmp/hyperledger-bftsmart.zip -d /opt/gopath/src/github.com/hyperledger/ && \
-mv /opt/gopath/src/github.com/hyperledger/hyperledger-fabric-bftsmart-release-1.1 /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart && \
-cd /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart && \
+rm -rf /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart-orderering
+wget https://github.com/datlv/hyperledger-bftsmart-orderering/archive/release-1.1.zip --output-document=/tmp/hyperledger-bftsmart-orderering.zip
+unzip /tmp/hyperledger-bftsmart-orderering.zip -d /opt/gopath/src/github.com/hyperledger/ && \
+mv /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart-orderering-release-1.1 /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart-orderering && \
+cd /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart-orderering && \
 ant clean && \
 ant;
