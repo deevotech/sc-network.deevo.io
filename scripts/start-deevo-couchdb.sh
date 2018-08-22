@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 usage() { echo "Usage: $0 [-r <restart_or_init>]" 1>&2; exit 1; }
-while getopts ":g:n:" o; do
+while getopts ":r:" o; do
     case "${o}" in
         r)
             r=${OPTARG}
@@ -16,7 +16,7 @@ while getopts ":g:n:" o; do
     esac
 done
 shift $((OPTIND-1))
-if [ -z "${d}" ] ; then
+if [ -z "${r}" ] ; then
     usage
 fi
 # remove couchdb database

@@ -2,7 +2,7 @@
 
 set -e
 usage() { echo "Usage: $0 [-d <restart_or_init>]" 1>&2; exit 1; }
-while getopts ":g:n:" o; do
+while getopts ":d:" o; do
     case "${o}" in
         d)
             d=${OPTARG}
