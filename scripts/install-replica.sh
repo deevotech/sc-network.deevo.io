@@ -17,8 +17,7 @@ sudo update-ca-certificates -f && \
 sudo rm -rf /var/lib/apt/lists/* && \
 sudo rm -rf /var/cache/oracle-jdk8-installer;
 	
-JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
-export JAVA_HOME
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 wget https://github.com/mcfunley/juds/archive/master.zip --output-document=/tmp/juds.zip;
 
 unzip /tmp/juds.zip -d /tmp/juds && \
