@@ -22,4 +22,4 @@ git pull && \
 cd /opt/gopath/src/github.com/hyperledger/fabric-ca && \
 export GOROOT=/opt/go && GOPATH=/opt/gopath && source ~/.profile && cd cmd/fabric-ca-server && go build;
 cd /opt/gopath/src/github.com/hyperledger/fabric-ca && \
-export GOROOT=/opt/go && GOPATH=/opt/gopath && source ~/.profile && source ~/.bashrc && cd cmd/fabric-ca-client && go build;
+export GOROOT=/opt/go && GOPATH=/opt/gopath && source ~/.profile && cd cmd/fabric-ca-client && go build;
