@@ -1,7 +1,21 @@
 #!/bin/sh
 
 set -e
-
+usage() { echo "Usage: $0 [-d <restart_or_init>]" 1>&2; exit 1; }
+while getopts ":g:n:" o; do
+    case "${o}" in
+        d)
+            d=${OPTARG}
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+if [ -z "${d}" ] ; then
+    usage
+fi
 sudo apt-get update || true
 sudo apt-get --no-install-recommends -y install \
     build-essential pkg-config runit erlang \
@@ -35,8 +49,11 @@ fi
 sudo mkdir /opt/couchdb
 sudo mkdir /opt/couchdb/data
 sudo chmod 777 -R /opt/couchdb
-sudo cp ../local.ini /home/couchdb/etc/local.ini
-
+if [ ${d} -eq 1 ] ; then 
+	sudo cp ../localdeevo.ini /home/couchdb/etc/local.ini
+else
+	sudo cp ../local.ini /home/couchdb/etc/local.ini
+fi
 sudo rm -rf /var/log/couchdb
 sudo mkdir /var/log/couchdb
 sudo chown couchdb:couchdb /var/log/couchdb
