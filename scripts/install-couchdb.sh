@@ -54,6 +54,8 @@ if [ ${d} -eq 1 ] ; then
 else
 	sudo cp ../local.ini /home/couchdb/etc/local.ini
 fi
+echo "-name couchdb@13.229.209.119" >> ../vm.args
+sudo cp ../vm.args /home/couchdb/etc/vm.args
 sudo rm -rf /var/log/couchdb
 sudo mkdir /var/log/couchdb
 sudo chown couchdb:couchdb /var/log/couchdb
