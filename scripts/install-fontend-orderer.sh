@@ -49,6 +49,7 @@ sudo mv go /opt/;
 
 #rm /tmp/hyperledger-fabric-bftsmart.zip;
 rm -rf /opt/gopath/src/github.com/hyperledger/fabric;
+rm -rf /opt/gopath/src/github.com/hyperledger/hyperledger-fabric-bftsmart;
 #wget https://github.com/datlv/hyperledger-fabric-bftsmart/archive/release-1.1.zip --output-document=/tmp/hyperledger-fabric-bftsmart.zip
 #unzip /tmp/hyperledger-fabric-bftsmart.zip -d /opt/gopath/src/github.com/hyperledger/ && \
 #mv /opt/gopath/src/github.com/hyperledger/hyperledger-fabric-bftsmart-release-1.1 /opt/gopath/src/github.com/hyperledger/fabric && \
