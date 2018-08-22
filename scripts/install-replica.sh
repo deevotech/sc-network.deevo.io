@@ -35,6 +35,6 @@ mkdir -p /opt/gopath/src/github.com && \
 mkdir -p /opt/gopath/src/github.com/hyperledger;
 wget https://github.com/datlv/hyperledger-fabric-bftsmart/archive/release-1.1.zip --output-document=/tmp/hyperledger-bftsmart.zip
 unzip /tmp/hyperledger-bftsmart.zip -d /opt/gopath/src/github.com/hyperledger/ && \
-cd /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart-release-1.1 && \
+cd /opt/gopath/src/github.com/hyperledger/hyperledger-bftsmart && \
 ant clean && \
 ant;
