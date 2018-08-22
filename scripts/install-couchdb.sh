@@ -1,11 +1,14 @@
 #!/bin/sh
 
 set -e
-usage() { echo "Usage: $0 [-d <restart_or_init>]" 1>&2; exit 1; }
-while getopts ":d:" o; do
+usage() { echo "Usage: $0 [-d <restart_or_init>] [ -i <ip_of_server> ]" 1>&2; exit 1; }
+while getopts ":d:i:" o; do
     case "${o}" in
         d)
             d=${OPTARG}
+            ;;
+        i)
+            i=${OPTARG}
             ;;
         *)
             usage
@@ -13,7 +16,7 @@ while getopts ":d:" o; do
     esac
 done
 shift $((OPTIND-1))
-if [ -z "${d}" ] ; then
+if [ -z "${d}" ] || [ -z "${i}" ]; then
     usage
 fi
 sudo apt-get update || true
@@ -54,7 +57,7 @@ if [ ${d} -eq 1 ] ; then
 else
 	sudo cp ../local.ini /home/couchdb/etc/local.ini
 fi
-echo "-name couchdb@13.229.209.119" >> ../vm.args
+echo "-name couchdb@${i}" >> ../vm.args
 sudo cp ../vm.args /home/couchdb/etc/vm.args
 sudo rm -rf /var/log/couchdb
 sudo mkdir /var/log/couchdb
