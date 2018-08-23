@@ -23,6 +23,6 @@ cd /opt/gopath/src/github.com/hyperledger/fabric && \
 git checkout release-1.1 && \
 git pull && \
 cd /opt/gopath/src/github.com/hyperledger/fabric && \
-export GOROOT=/opt/go && GOPATH=/opt/gopath && source /etc/environment && sudo ./devenv/setupUbuntuOnPPC64le.sh;
+export LC_ALL=C && export GOROOT=/opt/go && GOPATH=/opt/gopath && source /etc/environment && sudo ./devenv/setupUbuntuOnPPC64le.sh;
 cd /opt/gopath/src/github.com/hyperledger/fabric && \
-export GOROOT=/opt/go && GOPATH=/opt/gopath && source ~/.profile && source ~/.bashrc && make dist-clean peer;
+export LC_ALL=C && export GOROOT=/opt/go && GOPATH=/opt/gopath && source ~/.profile && source ~/.bashrc && make dist-clean peer;
