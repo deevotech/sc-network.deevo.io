@@ -1,6 +1,10 @@
 #!/bin/sh
 
 set -e
+export LC_ALL=C && \
+source ~/.bashrc && \
+source /etc/environment && \
+source ~/.profile;
 usage() { echo "Usage: $0 [-d <restart_or_init>] [ -i <ip_of_server> ]" 1>&2; exit 1; }
 while getopts ":d:i:" o; do
     case "${o}" in
@@ -30,7 +34,7 @@ tar -xvzf apache-couchdb-2.2.0.tar.gz
 cd apache-couchdb-2.2.0/
 ./configure && make release
 USER="couchdb"
-EXISTS=$( cat /etc/passwd | grep $USER | sed -e 's/:.*//g') 
+EXISTS=$( cat /etc/passwd | grep ${USER} | sed -e 's/:.*//g') 
 echo ${EXISTS}
 if [ ${EXISTS} -eq "couchdb" ] ; then
 sudo adduser --system \
