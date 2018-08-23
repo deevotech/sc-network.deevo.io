@@ -19,7 +19,7 @@ git clone git@github.com:datlv/fabric-ca.git && \
 cd /opt/gopath/src/github.com/hyperledger/fabric-ca && \
 git checkout release-1.1 && \
 git pull;
-cp ../config/version.go /opt/gopath/src/github.com/hyperledger/fabric-ca/lib/metadata/version.go
+cp /opt/gopath/src/github.com/deevotech/supply-chain-network/config/version.go /opt/gopath/src/github.com/hyperledger/fabric-ca/lib/metadata/version.go
 cd /opt/gopath/src/github.com/hyperledger/fabric-ca && \
 export LC_ALL=C && export GOROOT=/opt/go && GOPATH=/opt/gopath && source ~/.profile && cd cmd/fabric-ca-server && go build;
 cd /opt/gopath/src/github.com/hyperledger/fabric-ca && \
