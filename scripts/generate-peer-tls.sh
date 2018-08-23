@@ -31,7 +31,7 @@ source $(dirname "$0")/env.sh
 ORG=${g}
 mkdir -p ${DATA}
 initPeerVars $ORG ${n}
-export ENROLLMENT_URL=https://peer${n}.${ORG}.deevo.com:peer${n}.${ORG}.deevo.compw@rca.${ORG}.deevo.com:7054
+export ENROLLMENT_URL=https://rca-${ORG}-admin:rca-${ORG}-adminpw@rca.${ORG}.deevo.com:7054
 export PEER_HOME=${DATA}/${PEER_NAME}
 export CORE_PEER_TLS_CERT_FILE=${DATA}/${PEER_NAME}/tls/server.crt
 export CORE_PEER_TLS_KEY_FILE=${DATA}/${PEER_NAME}/tls/server.key
