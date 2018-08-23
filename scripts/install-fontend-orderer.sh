@@ -47,6 +47,7 @@ sudo curl -O https://storage.googleapis.com/golang/go1.9.1.linux-amd64.tar.gz;
 sudo tar -xvf go1.9.1.linux-amd64.tar.gz;
 sudo mv go /opt/;
 
+mkdir -p /opt/gopath/src/github.com/hyperledger
 #rm /tmp/hyperledger-fabric-bftsmart.zip;
 rm -rf /opt/gopath/src/github.com/hyperledger/fabric;
 rm -rf /opt/gopath/src/github.com/hyperledger/hyperledger-fabric-bftsmart;
