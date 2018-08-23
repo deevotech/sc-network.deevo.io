@@ -32,7 +32,7 @@ cd apache-couchdb-2.2.0/
 USER="couchdb"
 EXISTS=$( cat /etc/passwd | grep $USER | sed -e 's/:.*//g') 
 echo ${EXISTS}
-if [ ${EXISTS} != "couchdb" ] ; then
+if [ ${EXISTS} -eq "couchdb" ] ; then
 sudo adduser --system \
         --no-create-home \
         --shell /bin/bash \
