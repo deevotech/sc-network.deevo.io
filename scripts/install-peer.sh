@@ -1,4 +1,14 @@
 #!/bin/bash
+# sudo usermod -a -G docker $USER
+# then logout and reboot
+# in /etc/environment
+# GOROOT="/opt/go"
+# GOPATH="/opt/gopath"
+# source /etc/environment
+# and in ~/.profile
+# export GOROOT="/opt/go"
+# export GOPATH="/opt/gopath"
+# PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
 cd /home/ubuntu;
 sudo curl -O https://storage.googleapis.com/golang/go1.9.1.linux-amd64.tar.gz;
 sudo tar -xvf go1.9.1.linux-amd64.tar.gz;

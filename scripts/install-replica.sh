@@ -1,4 +1,7 @@
 #!/bin/bash
+# add in file ~/.profile
+# export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+# and RUN source ~/.profile
 sudo apt-get update && \
 sudo apt-get install -y openjdk-8-jdk && \
 sudo apt-get install -y ant && \

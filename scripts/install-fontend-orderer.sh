@@ -1,4 +1,15 @@
 #!/bin/bash
+# sudo usermod -a -G docker $USER
+# then logout and reboot
+# in /etc/environment
+# GOROOT="/opt/go"
+# GOPATH="/opt/gopath"
+# source /etc/environment
+# and in ~/.profile
+# export GOROOT="/opt/go"
+# export GOPATH="/opt/gopath"
+# PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
+# export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 sudo apt-get update && \
 sudo apt-get install -y openjdk-8-jdk && \
 sudo apt-get install -y ant && \
