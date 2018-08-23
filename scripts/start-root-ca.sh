@@ -59,4 +59,4 @@ fi
 # Start the root CA
 mkdir -p data
 mkdir -p data/logs
-$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-server/fabric-ca-server start > ./data/logs/fabric-ca-rca-${g}.out 2>&1 &
+$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-server/fabric-ca-server start > ./data/logs/rca.${g}.deevo.com 2>&1 &
