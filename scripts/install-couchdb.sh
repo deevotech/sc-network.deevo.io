@@ -36,13 +36,13 @@ cd apache-couchdb-2.2.0/
 USER="couchdb"
 EXISTS=$( cat /etc/passwd | grep ${USER} | sed -e 's/:.*//g') 
 #echo ${EXISTS}
-if [ "${EXISTS}" -eq "couchdb" ] ; then
+#if [ "${EXISTS}" -eq "couchdb" ] ; then
 sudo adduser --system \
         --no-create-home \
         --shell /bin/bash \
         --group --gecos \
         "CouchDB Administrator" couchdb
-fi
+#fi
 sudo kill $(pidof runsv)
 sudo rm -rf /home/couchdb/*
 sudo cp -R rel/couchdb /home/couchdb
