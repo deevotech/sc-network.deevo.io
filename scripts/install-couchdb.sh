@@ -31,7 +31,7 @@ sudo apt-get --no-install-recommends -y install \
 wget http://apache-mirror.rbc.ru/pub/apache/couchdb/source/2.2.0/apache-couchdb-2.2.0.tar.gz
 
 tar -xvzf apache-couchdb-2.2.0.tar.gz
-cd apache-couchdb-2.2.0/
+cd apache-couchdb-2.2.0/ && \
 ./configure && make release
 USER="couchdb"
 EXISTS=$( cat /etc/passwd | grep ${USER} | sed -e 's/:.*//g') 
@@ -57,7 +57,7 @@ sudo mkdir /opt/couchdb
 sudo mkdir /opt/couchdb/data
 sudo chmod 777 -R /opt/couchdb
 if [ ${d} -eq 1 ] ; then 
-	sudo cp ../localdeevo.ini /home/couchdb/etc/local.ini
+	sudo cp ../localdevo.ini /home/couchdb/etc/local.ini
 	echo "-name couchdb@${i}" >> ../vm.args
 else
 	sudo cp ../local.ini /home/couchdb/etc/local.ini
