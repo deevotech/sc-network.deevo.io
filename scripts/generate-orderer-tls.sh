@@ -30,7 +30,7 @@ fi
 source $(dirname "$0")/env.sh
 ORG=${g}
 mkdir -p ${DATA}
-initOrdererVars $ORG ${n}
+initOrdererVars $ORG 0
 export ORDERER_GENERAL_LOCALMSPDIR=${DATA}/orderer/msp
 export ORDERER_GENERAL_GENESISFILE=${DATA}/genesis.block
 export ORDERER_GENERAL_LOCALMSPID=${ORG}MSP
