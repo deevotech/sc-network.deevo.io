@@ -1,0 +1,4 @@
+export GOROOT="/opt/go"
+export GOPATH="/opt/gopath"
+PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
