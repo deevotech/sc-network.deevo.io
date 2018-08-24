@@ -188,7 +188,7 @@ Orderer: &OrdererDefaults
     # participation in ordering. 
     # NOTE: In the solo case, this should be a one-item list.
     Addresses:
-        - orderer1-org0:7050
+        - orderer0.org0.deevo.com:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch.
     BatchTimeout: 2s
