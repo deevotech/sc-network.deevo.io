@@ -114,4 +114,4 @@ mkdir -p data
 mkdir -p data/logs
 cp ${DATA}/${PEER_NAME}/tls/${PEER_NAME}-client.key ${DATA}/tls/
 cp ${DATA}/${PEER_NAME}/tls/${PEER_NAME}-client.crt ${DATA}/tls/
-cp ../config/core-peer${n}-${ORG}.yaml $DATA/core.yaml
+cp ../config/core-peer${n}.${ORG}.deevo.com.yaml $DATA/core.yaml
