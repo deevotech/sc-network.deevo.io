@@ -47,7 +47,7 @@ function enrollCAAdmin {
    mkdir -p $HOME/cas
    export FABRIC_CA_CLIENT_HOME=$HOME/cas/$CA_NAME
    export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
-$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d -u https://rca-${g}-admin:rca-${g}-adminpw@rca.${g}.deevo.com:7054
+   $GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d -u https://rca-${g}-admin:rca-${g}-adminpw@rca.${g}.deevo.com:7054
 }
 
 function registerIdentities {
@@ -58,7 +58,7 @@ function registerIdentities {
 
 # Register any identities associated with a peer
 function registerPeerIdentities {
-   for ORG in $PEER_ORGS; do
+   #for ORG in $PEER_ORGS; do
       initOrgVars $ORG
       enrollCAAdmin
       #while [[ "$COUNT" -le $NUM_PEERS ]]; do
@@ -71,14 +71,14 @@ function registerPeerIdentities {
       $GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client register -d --id.name $ADMIN_NAME --id.secret $ADMIN_PASS --id.attrs "hf.Registrar.Roles=client,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,abac.init=true:ecert,chaincode_example02.init=true:ecert,marbles02.init=true:ecert,supplychain.init=true:ecert"
       log "Registering user identity with $CA_NAME"
       $GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client register -d --id.name $USER_NAME --id.secret $USER_PASS
-   done
+   #done
 }
 
 function getCACerts {
    log "Getting CA certificates ..."
    #for ORG in $ORGS; do
       initOrgVars $ORG
-      log "Getting CA certs for organization $ORG and storing in $ORG_MSP_DIR"
+      log "Getting CA certs for organization ${ORG} and storing in $ORG_MSP_DIR"
       export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
       $GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client getcacert -d -u https://$CA_HOST:7054 -M $ORG_MSP_DIR
       finishMSPSetup $ORG_MSP_DIR
