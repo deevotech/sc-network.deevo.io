@@ -79,6 +79,7 @@ git pull && \
 cd /opt/gopath/src/github.com/hyperledger/fabric && \
 export LC_ALL=C && export GOROOT=/opt/go && GOPATH=/opt/gopath && source /etc/environment && sudo ./devenv/setupUbuntuOnPPC64le.sh;
 cd /opt/gopath/src/github.com/hyperledger/fabric && \
-export LC_ALL=C && export GOROOT=/opt/go && GOPATH=/opt/gopath && source ~/.profile && source ~/.bashrc && make dist-clean orderer configtxgen cryptogen;
+export LC_ALL=C && export GOROOT=/opt/go && GOPATH=/opt/gopath && source ~/.profile && source ~/.bashrc && make dist-clean peer orderer configtxgen cryptogen;
 
-
+sudo mkdir -p /var/hyperledger
+sudo chmod 777 -R /var/hyperledger
