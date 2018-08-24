@@ -38,7 +38,8 @@ rm -rf $HOME/fabric-ca/*
 if [ ${r} -eq 1 ] ; then
 	rm -rf ${FABRIC_CA_SERVER_HOME}/*
 	cp -R ${DATA}/rca-${g}-home/* ${FABRIC_CA_SERVER_HOME}/
-else 
+else
+	rm -rf $FABRIC_CA_SERVER_HOME/
 	$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-server/fabric-ca-server init -b $BOOTSTRAP_USER_PASS
 	# Copy the root CA's signing certificate to the data directory to be used by others
 	mkdir -p ${DATA}
