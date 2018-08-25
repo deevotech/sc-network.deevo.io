@@ -139,7 +139,7 @@ Organizations:
 
         # ID is the key by which this org's MSP definition will be referenced.
         # ID can include alphanumeric characters as well as dots and dashes.
-        ID: org3MSP
+        ID: org4MSP
 
         # MSPDir is the filesystem path which contains the MSP configuration.
         MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/org4/msp
