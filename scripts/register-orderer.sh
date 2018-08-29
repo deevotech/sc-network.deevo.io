@@ -328,7 +328,7 @@ Orderer: &OrdererDefaults
         # the serialized messages in a batch. If the "kafka" OrdererType is
         # selected, set 'message.max.bytes' and 'replica.fetch.max.bytes' on
         # the Kafka brokers to a value that is larger than this one.
-        AbsoluteMaxBytes: 10 MB
+        AbsoluteMaxBytes: 98 MB
 
         # Preferred Max Bytes: The preferred maximum number of bytes allowed
         # for the serialized messages in a batch. A message larger than the
