@@ -45,7 +45,7 @@ else
 	mkdir -p ${DATA}
 	rm -rf ${DATA}/*
 	cp $FABRIC_CA_SERVER_HOME/ca-cert.pem $TARGET_CERTFILE
-	
+	cp $FABRIC_CA_SERVER_HOME/tls-cert.pem ${DATA}/${g}-tls-cert.pem
 	# Add the custom orgs
 	for o in $FABRIC_ORGS; do
 	   aff=$aff"\n   $o: []"
@@ -60,4 +60,4 @@ fi
 # Start the root CA
 mkdir -p data
 mkdir -p data/logs
-$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-server/fabric-ca-server start > ./data/logs/rca.${g}.deevo.com 2>&1 &
+$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-server/fabric-ca-server start --tls.enabled=true > ./data/logs/rca.${g}.deevo.com 2>&1 &
