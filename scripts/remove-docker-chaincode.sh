@@ -4,4 +4,3 @@ if [ "$chaincodeImages" != "" ]; then
   # log "Removing chaincode docker images ..."
    docker rmi -f $chaincodeImages > /dev/null
 fi
-exit;
