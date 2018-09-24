@@ -115,3 +115,11 @@ mkdir -p data/logs
 cp ${DATA}/${PEER_NAME}/tls/${PEER_NAME}-client.key ${DATA}/tls/
 cp ${DATA}/${PEER_NAME}/tls/${PEER_NAME}-client.crt ${DATA}/tls/
 cp ../config/core-peer${n}.${ORG}.deevo.com.yaml $DATA/core.yaml
+
+rm -rf /tmp/mytls/*
+
+$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d --enrollment.profile tls -u $ENROLLMENT_URL -M /tmp/mytls
+
+mkdir ${DATA}/tls-${PEER_NAME}
+cp -R /tmp/mytls/* ${DATA}/tls-${PEER_NAME}/
+
