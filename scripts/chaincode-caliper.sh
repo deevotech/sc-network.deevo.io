@@ -59,8 +59,9 @@ for ORG in $PEER_ORGS; do
     echo $ORDERER_CONN_ARGS
     $GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode install -n $n -v 1.0 -p github.com/hyperledger/caliper/src/contract/fabric/simple/go
     #$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode install -n ${n} -v 1.0 -p github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02
-    #sleep 3
+    sleep 5
 done
+sleep 10 
 $GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode list --installed -C $CHANNEL_NAME
 #initPeerVars ${PORGS[1]} 1
 #switchToAdminIdentity
