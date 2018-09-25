@@ -1,4 +1,7 @@
 #!/bin/bash
+export GOPATH=/opt/gopath
+export GOROOT=/opt/go
+export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
 usage() { echo "Usage: $0 [-c <channelname>] -n [chaincodename]" 1>&2; exit 1; }
 while getopts ":c:n:" o; do
     case "${o}" in
