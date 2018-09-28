@@ -24,6 +24,7 @@ echo "create channel channelID ${c} chaincodeName ${n} chaincodeVersion ${v}"
 
 # clone sourecode
 cd $GOPATH/src/github.com/deevotech
+rm -rf hyperledger-supplychain-chaincode
 git clone https://github.com/deevotech/hyperledger-supplychain-chaincode
 
 # init config
