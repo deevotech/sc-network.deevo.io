@@ -3,7 +3,7 @@ export GOPATH=/opt/gopath
 export GOROOT=/opt/go
 export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
 usage() { echo "Usage: $0 [-c <channelname>] -n [chaincodename] -v [chaincodeversion]" 1>&2; exit 1; }
-while getopts ":c:n:" o; do
+while getopts ":c:n:v:" o; do
     case "${o}" in
         c)
             c=${OPTARG}
