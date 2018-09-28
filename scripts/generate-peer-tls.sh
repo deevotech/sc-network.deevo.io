@@ -86,7 +86,7 @@ genClientTLSCert $PEER_NAME $CORE_PEER_TLS_CLIENTCERT_FILE $CORE_PEER_TLS_CLIENT
 genClientTLSCert $PEER_NAME $DATA/tls/$PEER_NAME-cli-client.crt $DATA/tls/$PEER_NAME-cli-client.key
 
 # Enroll the peer to get an enrollment certificate and set up the core's local MSP directory
-$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d -u $ENROLLMENT_URL -M $CORE_PEER_MSPCONFIGPATH
+$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d  -u $ENROLLMENT_URL -M $CORE_PEER_MSPCONFIGPATH
 finishMSPSetup $CORE_PEER_MSPCONFIGPATH
 copyAdminCert $CORE_PEER_MSPCONFIGPATH
 
@@ -117,7 +117,7 @@ cp ${DATA}/${PEER_NAME}/tls/${PEER_NAME}-client.crt ${DATA}/tls/
 cp ../config/core-peer${n}.${ORG}.deevo.com.yaml $DATA/core.yaml
 
 rm -rf /tmp/mytls/*
-
+export ENROLLMENT_URL=https://admin-${ORG}:admin-${ORG}pw@rca.${ORG}.deevo.com:7054
 $GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d --enrollment.profile tls -u $ENROLLMENT_URL -M /tmp/mytls
 
 mkdir ${DATA}/tls-${PEER_NAME}
