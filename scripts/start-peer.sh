@@ -74,6 +74,7 @@ sudo chmod 777 -R /opt/couchdb
 sudo cp ./local.ini /home/couchdb/etc/local.ini
 rm -rf /ect/sv/couchdb/log/*
 
+docker image prune -a
 chaincodeImages=`docker images | grep "^dev-peer" | awk '{print $3}'`
 if [ "$chaincodeImages" != "" ]; then
   # log "Removing chaincode docker images ..."
