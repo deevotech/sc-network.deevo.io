@@ -1,7 +1,7 @@
 #!/bin/bash
 cd /home/ubuntu;
-sudo curl -O https://storage.googleapis.com/golang/go1.9.1.linux-amd64.tar.gz;
-sudo tar -xvf go1.9.1.linux-amd64.tar.gz;
+sudo curl -O https://dl.google.com/go/go1.10.linux-amd64.tar.gz;
+sudo tar -xvf go1.10.linux-amd64.tar.gz;
 sudo mv go /opt/;
 
 #rm /tmp/hyperledger-fabric-bftsmart.zip;
