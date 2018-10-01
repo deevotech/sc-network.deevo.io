@@ -14,7 +14,7 @@ shift $((OPTIND-1))
 if [ -z "${n}" ] ; then
     usage
 fi
-logpid() { while sleep 1; do  ps -p $1 -o pcpu= -o pmem= -o etime=; done; }
+logpid() { while sleep 0.02; do  ps -p $1 -opcpu= -opmem= -oetime=; done; }
 pid=$(pidof ${n})
 mkdir -p ./data
 mkdir -p ./data/logs
