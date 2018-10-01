@@ -16,4 +16,4 @@ if [ -z "${n}" ] ; then
 fi
 logpid() { while sleep 1; do  ps -p $1 -o pcpu= -o pmem= -o etime=; done; }
 pid=$(pidof ${n})
-logpid $pid > ./data/logs/pid-${n}.log 2>&1 &
+logpid $pid > ./data/logs/pid-${n}.log 2>&1 & echo $! > ./data/logs/pid-${n}.file & 
