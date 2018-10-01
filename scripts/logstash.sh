@@ -14,6 +14,6 @@ shift $((OPTIND-1))
 if [ -z "${n}" ] ; then
     usage
 fi
-logpid() { while sleep 1; do  ps -p $1 -o pcpu= -o pmem= ; done; }
+logpid() { while sleep 1; do  ps -p $1 -o pcpu= -o pmem= -o etime=; done; }
 pid=$(pidof ${n})
 logpid $pid > ./data/logs/pid-${n}.log 2>&1 &
