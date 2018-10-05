@@ -1,6 +1,6 @@
 #!/bin/bash
-usage() { echo "Usage: $0 [-c <channelname>] -n [number]" 1>&2; exit 1; }
-while getopts ":c:n:v:" o; do
+usage() { echo "Usage: $0 [-c <channelname>] -n [number] -g [org] -f [fileout]" 1>&2; exit 1; }
+while getopts ":c:n:g:f:" o; do
     case "${o}" in
         c)
             c=${OPTARG}
@@ -8,13 +8,19 @@ while getopts ":c:n:v:" o; do
         n)
             n=${OPTARG}
             ;;
+        g)
+            g=${OPTARG}
+            ;;
+        f)
+            f=${OPTARG}
+            ;;
         *)
             usage
             ;;
     esac
 done
 shift $((OPTIND-1))
-if [ -z "${c}" ] || [ -z "${n}" ] ; then
+if [ -z "${c}" ] || [ -z "${n}" ] || [ -z "${g}" ] || [ -z "${f}" ]  ; then
     usage
 fi
 
@@ -29,7 +35,7 @@ ORDERER_HOST=orderer0.org0.deevo.com
 export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.com:7050 --tls --cafile $CA_CHAINFILE --clientauth"
 QUERY_TIMEOUT=30
 
-ORG=org1
+ORG=${g}
 PEER_HOST=peer0.${ORG}.deevo.com
 PEER_NAME=${PEER_HOST}
 ORG_ADMIN_HOME=$DATA/orgs/$ORG/admin
@@ -57,4 +63,4 @@ echo $ORDERER_CONN_ARGS
 echo "Instantiating chaincode on $PEER_HOST ..."
 export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.com:7050 --tls --cafile $DATA/org0-ca-cert.pem --clientauth"
 export ORDERER_CONN_ARGS="$ORDERER_PORT_ARGS --keyfile $CORE_PEER_TLS_CLIENTKEY_FILE --certfile $CORE_PEER_TLS_CLIENTCERT_FILE"
-$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer channel fetch ${n} ./out.txt -c $CHANNEL_NAME $ORDERER_CONN_ARGS
+$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer channel fetch ${n} ${f} -c $CHANNEL_NAME $ORDERER_CONN_ARGS
