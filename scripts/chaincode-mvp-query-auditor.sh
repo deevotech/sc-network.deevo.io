@@ -1,6 +1,6 @@
 #!/bin/bash
-usage() { echo "Usage: $0 [-c <channelname>] -n [chaincodename] -v [chaincodeversion]" 1>&2; exit 1; }
-while getopts ":c:n:v:" o; do
+usage() { echo "Usage: $0 [-c <channelname>] -n [chaincodename] -v [chaincodeversion] -g [org] -i [objectID]" 1>&2; exit 1; }
+while getopts ":c:n:v:g:i:" o; do
     case "${o}" in
         c)
             c=${OPTARG}
@@ -11,13 +11,19 @@ while getopts ":c:n:v:" o; do
         v)
             v=${OPTARG}
             ;;
+        g)
+            g=${OPTARG}
+            ;;
+        i)
+            i=${OPTARG}
+            ;;
         *)
             usage
             ;;
     esac
 done
 shift $((OPTIND-1))
-if [ -z "${c}" ] || [ -z "${n}" ] || [ -z "${v}" ] ; then
+if [ -z "${c}" ] || [ -z "${n}" ] || [ -z "${v}" ] || [ -z "${g}" ] || [ -z "${i}" ] ; then
     usage
 fi
 
@@ -38,7 +44,7 @@ $GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode list --instal
 
 # instantiate chaincode
 
-ORG=org1
+ORG=${g}
 PEER_HOST=peer0.${ORG}.deevo.com
 PEER_NAME=${PEER_HOST}
 ORG_ADMIN_HOME=$DATA/orgs/$ORG/admin
@@ -63,4 +69,4 @@ export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.com:7050 --tls --cafile $DATA/
 export ORDERER_CONN_ARGS="$ORDERER_PORT_ARGS --keyfile $CORE_PEER_TLS_CLIENTKEY_FILE --certfile $CORE_PEER_TLS_CLIENTCERT_FILE"
 echo $ORDERER_CONN_ARGS
 
-$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -v ${v}  -c '{"Args":["updateAuditor", "{\"objectType\":\"auditor\",\"id\":\"Auditor_1\",\"name\":\"Auditor 2\",\"content\":\"\"}"]}' $ORDERER_CONN_ARGS
+$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode query -C $CHANNEL_NAME -n ${n} -v ${v}  -c '{"Args":["getObject","'${i}'"}' $ORDERER_CONN_ARGS
