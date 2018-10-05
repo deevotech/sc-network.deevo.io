@@ -68,5 +68,5 @@ export CORE_PEER_GOSSIP_ORGLEADER=false
 export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.com:7050 --tls --cafile $DATA/org0-ca-cert.pem --clientauth"
 export ORDERER_CONN_ARGS="$ORDERER_PORT_ARGS --keyfile $CORE_PEER_TLS_CLIENTKEY_FILE --certfile $CORE_PEER_TLS_CLIENTCERT_FILE"
 echo $ORDERER_CONN_ARGS
-
+echo '{"Args":["getObject","'${i}'"]}'
 $GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode query -C $CHANNEL_NAME -n ${n} -v ${v}  -c '{"Args":["getObject","'${i}'"]}' $ORDERER_CONN_ARGS
