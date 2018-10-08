@@ -2,7 +2,7 @@
 usage() { echo "Usage: $0 -g [org]" 1>&2; exit 1; }
 while getopts ":g:" o; do
     case "${o}" in
-        f)
+        g)
             g=${OPTARG}
             ;;
         *)
