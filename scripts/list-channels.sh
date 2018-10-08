@@ -1,9 +1,12 @@
 #!/bin/bash
-usage() { echo "Usage: $0 -g [org]" 1>&2; exit 1; }
-while getopts ":g:" o; do
+usage() { echo "Usage: $0 -g [org] -l [log level]" 1>&2; exit 1; }
+while getopts ":g:l:" o; do
     case "${o}" in
         g)
             g=${OPTARG}
+            ;;
+        l)
+            l=${OPTARG}
             ;;
         *)
             usage
@@ -11,7 +14,7 @@ while getopts ":g:" o; do
     esac
 done
 shift $((OPTIND-1))
-if [ -z "${g}" ]  ; then
+if [ -z "${g}" ] || [ -z "${l}" ] ; then
     usage
 fi
 
@@ -45,4 +48,4 @@ export CORE_PEER_GOSSIP_ORGLEADER=false
 export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.com:7050 --tls --cafile $DATA/org0-ca-cert.pem --clientauth"
 export ORDERER_CONN_ARGS="$ORDERER_PORT_ARGS --keyfile $CORE_PEER_TLS_CLIENTKEY_FILE --certfile $CORE_PEER_TLS_CLIENTCERT_FILE"
 
-$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer channel list $ORDERER_CONN_ARGS
+$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer channel list $ORDERER_CONN_ARGS --logging-level $l
