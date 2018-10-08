@@ -1,9 +1,9 @@
 #!/bin/bash
 usage() { echo "Usage: $0 -g [org]" 1>&2; exit 1; }
-while getopts ":f:" o; do
+while getopts ":g:" o; do
     case "${o}" in
         f)
-            f=${OPTARG}
+            g=${OPTARG}
             ;;
         *)
             usage
