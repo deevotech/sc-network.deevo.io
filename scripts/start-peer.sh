@@ -80,7 +80,8 @@ if [ "$chaincodeImages" != "" ]; then
   # log "Removing chaincode docker images ..."
    docker rmi -f $chaincodeImages
 fi
-
+sudo rm -f /home/couchdb/bin/couchdb
+sudo cp ./couchdb /home/couchdb/bin/
 #sudo runsv /etc/service/couchdb
 sudo sv start /etc/service/couchdb
 
