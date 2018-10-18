@@ -26,13 +26,10 @@ fi
 
 DATA=/home/ubuntu/hyperledgerconfig/data
 export FABRIC_CFG_PATH=$DATA/
-PEER_ORGS="org1 org2 org3 org4 org5"
-NUM_PEERS=5
 CHANNEL_NAME=${c}
 CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 CA_CHAINFILE=${DATA}/org0-ca-cert.pem
 ORDERER_HOST=orderer0.org0.deevo.com
-export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.com:7050 --tls --cafile $CA_CHAINFILE --clientauth"
 QUERY_TIMEOUT=30
 
 ORG=${g}
@@ -56,11 +53,10 @@ export CORE_PEER_PROFILE_ENABLED=true
 # gossip variables
 export CORE_PEER_GOSSIP_USELEADERELECTION=true
 export CORE_PEER_GOSSIP_ORGLEADER=false
-export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.com:7050 --tls --cafile $DATA/org0-ca-cert.pem --clientauth"
-export ORDERER_CONN_ARGS="$ORDERER_PORT_ARGS --keyfile $CORE_PEER_TLS_CLIENTKEY_FILE --certfile $CORE_PEER_TLS_CLIENTCERT_FILE"
-echo $ORDERER_CONN_ARGS
 
-echo "Instantiating chaincode on $PEER_HOST ..."
 export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.com:7050 --tls --cafile $DATA/org0-ca-cert.pem --clientauth"
 export ORDERER_CONN_ARGS="$ORDERER_PORT_ARGS --keyfile $CORE_PEER_TLS_CLIENTKEY_FILE --certfile $CORE_PEER_TLS_CLIENTCERT_FILE"
+
+$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode list -C $CHANNEL_NAME --instantiated $ORDERER_CONN_ARGS
+
 $GOPATH/src/github.com/hyperledger/fabric/build/bin/peer channel fetch ${n} ${f} -c $CHANNEL_NAME $ORDERER_CONN_ARGS
