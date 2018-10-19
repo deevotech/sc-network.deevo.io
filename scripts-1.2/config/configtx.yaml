@@ -27,7 +27,7 @@ Organizations:
         ID: org0MSP
 
         # MSPDir is the filesystem path which contains the MSP configuration.
-        MSPDir: /etc/hyperledger/fabric/crypto-config/orgs/org0/msp
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/org0/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -52,7 +52,7 @@ Organizations:
     - &ordering-nodes
         Name: ordering-nodes
         ID: ordering-nodesMSP
-        MSPDir: /etc/hyperledger/fabric/crypto-config/orgs/ordering/msp
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/ordering/msp
         Policies:
             Readers:
                 Type: Signature
@@ -66,7 +66,7 @@ Organizations:
     - &org1
         Name: org1
         ID: org1MSP
-        MSPDir: /etc/hyperledger/fabric/crypto-config/orgs/org1/msp
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/org1/msp
         Policies: &org1Policies
             Readers:
                 Type: Signature
@@ -81,12 +81,12 @@ Organizations:
         # cross-org gossip communication. Note, this value is only encoded in
         # the genesis block in the Application section context.
         AnchorPeers:
-            - Host: peer1.org1.bft
+            - Host: peer0.org1.deevo.io
               Port: 7051
     - &org2
         Name: org2
         ID: org2MSP
-        MSPDir: /etc/hyperledger/fabric/crypto-config/orgs/org2/msp
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/org2/msp
         Policies: &org2Policies
             Readers:
                 Type: Signature
@@ -98,8 +98,60 @@ Organizations:
                 Type: Signature
                 Rule: "OR('org2MSP.admin')"
         AnchorPeers:
-            - Host: peer1.org2.bft
+            - Host: peer0.org2.deevo.io
               Port: 7051
+    - &org3
+        Name: org3
+        ID: org3MSP
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/org3/msp
+        Policies: &org2Policies
+            Readers:
+                Type: Signature
+                Rule: "OR('org3MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('org3MSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('org3MSP.admin')"
+        AnchorPeers:
+            - Host: peer0.org3.deevo.io
+              Port: 7051
+    - &org4
+        Name: org4
+        ID: org4MSP
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/org4/msp
+        Policies: &org4Policies
+            Readers:
+                Type: Signature
+                Rule: "OR('org4MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('org4MSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('org4MSP.admin')"
+        AnchorPeers:
+            - Host: peer0.org4.deevo.io
+              Port: 7051
+    - &org5
+        Name: org5
+        ID: org5MSP
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/org5/msp
+        Policies: &org5Policies
+            Readers:
+                Type: Signature
+                Rule: "OR('org5MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('org5MSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('org5MSP.admin')"
+        AnchorPeers:
+            - Host: peer0.org5.deevo.io
+              Port: 7051
+
 ################################################################################
 #
 #   CAPABILITIES
@@ -170,7 +222,7 @@ Orderer: &OrdererDefaults
     # participation in ordering.
     # NOTE: In the solo case, this should be a one-item list.
     Addresses:
-        - orderer1.org0.bft:7050
+        - orderer0.org0.deevo.io:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch.
     BatchTimeout: 2s
@@ -411,11 +463,17 @@ Profiles:
             Organizations:
                 - *org1
                 - *org2
+                - *org3
+                - *org4
+                - *org5
         Consortiums:
             SampleConsortium:
                 Organizations:
                     - *org1
                     - *org2
+                    - *org3
+                    - *org4
+                    - *org5
 
     # SampleSingleMSPChannel defines a channel with only the sample org as a
     # member. It is designed to be used in conjunction with SampleSingleMSPSolo
@@ -427,3 +485,6 @@ Profiles:
             Organizations:
                 - *org1
                 - *org2
+                - *org3
+                - *org4
+                - *org5
