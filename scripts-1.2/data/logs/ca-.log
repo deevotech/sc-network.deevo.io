@@ -1,0 +1,92 @@
+##### 2018-10-19 12:06:24 ordering-nodes: []\n org0: []\n org1: []\n org2: []\n org3: []\n org4: []\n org5: []\n ordering-nodes: []\n org0: []\n org1: []\n org2: []\n org3: []\n org4: []\n org5: []
+##### 2018-10-19 12:09:49 ordering-nodes: []\n org0: []\n org1: []\n org2: []\n org3: []\n org4: []\n org5: []\n ordering-nodes: []\n org0: []\n org1: []\n org2: []\n org3: []\n org4: []\n org5: []
+##### 2018-10-19 12:18:10 ordering-nodes: []\n org0: []\n org1: []\n org2: []\n org3: []\n org4: []\n org5: []\n ordering-nodes: []\n org0: []\n org1: []\n org2: []\n org3: []\n org4: []\n org5: []
+##### 2018-10-19 12:18:12 Start CA server
+2018/10/19 12:18:12 [INFO] Configuration file location: /home/datlv/fabric-ca/fabric-ca-server-config.yaml
+2018/10/19 12:18:12 [INFO] Starting server in home directory: /home/datlv/fabric-ca
+2018/10/19 12:18:12 [INFO] Server Version: 1.2.0
+2018/10/19 12:18:12 [INFO] Server Levels: &{Identity:1 Affiliation:1 Certificate:1 Credential:1 RAInfo:1 Nonce:1}
+2018/10/19 12:18:12 [DEBUG] Making server filenames absolute
+2018/10/19 12:18:12 [DEBUG] Initializing default CA in directory /home/datlv/fabric-ca
+2018/10/19 12:18:12 [DEBUG] Init CA with home /home/datlv/fabric-ca and config {Version:1.2.0 Cfg:{Identities:{AllowRemove:false} Affiliations:{AllowRemove:false}} CA:{Name:rca.ordering-nodes.deevo.com Keyfile:/etc/hyperledger/fabric-ca-server-config/rca.ordering.bft-cert.key Certfile:/etc/hyperledger/fabric-ca-server-config/rca.ordering.bft-cert.pem Chainfile:ca-chain.pem} Signing:0xc4201bccd0 CSR:{CN:rca.ordering-nodes.deevo.com Names:[{C:US ST:California L: O: OU:COP SerialNumber:}] Hosts:[rca.ordering-nodes.deevo.com] KeyRequest:<nil> CA:0xc4205e9fc0 SerialNumber:} Registry:{MaxEnrollments:-1 Identities:[{ Name:**** Pass:**** Type:client Affiliation: MaxEnrollments:0 Attrs:map[hf.GenCRL:1 hf.Registrar.Attributes:* hf.AffiliationMgr:1 hf.Registrar.Roles:* hf.Registrar.DelegateRoles:* hf.Revoker:1 hf.IntermediateCA:1]  }]} Affiliations:map[org0:[] org4:[] org5:[] org2:[department1] org1:[department1 department2] org3:[] ordering-nodes:[]] LDAP:{ Enabled:false URL:ldap://****:****@<host>:<port>/<base> UserFilter:(uid=%s) GroupFilter:(memberUid=%s) Attribute:{[uid member] [{ }] map[groups:[{ }]]} TLS:{false [] { }}  } DB:{ Type:sqlite3 Datasource:fabric-ca-server.db TLS:{false [] { }}  } CSP:0xc4205e9a20 Client:<nil> Intermediate:{ParentServer:{ URL: CAName:  } TLS:{Enabled:false CertFiles:[] Client:{KeyFile: CertFile:}} Enrollment:{ Name: Secret:**** CAName: AttrReqs:[] Profile: Label: CSR:<nil> Type:x509  }} CRL:{Expiry:24h0m0s} Idemix:{IssuerPublicKeyfile: IssuerSecretKeyfile: RevocationPublicKeyfile: RevocationPrivateKeyfile: RHPoolSize:0 NonceExpiration: NonceSweepInterval:}}
+2018/10/19 12:18:12 [DEBUG] CA Home Directory: /home/datlv/fabric-ca
+2018/10/19 12:18:12 [DEBUG] Checking configuration file version '1.2.0' against server version: '1.2.0'
+2018/10/19 12:18:12 [DEBUG] Initializing BCCSP: &{ProviderName:SW SwOpts:0xc4205f4ea0 PluginOpts:<nil>}
+2018/10/19 12:18:12 [DEBUG] Initializing BCCSP with software options &{SecLevel:256 HashFamily:SHA2 Ephemeral:false FileKeystore:0xc4201caac0 DummyKeystore:<nil>}
+2018/10/19 12:18:12 [DEBUG] Initialize key material
+2018/10/19 12:18:12 [DEBUG] Making CA filenames absolute
+2018/10/19 12:18:12 [WARNING] &{69 The specified CA certificate file /etc/hyperledger/fabric-ca-server-config/rca.ordering.bft-cert.pem does not exist}
+2018/10/19 12:18:12 [DEBUG] Root CA certificate request: {CN:rca.ordering-nodes.deevo.com Names:[{C:US ST:California L: O: OU:COP SerialNumber:}] Hosts:[rca.ordering-nodes.deevo.com] KeyRequest:0xc4201ce700 CA:0xc4205e9fc0 SerialNumber:}
+2018/10/19 12:18:12 [INFO] generating key: &{A:ecdsa S:256}
+2018/10/19 12:18:12 [DEBUG] generate key from request: algo=ecdsa, size=256
+2018/10/19 12:18:12 [INFO] encoded CSR
+2018/10/19 12:18:12 [DEBUG] validating configuration
+2018/10/19 12:18:12 [DEBUG] validate local profile
+2018/10/19 12:18:12 [DEBUG] profile is valid
+2018/10/19 12:18:12 [INFO] signed certificate with serial number 547030960895465423616408721652877015425346605459
+2018/10/19 12:18:12 [INFO] The CA key and certificate were generated for CA rca.ordering-nodes.deevo.com
+2018/10/19 12:18:12 [INFO] The key was stored by BCCSP provider 'SW'
+2018/10/19 12:18:12 [INFO] The certificate is at: /etc/hyperledger/fabric-ca-server-config/rca.ordering.bft-cert.pem
+2018/10/19 12:18:12 [DEBUG] Initializing DB
+2018/10/19 12:18:12 [DEBUG] Initializing 'sqlite3' database at '/home/datlv/fabric-ca/fabric-ca-server.db'
+2018/10/19 12:18:12 [DEBUG] Using sqlite database, connect to database in home (/home/datlv/fabric-ca/fabric-ca-server.db) directory
+2018/10/19 12:18:12 [DEBUG] Creating SQLite database (/home/datlv/fabric-ca/fabric-ca-server.db) if it does not exist...
+2018/10/19 12:18:12 [DEBUG] Creating users table if it does not exist
+2018/10/19 12:18:12 [DEBUG] Creating affiliations table if it does not exist
+2018/10/19 12:18:12 [DEBUG] Creating certificates table if it does not exist
+2018/10/19 12:18:12 [DEBUG] Creating credentials table if it does not exist
+2018/10/19 12:18:12 [DEBUG] Creating revocation_authority_info table if it does not exist
+2018/10/19 12:18:12 [DEBUG] Creating nonces table if it does not exist
+2018/10/19 12:18:12 [DEBUG] Creating properties table if it does not exist
+2018/10/19 12:18:12 [DEBUG] Successfully opened sqlite3 DB
+2018/10/19 12:18:12 [DEBUG] Checking database schema...
+2018/10/19 12:18:12 [DEBUG] Update SQLite schema, if using outdated schema
+2018/10/19 12:18:12 [DEBUG] Initializing identity registry
+2018/10/19 12:18:12 [DEBUG] Initialized DB identity registry
+2018/10/19 12:18:12 [DEBUG] DB: Get properties [identity.level affiliation.level certificate.level]
+2018/10/19 12:18:12 [DEBUG] Checking database levels 'map[affiliation.level:1 certificate.level:1 identity.level:1]' against server levels '&{Identity:1 Affiliation:1 Certificate:1 Credential:1 RAInfo:1 Nonce:1}'
+2018/10/19 12:18:12 [DEBUG] Loading identity table
+2018/10/19 12:18:12 [DEBUG] Loading identity 'rca-ordering-nodes-admin'
+2018/10/19 12:18:12 [DEBUG] DB: Getting identity rca-ordering-nodes-admin
+2018/10/19 12:18:12 [DEBUG] Identity 'rca-ordering-nodes-admin' already registered, loaded identity
+2018/10/19 12:18:12 [DEBUG] Successfully loaded identity table
+2018/10/19 12:18:12 [DEBUG] Loading affiliations table
+2018/10/19 12:18:12 [DEBUG] DB: Add affiliation org2
+2018/10/19 12:18:12 [DEBUG] Affiliation 'org2' already exists
+2018/10/19 12:18:12 [DEBUG] DB: Add affiliation org2.department1
+2018/10/19 12:18:12 [DEBUG] Affiliation 'org2.department1' already exists
+2018/10/19 12:18:12 [DEBUG] DB: Add affiliation org1
+2018/10/19 12:18:12 [DEBUG] Affiliation 'org1' already exists
+2018/10/19 12:18:12 [DEBUG] DB: Add affiliation org1.department1
+2018/10/19 12:18:12 [DEBUG] Affiliation 'org1.department1' already exists
+2018/10/19 12:18:12 [DEBUG] DB: Add affiliation org1.department2
+2018/10/19 12:18:12 [DEBUG] Affiliation 'org1.department2' already exists
+2018/10/19 12:18:12 [DEBUG] DB: Add affiliation org3
+2018/10/19 12:18:12 [DEBUG] Affiliation 'org3' already exists
+2018/10/19 12:18:12 [DEBUG] DB: Add affiliation ordering-nodes
+2018/10/19 12:18:12 [DEBUG] Affiliation 'ordering-nodes' already exists
+2018/10/19 12:18:12 [DEBUG] DB: Add affiliation org0
+2018/10/19 12:18:12 [DEBUG] Affiliation 'org0' already exists
+2018/10/19 12:18:12 [DEBUG] DB: Add affiliation org4
+2018/10/19 12:18:12 [DEBUG] Affiliation 'org4' already exists
+2018/10/19 12:18:12 [DEBUG] DB: Add affiliation org5
+2018/10/19 12:18:12 [DEBUG] Affiliation 'org5' already exists
+2018/10/19 12:18:12 [DEBUG] Successfully loaded affiliations table
+2018/10/19 12:18:12 [DEBUG] Checking and performing migration, if needed
+2018/10/19 12:18:12 [DEBUG] Updating database level to &{Identity:1 Affiliation:1 Certificate:1 Credential:1 RAInfo:1 Nonce:1}
+2018/10/19 12:18:13 [INFO] Initialized sqlite3 database at /home/datlv/fabric-ca/fabric-ca-server.db
+2018/10/19 12:18:13 [DEBUG] Initializing enrollment signer
+2018/10/19 12:18:13 [DEBUG] validating configuration
+2018/10/19 12:18:13 [DEBUG] validate local profile
+2018/10/19 12:18:13 [DEBUG] profile is valid
+2018/10/19 12:18:13 [DEBUG] validate local profile
+2018/10/19 12:18:13 [DEBUG] profile is valid
+2018/10/19 12:18:13 [DEBUG] validate local profile
+2018/10/19 12:18:13 [DEBUG] profile is valid
+2018/10/19 12:18:13 [DEBUG] CA initialization successful
+2018/10/19 12:18:13 [INFO] Home directory for default CA: /home/datlv/fabric-ca
+2018/10/19 12:18:13 [DEBUG] 1 CA instance(s) running on server
+2018/10/19 12:18:13 [DEBUG] TLS is enabled
+2018/10/19 12:18:13 [DEBUG] TLS Certificate: /etc/hyperledger/fabric-ca-server-config/rca.ordering.bft-cert.pem, TLS Key: /etc/hyperledger/fabric-ca-server-config/rca.ordering.bft-cert.key
+2018/10/19 12:18:13 [DEBUG] Client authentication type requested: noclientcert
+2018/10/19 12:18:13 [INFO] Listening on https://0.0.0.0:7054
