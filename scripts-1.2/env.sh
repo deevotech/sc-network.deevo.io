@@ -419,12 +419,19 @@ function genMSPCerts() {
 	logr "Enroll to get peer's TLS cert"
 
 	mkdir -p $MSP_DIR
+    rm -rf $MSP_DIR/*
+    echo $HOST_NAME
+    echo $NAME
+    echo $PASSWORD
+    echo $CA_HOST_NAME
+    echo $MSP_DIR
+    echo $ORG
 
 	fabric-ca-client enroll -d --enrollment.profile tls -u https://$NAME:$PASSWORD@$CA_HOST_NAME:7054 -M $MSP_DIR --csr.hosts $HOST_NAME --csr.names C=US,ST="California",O=${ORG},OU=COP
 
 	# Copy CA certs
-	mkdir $MSP_DIR/tlscacerts
-	mkdir $MSP_DIR/cacerts
+	mkdir -p $MSP_DIR/tlscacerts
+	mkdir -p $MSP_DIR/cacerts
     cp $ORG_MSP/cacerts/* $MSP_DIR/tlscacerts
 	cp $ORG_MSP/cacerts/* $MSP_DIR/cacerts
 }
