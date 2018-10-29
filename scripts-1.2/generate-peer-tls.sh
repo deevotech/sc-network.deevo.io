@@ -27,99 +27,92 @@ shift $((OPTIND-1))
 if [ -z "${g}" ] || [ -z "${n}" ] ; then
     usage
 fi
-source $(dirname "$0")/env.sh
-ORG=${g}
-mkdir -p ${DATA}
-initPeerVars $ORG ${n}
-export ENROLLMENT_URL=https://rca-${ORG}-admin:rca-${ORG}-adminpw@rca.${ORG}.deevo.com:7054
-export PEER_HOME=${DATA}/${PEER_NAME}
-export CORE_PEER_TLS_CERT_FILE=${DATA}/${PEER_NAME}/tls/server.crt
-export CORE_PEER_TLS_KEY_FILE=${DATA}/${PEER_NAME}/tls/server.key
-export CORE_PEER_TLS_CLIENTROOTCAS_FILES=$DATA/${ORG}-ca-cert.pem
-export CORE_PEER_TLS_CLIENTCERT_FILE=$DATA/${PEER_NAME}/tls/${PEER_NAME}-client.crt
-export CORE_PEER_TLS_CLIENTKEY_FILE=$DATA/${PEER_NAME}/tls/${PEER_NAME}-client.key
-export FABRIC_CA_CLIENT_TLS_CERTFILES=$DATA/${ORG}-ca-cert.pem
-export CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
 
-export CORE_PEER_TLS_ROOTCERT_FILE=${DATA}/${ORG}-ca-cert.pem
-export CORE_PEER_TLS_KEY_FILE=${DATA}/${PEER_NAME}/tls/server.key
-export CORE_PEER_GOSSIP_ORGLEADER=false
-export CORE_PEER_LOCALMSPID=${ORG}MSP
-export CORE_PEER_TLS_ENABLED=true
-export CORE_PEER_TLS_CLIENTAUTHREQUIRED=true
-export CORE_PEER_ID=${PEER_NAME}
-export CORE_LOGGING_LEVEL=DEBUG
-export CORE_PEER_GOSSIP_EXTERNALENDPOINT=${PEER_NAME}:7051
-export CORE_PEER_ADDRESS=${PEER_NAME}:7051
-export CORE_PEER_GOSSIP_USELEADERELECTION=true
-export FABRIC_CFG_PATH=${DATA}/
-export CORE_PEER_MSPCONFIGPATH=$DATA/$PEER_NAME/msp
-mkdir -p $DATA/${PEER_NAME}
-mkdir -p $DATA/${PEER_NAME}
-if [ -d ${CORE_PEER_MSPCONFIGPATH}/keystore/] ; then
-	rm -rf ${CORE_PEER_MSPCONFIGPATH}/keystore/*
-fi
+function enrollCAAdmin() {
+	logr "Enrolling with $ENROLLMENT_URL as bootstrap identity ..."
+	fabric-ca-client enroll -d -u $ENROLLMENT_URL
+}
 
-# Although a peer may use the same TLS key and certificate file for both inbound and outbound TLS,
-# we generate a different key and certificate for inbound and outbound TLS simply to show that it is perssible
-mkdir -p /tmp/tls
-if [ -d /tmp/tls/keystore/ ] ; then
-	rm -rf /tmp/tls/keystore/*
-fi
-# Generate server TLS cert and key pair for the peer
-echo ${ENROLLMENT_URL}
-echo ${PEER_HOST}
-$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d --enrollment.profile tls -u $ENROLLMENT_URL -M /tmp/tls --csr.hosts $PEER_HOST
+# Register any identities associated with a peer
+function registerPeerIdentities() {
+	enrollCAAdmin
 
+	fabric-ca-client register -d --id.name $CORE_PEER_ID --id.secret $PEER_PASS --id.type peer --id.affiliation $ORG --id.attrs 'admin=true:ecert'
 
-# Copy the TLS key and cert to the appropriate place
-TLSDIR=$PEER_HOME/tls
-mkdir -p $TLSDIR
-cp /tmp/tls/signcerts/* $CORE_PEER_TLS_CERT_FILE
-cp /tmp/tls/keystore/* $CORE_PEER_TLS_KEY_FILE
-rm -rf /tmp/tls
+	logr "Registering admin identity with $ADMIN_NAME:$ADMIN_PASS"
+	# The admin identity has the "admin" attribute which is added to ECert by default
+	fabric-ca-client register -d --id.name $ADMIN_NAME --id.secret $ADMIN_PASS --id.affiliation $ORG --id.attrs '"hf.Registrar.Roles=user"' --id.attrs '"hf.Registrar.Attributes=*"' --id.attrs 'hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,mycc.init=true:ecert'
+	logr "Registering user identity with $USER_NAME:$USER_PASS"
+	fabric-ca-client register -d --id.name $USER_NAME --id.secret $USER_PASS --id.affiliation $ORG --id.attrs '"hf.Registrar.Roles=user"'
+}
 
-# Generate client TLS cert and key pair for the peer
-genClientTLSCert $PEER_NAME $CORE_PEER_TLS_CLIENTCERT_FILE $CORE_PEER_TLS_CLIENTKEY_FILE
+function getCACerts() {
+	logr "Getting CA certificates ..."
+	logr "Getting CA certs for organization $ORG and storing in $ORG_MSP_DIR"
+	mkdir -p $ORG_MSP_DIR
+	fabric-ca-client getcacert -d -u $ENROLLMENT_URL -M $ORG_MSP_DIR
+	mkdir -p $ORG_MSP_DIR/tlscacerts
+	cp $ORG_MSP_DIR/cacerts/* $ORG_MSP_DIR/tlscacerts
 
-# Generate client TLS cert and key pair for the peer CLI
-genClientTLSCert $PEER_NAME $DATA/tls/$PEER_NAME-cli-client.crt $DATA/tls/$PEER_NAME-cli-client.key
+	# Copy CA cert
+	mkdir -p $FABRIC_CA_CLIENT_HOME/msp/tlscacerts
+	cp $ORG_MSP_DIR/cacerts/* $FABRIC_CA_CLIENT_HOME/msp/tlscacerts
+}
 
-# Enroll the peer to get an enrollment certificate and set up the core's local MSP directory
-$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d  -u $ENROLLMENT_URL -M $CORE_PEER_MSPCONFIGPATH
-finishMSPSetup $CORE_PEER_MSPCONFIGPATH
-copyAdminCert $CORE_PEER_MSPCONFIGPATH
+function main() {
+	mkdir -p FABRIC_CA_CLIENT_HOME
 
+	registerPeerIdentities
+	getCACerts
+	logr "Finished create certificates"
+	logr "Start create TLS"
 
-# Start the peer
-log "Starting peer '$CORE_PEER_ID' with MSP at '$CORE_PEER_MSPCONFIGPATH'"
-mkdir -p $DATA/$PEER_NAME
-env | grep CORE > $DATA/$PEER_NAME/core.config
-env | grep CORE
+	mkdir -p $PEER_CERT_DIR
+	logr "Generate server TLS cert and key pair for the peer"
+	genMSPCerts $CORE_PEER_ID $CORE_PEER_ID $PEER_PASS $ORG $CA_HOST $PEER_CERT_DIR/msp
 
-#cp -R $FABRIC_CA_CLIENT_HOME/* $DATA/$PEER_NAME/
+	mkdir -p $PEER_CERT_DIR/tls
+	cp $PEER_CERT_DIR/msp/signcerts/* $PEER_CERT_DIR/tls/server.crt
+	cp $PEER_CERT_DIR/msp/keystore/* $PEER_CERT_DIR/tls/server.key
 
-if [ -f ./data/logs/${PEER_NAME}.out ] ; then
-rm ./data/logs/${PEER_NAME}.out
-fi
-if [ -d /var/hyperledger/production ] ; then
-rm -rf /var/hyperledger/production/*
-fi
-chaincodeImages=`docker images | grep "^dev-peer" | awk '{print $3}'`
-if [ "$chaincodeImages" != "" ]; then
-  # log "Removing chaincode docker images ..."
-   docker rmi -f $chaincodeImages > /dev/null
-fi
-mkdir -p data
+	logr "Generate client TLS cert and key pair for the user client"
+	genMSPCerts $CORE_PEER_ID $USER_NAME $USER_PASS $ORG $CA_HOST $USER_CERT_DIR/msp
+
+    mkdir -p $USER_CERT_DIR/tls
+	cp $USER_CERT_DIR/msp/signcerts/* $USER_CERT_DIR/tls/client.crt
+	cp $USER_CERT_DIR/msp/keystore/* $USER_CERT_DIR/tls/client.key
+
+	if [ $ADMINCERTS ]; then
+		logr "Generate client TLS cert and key pair for the peer CLI"
+		genMSPCerts $CORE_PEER_ID $ADMIN_NAME $ADMIN_PASS $ORG $CA_HOST $ADMIN_CERT_DIR/msp
+
+        mkdir -p $ADMIN_CERT_DIR/tls
+		cp $ADMIN_CERT_DIR/msp/signcerts/* $ADMIN_CERT_DIR/tls/server.crt
+		cp $ADMIN_CERT_DIR/msp/keystore/* $ADMIN_CERT_DIR/tls/server.key
+		mkdir -p $ADMIN_CERT_DIR/msp/admincerts
+		cp $ADMIN_CERT_DIR/msp/signcerts/* $ADMIN_CERT_DIR/msp/admincerts/cert.pem
+		logr "Copy the org's admin cert into some target MSP directory"
+
+		mkdir -p $PEER_CERT_DIR/msp/admincerts
+		cp $ADMIN_CERT_DIR/msp/signcerts/* $PEER_CERT_DIR/msp/admincerts/admin-user.pem
+		cp $PEER_CERT_DIR/msp/signcerts/* $PEER_CERT_DIR/msp/admincerts/admin-peer.pem
+
+		mkdir -p $USER_CERT_DIR/msp/admincerts
+		cp $ADMIN_CERT_DIR/msp/signcerts/* $USER_CERT_DIR/msp/admincerts/admin-user.pem
+		cp $PEER_CERT_DIR/msp/signcerts/* $USER_CERT_DIR/msp/admincerts/admin-peer.pem
+
+		mkdir -p $ORG_MSP_DIR/admincerts
+		cp $ADMIN_CERT_DIR/msp/signcerts/* $ORG_MSP_DIR/admincerts/admin-user.pem
+		cp $PEER_CERT_DIR/msp/signcerts/* $ORG_MSP_DIR/admincerts/admin-peer.pem
+	fi
+
+	logr "Finished create TLS"
+}
+
+export RUN_SUMPATH=data/logs/peer${g}-${n}.log
 mkdir -p data/logs
-cp ${DATA}/${PEER_NAME}/tls/${PEER_NAME}-client.key ${DATA}/tls/
-cp ${DATA}/${PEER_NAME}/tls/${PEER_NAME}-client.crt ${DATA}/tls/
-cp ../config/core-peer${n}.${ORG}.deevo.com.yaml $DATA/core.yaml
+ORG=${g}
+initPeerVars $ORG ${n}
+mkdir -p ${ORG_HOME}
 
-rm -rf /tmp/mytls/*
-export ENROLLMENT_URL=https://admin-${ORG}:admin-${ORG}pw@rca.${ORG}.deevo.com:7054
-$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d --enrollment.profile tls -u $ENROLLMENT_URL -M /tmp/mytls
-
-mkdir ${DATA}/tls-${PEER_NAME}
-cp -R /tmp/mytls/* ${DATA}/tls-${PEER_NAME}/
-
+main

@@ -1,15 +1,4 @@
 #!/bin/bash
-# sudo usermod -a -G docker $USER
-# then logout and reboot
-# in /etc/environment
-# GOROOT="/opt/go"
-# GOPATH="/opt/gopath"
-# source /etc/environment
-# and in ~/.profile
-# export GOROOT="/opt/go"
-# export GOPATH="/opt/gopath"
-# PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
-# export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 sudo apt-get clean && \
 rm -rf /var/lib/apt/lists/* && \
 rm -rf /var/cache/oracle-jdk8-installer;
@@ -52,13 +41,12 @@ go get github.com/golang/protobuf/protoc-gen-go \
 
 # Clone the Hyperledger Fabric code and cp sample config files
 FABRIC_ROOT=$GOPATH/src/github.com/hyperledger/fabric
-cd $GOPATH/src/github.com/hyperledger \
-        && wget https://github.com/deevotech/fabric/archive/release-1.2-deevo.zip \
-        && unzip release-1.2-deevo.zip \
-        && rm release-1.2-deevo.zip \
-        && mv fabric-release-1.2-deevo fabric;
+
+cd $GOPATH/src/github.com/hyperledger 
+git clone https://github.com/deevotech/fabric -b release-1.2-deevo
+
 #cp $FABRIC_ROOT/devenv/limits.conf /etc/security/limits.conf
-cd $FABRIC_ROOT
+cd $GOPATH/src/github.com/hyperledger/fabric
 make dist-clean peer
 
 sudo mkdir -p /var/hyperledger

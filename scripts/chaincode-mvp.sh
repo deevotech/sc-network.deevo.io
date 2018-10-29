@@ -24,8 +24,8 @@ echo "create channel channelID ${c} chaincodeName ${n} chaincodeVersion ${v}"
 
 # clone sourecode
 cd $GOPATH/src/github.com/deevotech
-rm -rf hyperledger-supplychain-chaincode
-git clone https://github.com/deevotech/hyperledger-supplychain-chaincode
+rm -rf sc-chaincode.deevo.io
+git clone https://github.com/deevotech/sc-chaincode.deevo.io
 
 # init config
 DATA=/home/ubuntu/hyperledgerconfig/data
@@ -66,7 +66,7 @@ for ORG in $PEER_ORGS; do
     export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.com:7050 --tls --cafile $DATA/org0-ca-cert.pem --clientauth"
     export ORDERER_CONN_ARGS="$ORDERER_PORT_ARGS --keyfile $CORE_PEER_TLS_CLIENTKEY_FILE --certfile $CORE_PEER_TLS_CLIENTCERT_FILE"
     echo $ORDERER_CONN_ARGS
-    $GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode install -n $n -v $v -p github.com/deevotech/hyperledger-supplychain-chaincode/food-supplychain
+    $GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode install -n $n -v $v -p github.com/deevotech/sc-chaincode.deevo.io/food-supplychain
 done
 
 $GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode list --installed -C $CHANNEL_NAME

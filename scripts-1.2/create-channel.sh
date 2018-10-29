@@ -40,13 +40,13 @@ done
 
 echo "join channel to chain"
 CA_CHAINFILE=${DATA}/org0-ca-cert.pem
-ORDERER_HOST=orderer0.org0.deevo.com
-export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.com:7050 --tls --cafile $CA_CHAINFILE --clientauth"
+ORDERER_HOST=orderer0.org0.deevo.io
+export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.io:7050 --tls --cafile $CA_CHAINFILE --clientauth"
 #initPeerVars ${PORGS[0]} 1
-PEER_NAME=peer0.org1.deevo.com
+PEER_NAME=peer0.org1.deevo.io
 PEER_HOST=$PEER_NAME
 export FABRIC_CA_CLIENT=$DATA/$PEER_NAME/
-export CORE_PEER_ID=peer0.org1.deevo.com
+export CORE_PEER_ID=peer0.org1.deevo.io
 export CORE_PEER_ADDRESS=peer1-org1:7051
 export CORE_PEER_LOCALMSPID=org1MSP
 export CORE_LOGGING_LEVEL=DEBUG
@@ -76,7 +76,7 @@ for ORG in $PEER_ORGS; do
      #COUNT=1
      #while [[ "$COUNT" -le $NUM_PEERS ]]; do
          #initPeerVars $ORG $COUNT
-         PEER_HOST=peer0.${ORG}.deevo.com
+         PEER_HOST=peer0.${ORG}.deevo.io
          #PEER_HOST=peer1-${ORG}
          PEER_NAME=${PEER_HOST}
          ORG_ADMIN_HOME=$DATA/orgs/$ORG/admin
@@ -120,7 +120,7 @@ sleep 5
 for ORG in $PEER_ORGS; do
     #initPeerVars $ORG 1
     #switchToAdminIdentity
-    PEER_HOST=peer0.${ORG}.deevo.com
+    PEER_HOST=peer0.${ORG}.deevo.io
          PEER_NAME=${PEER_HOST}
          ORG_ADMIN_HOME=$DATA/orgs/$ORG/admin
          CA_CHAINFILE=${DATA}/${ORG}-ca-cert.pem
@@ -140,7 +140,7 @@ for ORG in $PEER_ORGS; do
 	   # gossip variables
 	   export CORE_PEER_GOSSIP_USELEADERELECTION=true
     echo "Updating anchor peers for $PEER_HOST ..."
-    export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.com:7050 --tls --cafile $DATA/org0-ca-cert.pem --clientauth"
+    export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.io:7050 --tls --cafile $DATA/org0-ca-cert.pem --clientauth"
     export ORDERER_CONN_ARGS="$ORDERER_PORT_ARGS --keyfile $CORE_PEER_TLS_CLIENTKEY_FILE --certfile $CORE_PEER_TLS_CLIENTCERT_FILE"
     ANCHOR_TX_FILE=$DATA/orgs/$ORG/anchors.tx
     echo $ORDERER_CONN_ARGS

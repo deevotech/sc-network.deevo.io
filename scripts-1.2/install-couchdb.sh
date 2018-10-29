@@ -57,12 +57,12 @@ sudo mkdir /opt/couchdb
 sudo mkdir /opt/couchdb/data
 sudo chmod 777 -R /opt/couchdb
 if [ ${d} -eq 1 ] ; then 
-	sudo cp ../localdevo.ini /home/couchdb/etc/local.ini
-	echo "-name couchdb@${i}" >> ../vm.args
+	sudo cp ../config-1.2/localdeevo.ini /home/couchdb/etc/local.ini
+	echo "-name couchdb@${i}" >> ../config-1.2/vm.args
 else
-	sudo cp ../local.ini /home/couchdb/etc/local.ini
+	sudo cp ../config-1.2/local.ini /home/couchdb/etc/local.ini
 fi
-sudo cp ../vm.args /home/couchdb/etc/vm.args
+sudo cp ../config-1.2/vm.args /home/couchdb/etc/vm.args
 sudo rm -rf /var/log/couchdb
 sudo mkdir /var/log/couchdb
 sudo chown couchdb:couchdb /var/log/couchdb

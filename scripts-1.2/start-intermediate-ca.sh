@@ -26,13 +26,13 @@ initOrgVars $ORG
 
 set -e
 export FABRIC_CA_SERVER_HOME=$HOME/fabric-ca
-export FABRIC_CA_SERVER_CA_NAME=ica.${ORG}.deevo.com
+export FABRIC_CA_SERVER_CA_NAME=ica.${ORG}.deevo.io
 export FABRIC_CA_SERVER_INTERMEDIATE_TLS_CERTFILES=${DATA}/${ORG}-ca-cert.pem
-export FABRIC_CA_SERVER_CSR_HOSTS=ica.${ORG}.deevo.com
+export FABRIC_CA_SERVER_CSR_HOSTS=ica.${ORG}.deevo.io
 export FABRIC_CA_SERVER_TLS_ENABLED=true
 export FABRIC_CA_SERVER_DEBUG=true
 export BOOTSTRAP_USER_PASS=ica-${ORG}-admin:ica-${ORG}-adminpw
-export PARENT_URL=https://rca-${ORG}-admin:rca-${ORG}-adminpw@rca.${ORG}.deevo.com:7054
+export PARENT_URL=https://rca-${ORG}-admin:rca-${ORG}-adminpw@rca.${ORG}.deevo.io:7054
 export TARGET_CHAINFILE=${DATA}/${ORG}-ca-chain.pem
 # Wait for the root CA to start
 waitPort "root CA to start" 60 $ROOT_CA_LOGFILE $ROOT_CA_HOST 7054

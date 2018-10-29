@@ -10,86 +10,89 @@
 # 1) registers orderer and peer identities with intermediate fabric-ca-servers
 # 2) Builds the channel artifacts (e.g. genesis block, etc)
 #
-usage() { echo "Usage: $0 [-g <orgname>]" 1>&2; exit 1; }
+usage() {
+	echo "Usage: $0 [-g <orgname>]" 1>&2
+	exit 1
+}
 while getopts ":g:" o; do
-    case "${o}" in
-        g)
-            g=${OPTARG}
-            ;;
-        *)
-            usage
-            ;;
-    esac
+	case "${o}" in
+	g)
+		g=${OPTARG}
+		;;
+	*)
+		usage
+		;;
+	esac
 done
-shift $((OPTIND-1))
-if [ -z "${g}" ] ; then
-    usage
+shift $((OPTIND - 1))
+if [ -z "${g}" ]; then
+	usage
 fi
 
 ORG=${g}
 
-function main {
-   mkdir -p ${DATA}
-   log "Beginning building channel artifacts ..."
-   registerIdentities
-   getCACerts
-   makeConfigTxYaml
-   generateBftConfig
-   cp ../config/orderer.yaml $DATA/
+function main() {
+	mkdir -p ${DATA}
+	log "Beginning building channel artifacts ..."
+	registerIdentities
+	getCACerts
+	makeConfigTxYaml
+	generateBftConfig
+	cp ../config/orderer.yaml $DATA/
 }
 
 # Enroll the CA administrator
-function enrollCAAdmin {
-   #waitPort "$CA_NAME to start" 90 $CA_LOGFILE $CA_HOST 7054
-   log "Enrolling with $CA_NAME as bootstrap identity ..."
-   mkdir -p $HOME/cas
-   export FABRIC_CA_CLIENT_HOME=$HOME/cas/$CA_NAME
-   export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
-   $GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d -u https://$CA_ADMIN_USER_PASS@$CA_HOST:7054
+function enrollCAAdmin() {
+	#waitPort "$CA_NAME to start" 90 $CA_LOGFILE $CA_HOST 7054
+	log "Enrolling with $CA_NAME as bootstrap identity ..."
+	mkdir -p $HOME/cas
+	export FABRIC_CA_CLIENT_HOME=$HOME/cas/$CA_NAME
+	export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
+	$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d -u https://$CA_ADMIN_USER_PASS@$CA_HOST:7054
 }
 
-function registerIdentities {
-   log "Registering identities ..."
-   registerOrdererIdentities
-   #registerPeerIdentities
+function registerIdentities() {
+	log "Registering identities ..."
+	registerOrdererIdentities
+	#registerPeerIdentities
 }
 
 # Register any identities associated with the orderer
-function registerOrdererIdentities {
-   #for ORG in $ORDERER_ORGS; do
-      initOrgVars $ORG
-      enrollCAAdmin
-      local COUNT=1
-      while [[ "$COUNT" -le $NUM_ORDERERS ]]; do
-         initOrdererVars $ORG $COUNT
-         log "Registering $ORDERER_NAME with $CA_NAME"
-         $GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client register -d --id.name $ORDERER_NAME --id.secret $ORDERER_PASS --id.type orderer
-         COUNT=$((COUNT+1))
-      done
-      log "Registering admin identity with $CA_NAME"
-      # The admin identity has the "admin" attribute which is added to ECert by default
-      $GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client register -d --id.name $ADMIN_NAME --id.secret $ADMIN_PASS --id.attrs "admin=true:ecert"
-   #done
+function registerOrdererIdentities() {
+	#for ORG in $ORDERER_ORGS; do
+	initOrgVars $ORG
+	enrollCAAdmin
+	local COUNT=1
+	while [[ "$COUNT" -le $NUM_ORDERERS ]]; do
+		initOrdererVars $ORG $COUNT
+		log "Registering $ORDERER_NAME with $CA_NAME"
+		$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client register -d --id.name $ORDERER_NAME --id.secret $ORDERER_PASS --id.type orderer
+		COUNT=$((COUNT + 1))
+	done
+	log "Registering admin identity with $CA_NAME"
+	# The admin identity has the "admin" attribute which is added to ECert by default
+	$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client register -d --id.name $ADMIN_NAME --id.secret $ADMIN_PASS --id.attrs "admin=true:ecert"
+	#done
 }
 
-function getCACerts {
-   log "Getting CA certificates ..."
-   #for ORG in $ORGS; do
-      initOrgVars $ORG
-      log "Getting CA certs for organization $ORG and storing in $ORG_MSP_DIR"
-      export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
-      $GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client getcacert -d -u https://$CA_HOST:7054 -M $ORG_MSP_DIR
-      finishMSPSetup $ORG_MSP_DIR
-      # If ADMINCERTS is true, we need to enroll the admin now to populate the admincerts directory
-      if [ $ADMINCERTS ]; then
-         switchToAdminIdentity
-      fi
-   #done
+function getCACerts() {
+	log "Getting CA certificates ..."
+	#for ORG in $ORGS; do
+	initOrgVars $ORG
+	log "Getting CA certs for organization $ORG and storing in $ORG_MSP_DIR"
+	export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
+	$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client getcacert -d -u https://$CA_HOST:7054 -M $ORG_MSP_DIR
+	finishMSPSetup $ORG_MSP_DIR
+	# If ADMINCERTS is true, we need to enroll the admin now to populate the admincerts directory
+	if [ $ADMINCERTS ]; then
+		switchToAdminIdentity
+	fi
+	#done
 }
 
 # printOrg
-function printOrg {
-   echo "
+function printOrg() {
+	echo "
   - &$ORG_CONTAINER_NAME
 
     Name: $ORG
@@ -102,16 +105,16 @@ function printOrg {
 }
 
 # printOrdererOrg <ORG>
-function printOrdererOrg {
-   initOrgVars $1
-   printOrg
+function printOrdererOrg() {
+	initOrgVars $1
+	printOrg
 }
 
 # printPeerOrg <ORG> <COUNT>
-function printPeerOrg {
-   initPeerVars $1 $2
-   printOrg
-   echo "
+function printPeerOrg() {
+	initPeerVars $1 $2
+	printOrg
+	echo "
     AnchorPeers:
        # AnchorPeers defines the location of peers which can be used
        # for cross org gossip communication.  Note, this value is only
@@ -120,9 +123,9 @@ function printPeerOrg {
          Port: 7051"
 }
 
-function makeConfigTxYaml {
-   {
-   echo "# Copyright IBM Corp. All Rights Reserved.
+function makeConfigTxYaml() {
+	{
+		echo "# Copyright IBM Corp. All Rights Reserved.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -215,7 +218,7 @@ Organizations:
         # cross-org gossip communication. Note, this value is only encoded in
         # the genesis block in the Application section context.
         AnchorPeers:
-            - Host: peer0.org1.deevo.com
+            - Host: peer0.org1.deevo.io
               Port: 7051
     - &org2
         # Name is the key by which this org will be referenced in channel
@@ -234,7 +237,7 @@ Organizations:
         # cross-org gossip communication. Note, this value is only encoded in
         # the genesis block in the Application section context.
         AnchorPeers:
-            - Host: peer0.org2.deevo.com
+            - Host: peer0.org2.deevo.io
               Port: 7051
     - &org3
         # Name is the key by which this org will be referenced in channel
@@ -253,7 +256,7 @@ Organizations:
         # cross-org gossip communication. Note, this value is only encoded in
         # the genesis block in the Application section context.
         AnchorPeers:
-            - Host: peer0.org3.deevo.com
+            - Host: peer0.org3.deevo.io
               Port: 7051
 - &org4
         # Name is the key by which this org will be referenced in channel
@@ -272,7 +275,7 @@ Organizations:
         # cross-org gossip communication. Note, this value is only encoded in
         # the genesis block in the Application section context.
         AnchorPeers:
-            - Host: peer0.org4.deevo.com
+            - Host: peer0.org4.deevo.io
               Port: 7051
 - &org5
         # Name is the key by which this org will be referenced in channel
@@ -291,7 +294,7 @@ Organizations:
         # cross-org gossip communication. Note, this value is only encoded in
         # the genesis block in the Application section context.
         AnchorPeers:
-            - Host: peer0.org5.deevo.com
+            - Host: peer0.org5.deevo.io
               Port: 7051
 ################################################################################
 #
@@ -312,7 +315,7 @@ Orderer: &OrdererDefaults
     # participation in ordering. 
     # NOTE: In the solo case, this should be a one-item list.
     Addresses:
-        - orderer0.org0.deevo.com:7050
+        - orderer0.org0.deevo.io:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch.
     BatchTimeout: 2s
@@ -433,54 +436,54 @@ Capabilities:
         # the network may cause a fork.
         V1_1_RESOURCETREE_EXPERIMENTAL: false
    "
-} > $DATA/configtx.yaml
-   # Copy it to the data directory to make debugging easier
-   #cp /etc/hyperledger/fabric/configtx.yaml $DATA
+	} >$DATA/configtx.yaml
+	# Copy it to the data directory to make debugging easier
+	#cp /etc/hyperledger/fabric/configtx.yaml $DATA
 }
 
 function generateChannelArtifacts() {
-  
-  #which configtxgen
-  if [ "$?" -ne 0 ]; then
-    fatal "configtxgen tool not found. exiting"
-  fi
 
-  log "Generating orderer genesis block at $GENESIS_BLOCK_FILE"
-  # Note: For some unknown reason (at least for now) the block file can't be
-  # named orderer.genesis.block or the orderer will fail to launch!
- #cp /data/core.yaml $FABRIC_CFG_PATH/
-  $GOPATH/src/github.com/hyperledger/fabric/build/bin/configtxgen -profile SampleSingleMSPBFTsmart -outputBlock $GENESIS_BLOCK_FILE
-  if [ "$?" -ne 0 ]; then
-    fatal "Failed to generate orderer genesis block"
-  fi
+	#which configtxgen
+	if [ "$?" -ne 0 ]; then
+		fatal "configtxgen tool not found. exiting"
+	fi
 
-  log "Generating channel configuration transaction at $CHANNEL_TX_FILE"
-  $GOPATH/src/github.com/hyperledger/fabric/build/bin/configtxgen -profile SampleSingleMSPChannel -outputCreateChannelTx $CHANNEL_TX_FILE -channelID $CHANNEL_NAME
-  if [ "$?" -ne 0 ]; then
-    fatal "Failed to generate channel configuration transaction"
-  fi
+	log "Generating orderer genesis block at $GENESIS_BLOCK_FILE"
+	# Note: For some unknown reason (at least for now) the block file can't be
+	# named orderer.genesis.block or the orderer will fail to launch!
+	#cp /data/core.yaml $FABRIC_CFG_PATH/
+	$GOPATH/src/github.com/hyperledger/fabric/build/bin/configtxgen -profile SampleSingleMSPBFTsmart -outputBlock $GENESIS_BLOCK_FILE
+	if [ "$?" -ne 0 ]; then
+		fatal "Failed to generate orderer genesis block"
+	fi
 
-  for ORG in $PEER_ORGS; do
-     initOrgVars $ORG
-     log "Generating anchor peer update transaction for $ORG at $ANCHOR_TX_FILE"
-     $GOPATH/src/github.com/hyperledger/fabric/build/bin/configtxgen -profile SampleSingleMSPChannel -outputAnchorPeersUpdate $ANCHOR_TX_FILE \
-                 -channelID $CHANNEL_NAME -asOrg $ORG
-     if [ "$?" -ne 0 ]; then
-        fatal "Failed to generate anchor peer update for $ORG"
-     fi
-  done
+	log "Generating channel configuration transaction at $CHANNEL_TX_FILE"
+	$GOPATH/src/github.com/hyperledger/fabric/build/bin/configtxgen -profile SampleSingleMSPChannel -outputCreateChannelTx $CHANNEL_TX_FILE -channelID $CHANNEL_NAME
+	if [ "$?" -ne 0 ]; then
+		fatal "Failed to generate channel configuration transaction"
+	fi
+
+	for ORG in $PEER_ORGS; do
+		initOrgVars $ORG
+		log "Generating anchor peer update transaction for $ORG at $ANCHOR_TX_FILE"
+		$GOPATH/src/github.com/hyperledger/fabric/build/bin/configtxgen -profile SampleSingleMSPChannel -outputAnchorPeersUpdate $ANCHOR_TX_FILE \
+			-channelID $CHANNEL_NAME -asOrg $ORG
+		if [ "$?" -ne 0 ]; then
+			fatal "Failed to generate anchor peer update for $ORG"
+		fi
+	done
 
 }
 function generateBftConfig() {
-KEYFILE=""
-SIGN_FILE=""
-for entry in `ls ${DATA}/orgs/org0/admin/msp/keystore/`; do
-    KEYFILE=${entry}
-done
-for entry in `ls ${DATA}/orgs/org0/admin/msp/signcerts/`; do
-    SIGN_FILE=${entry}
-done
-echo "#The ID of the membership service provider (MSP)
+	KEYFILE=""
+	SIGN_FILE=""
+	for entry in $(ls ${DATA}/orgs/org0/admin/msp/keystore/); do
+		KEYFILE=${entry}
+	done
+	for entry in $(ls ${DATA}/orgs/org0/admin/msp/signcerts/); do
+		SIGN_FILE=${entry}
+	done
+	echo "#The ID of the membership service provider (MSP)
 MSPID=org0MSP
 
 #Certificate of the node, compliant to Fabric's MSP guidelines
@@ -497,9 +500,9 @@ BLOCKS_PER_THREAD=10000
 
 #IDs of the frontends present in the system, separate by commas
 RECEIVERS=1000
-" > $DATA/node.config
-cat $DATA/orgs/org0/admin/msp/keystore/$KEYFILE > $DATA/key.pem
-cat $DATA/orgs/org0/admin/msp/signcerts/$SIGN_FILE > $DATA/peer.pem
+" >$DATA/node.config
+	cat $DATA/orgs/org0/admin/msp/keystore/$KEYFILE >$DATA/key.pem
+	cat $DATA/orgs/org0/admin/msp/signcerts/$SIGN_FILE >$DATA/peer.pem
 
 }
 

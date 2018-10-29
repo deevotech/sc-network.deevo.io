@@ -25,7 +25,7 @@ fi
 ORG=${g}
 NUMBER=${n}
 DATA=/home/ubuntu/hyperledgerconfig/data
-PEER_NAME=peer${NUMBER}.${ORG}.deevo.com
+PEER_NAME=peer${NUMBER}.${ORG}.deevo.io
 export PEER_GOSSIP_SKIPHANDSHAKE=true
 export CORE_PEER_TLS_CLIENTCERT_FILE=${DATA}/tls/${PEER_NAME}-client.crt
 export CORE_PEER_TLS_ROOTCERT_FILE=${DATA}/${ORG}-ca-cert.pem

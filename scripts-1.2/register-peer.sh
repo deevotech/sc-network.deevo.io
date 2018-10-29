@@ -42,7 +42,7 @@ function enrollCAAdmin {
    mkdir -p $HOME/cas
    export FABRIC_CA_CLIENT_HOME=$HOME/cas/$CA_NAME
    export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
-   $GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d -u https://rca-${g}-admin:rca-${g}-adminpw@rca.${g}.deevo.com:7054
+   $GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d -u https://rca-${g}-admin:rca-${g}-adminpw@rca.${g}.deevo.io:7054
 }
 
 function registerIdentities {
