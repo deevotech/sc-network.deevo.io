@@ -37,7 +37,7 @@ function enrollCAAdmin() {
 function registerPeerIdentities() {
 	enrollCAAdmin
 
-	fabric-ca-client register -d --id.name $CORE_PEER_ID --id.secret $PEER_PASS --id.type peer --id.affiliation $ORG --id.attrs 'admin=true:ecert'
+	fabric-ca-client register -d --id.name $PEER_NAME --id.secret $PEER_PASS --id.type peer --id.affiliation $ORG --id.attrs 'admin=true:ecert'
 
 	logr "Registering admin identity with $ADMIN_NAME:$ADMIN_PASS"
 	# The admin identity has the "admin" attribute which is added to ECert by default
