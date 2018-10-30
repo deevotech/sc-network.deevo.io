@@ -31,7 +31,7 @@ if [ -z "${g}" ] || [ -z "${r}" ]; then
 fi
 
 set -e
-
+ORG=${g}
 export FABRIC_CA_SERVER_HOME=$HOME/fabric-ca
 export FABRIC_CA_SERVER_TLS_ENABLED=true
 export FABRIC_CA_SERVER_CSR_CN=rca.${g}.deevo.io
