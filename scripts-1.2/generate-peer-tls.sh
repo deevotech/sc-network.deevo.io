@@ -29,6 +29,9 @@ if [ -z "${g}" ] || [ -z "${n}" ] ; then
 fi
 
 function enrollCAAdmin() {
+	mkdir -p FABRIC_CA_CLIENT_HOME
+	rm -rf FABRIC_CA_CLIENT_HOME/*
+	
 	logr "Enrolling with $ENROLLMENT_URL as bootstrap identity ..."
 	fabric-ca-client enroll -d -u $ENROLLMENT_URL
 }

@@ -26,13 +26,13 @@ function registerNodesIdentities() {
 	FABRIC_CA_CLIENT_HOME=/var/hyperledger/ordering/ca-client
 	export FABRIC_CA_CLIENT_TLS_CERTFILES=/etc/hyperledger/fabric-ca-server-config/rca.ordering.bft-cert.pem
 
-	fabric-ca-client enroll -d -u https://rca-ordering-nodes-admin:rca-ordering-nodes-adminpw@$ORDERING_CA_HOST:7054
-	NODE_ORG_ADMIN=ordering-nodes-admin
-	NODE_ORG_ADMIN_PW=ordering-nodes-adminpw
+	fabric-ca-client enroll -d -u https://rca-replicas-admin:rca-replicas-adminpw@$ORDERING_CA_HOST:7054
+	NODE_ORG_ADMIN=replicas-admin
+	NODE_ORG_ADMIN_PW=replicas-adminpw
 
 	ORDERING_ORG_MSP_DIR=$ORDERING_CRYPTO_DIR/msp
 	mkdir -p $ORDERING_ORG_MSP_DIR
-	fabric-ca-client getcacert -d -u https://rca-ordering-nodes-admin:rca-ordering-nodes-adminpw@$ORDERING_CA_HOST:7054 -M $ORDERING_ORG_MSP_DIR
+	fabric-ca-client getcacert -d -u https://rca-replicas-admin:rca-replicas-adminpw@$ORDERING_CA_HOST:7054 -M $ORDERING_ORG_MSP_DIR
 	mkdir -p $ORDERING_ORG_MSP_DIR/tlscacerts
 	cp $ORDERING_ORG_MSP_DIR/cacerts/* $ORDERING_ORG_MSP_DIR/tlscacerts
 
@@ -108,11 +108,11 @@ function main() {
     export ORDERING_CRYPTO_DIR=/var/hyperledger/crypto/ordering
     export FABRIC_CA_CLIENT_HOME=/var/hyperledger/ordering/ca-client
     export FABRIC_CA_CLIENT_TLS_CERTFILES=/etc/hyperledger/fabric-ca-server-config/rca.ordering.bft-cert.pem
-    export ORDERING_CA_HOST=rca.ordering-nodes.deevo.io
+    export ORDERING_CA_HOST=rca.replicas.deevo.io
     export NODE_COUNT=4
-    export NODE_ORG=ordering-nodes
+    export NODE_ORG=replicas
     export ORG_MSP=/var/hyperledger/crypto/org/msp
-    export ENROLLMENT_URL=https://rca-ordering-nodes-admin:rca-ordering-nodes-adminpw@$ORDERING_CA_HOST:7054
+    export ENROLLMENT_URL=https://rca-replicas-admin:rca-replicas-adminpw@$ORDERING_CA_HOST:7054
 
     getCACerts
 

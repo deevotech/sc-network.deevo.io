@@ -36,7 +36,7 @@ export FABRIC_CA_SERVER_CSR_HOSTS=rca.${g}.deevo.io
 export FABRIC_CA_SERVER_DEBUG=true
 export BOOTSTRAP_USER_PASS=rca-${g}-admin:rca-${g}-adminpw
 export FABRIC_CA_SERVER_CA_NAME=rca.${g}.deevo.io
-export FABRIC_ORGS="ordering-nodes org0 org1 org2 org3 org4 org5"
+export FABRIC_ORGS="replicas org0 org1 org2 org3 org4 org5"
 export FABRIC_CA_SERVER_TLS_CERTFILE=$DATA/ca/rca.${g}.deevo.io.pem
 export FABRIC_CA_SERVER_TLS_KEYFILE=$DATA/ca/rca.${g}.deevo.io.key
 
