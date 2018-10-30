@@ -1,9 +1,9 @@
 #!/bin/bash
 
 rm -rf $GOPATH/src/github.com/hyperledger/fabric-ca
-sudo apt-get update &&
-	apt-get install -y libtool libltdl-dev unzip &&
-	rm -rf /var/cache/apt
+sudo apt-get update
+sudo apt-get install -y libtool libltdl-dev unzip
+sudo rm -rf /var/cache/apt
 
 # clone and build ca
 cd $GOPATH/src/github.com/hyperledger
