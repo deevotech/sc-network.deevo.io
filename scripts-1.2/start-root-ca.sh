@@ -44,8 +44,8 @@ export FABRIC_CA_SERVER_TLS_CERTFILE=$DATA/ca/rca.${g}.deevo.io.pem
 export FABRIC_CA_SERVER_TLS_KEYFILE=$DATA/ca/rca.${g}.deevo.io.key
 
 rm -rf $HOME/fabric-ca/*
+rm -rf $DATA/*
 mkdir -p $DATA/ca
-rm -rf $DATA/ca/*
 
 mkdir -p data
 mkdir -p data/logs
