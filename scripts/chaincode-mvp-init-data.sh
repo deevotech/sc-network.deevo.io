@@ -30,7 +30,7 @@ git clone https://github.com/deevotech/sc-chaincode.deevo.io
 # init config
 DATA=/home/ubuntu/hyperledgerconfig/data
 export FABRIC_CFG_PATH=$DATA/
-PEER_ORGS="org1 org2 org3 org4 org5"
+PEER_ORGS=("org1" "org2" "org3" "org4" "org5")
 NUM_PEERS=5
 CHANNEL_NAME=${c}
 CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx

@@ -21,7 +21,7 @@ echo "create channel"
 
 source $(dirname "$0")/env.sh
 
-PEER_ORGS="org1 org2 org3 org4 org5"
+PEER_ORGS=("org1" "org2" "org3" "org4" "org5")
 NUM_PEERS=5
 CHANNEL_NAME=${c}
 CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
@@ -43,7 +43,7 @@ done
 
 echo "join channel to chain"
 
-initPeerVars ${PEER_ORGS[1]} 1
+initPeerVars ${PEER_ORGS[0]} 1
 
 echo "Creating channel '$CHANNEL_NAME' on $ORDERER_HOST ..."
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer channel create --logging-level=DEBUG -c $CHANNEL_NAME -f $CHANNEL_TX_FILE $ORDERER_CONN_ARGS

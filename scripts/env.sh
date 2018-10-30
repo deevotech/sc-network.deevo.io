@@ -17,7 +17,7 @@ NETWORK=supply-chain-network
 ORDERER_ORGS="org0"
 
 # Names of the peer organizations
-PEER_ORGS="org1 org2 org3 org4 org5"
+PEER_ORGS=("org1" "org2" "org3" "org4" "org5")
 
 # Number of peers in each peer organization
 NUM_PEERS=5
