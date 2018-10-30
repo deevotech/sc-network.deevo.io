@@ -29,7 +29,7 @@ ORG=${g}
 NUMBER=${n}
 
 source $(dirname "$0")/env.sh
-initPeerVars ${ORG}
+initPeerVars ${ORG} ${NUMBER}
 
 cp ../config-1.2/core.yaml ${FABRIC_CFG_PATH}/core.yaml
 mkdir -p data
