@@ -36,6 +36,9 @@ make
 make install
 
 mkdir -p $GOPATH/src/github.com/hyperledger
+rm -rf $GOPATH/src/github.com/hyperledger/fabric-orderingservice
+rm -rf $GOPATH/src/github.com/hyperledger/fabric
+
 cd $GOPATH/src/github.com/hyperledger
 git clone https://github.com/deevotech/fabric-orderingservice -b release-1.2-deevo
 cd $GOPATH/src/github.com/hyperledger/fabric-orderingservice

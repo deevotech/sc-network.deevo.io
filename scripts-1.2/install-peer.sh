@@ -28,6 +28,7 @@ sudo apt-get update \
         && rm -rf /var/cache/apt;
 
 mkdir -p $GOPATH/src/github.com/hyperledger
+rm -rf $GOPATH/src/github.com/hyperledger/fabric
 cd $GOPATH/src/github.com/hyperledger
 
 go get github.com/golang/protobuf/protoc-gen-go \
