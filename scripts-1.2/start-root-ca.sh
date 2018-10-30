@@ -7,24 +7,27 @@
 SDIR=$(dirname "$0")
 source $SDIR/env.sh
 
-usage() { echo "Usage: $0 [-g <orgname>] [-r <restart>]" 1>&2; exit 1; }
+usage() {
+	echo "Usage: $0 [-g <orgname>] [-r <restart>]" 1>&2
+	exit 1
+}
 while getopts ":g:r:" o; do
-    case "${o}" in
-        g)
-            g=${OPTARG}
-            ;;
-        r)
-            r=${OPTARG}
-            ;;
-        *)
-            usage
-            ;;
-    esac
+	case "${o}" in
+	g)
+		g=${OPTARG}
+		;;
+	r)
+		r=${OPTARG}
+		;;
+	*)
+		usage
+		;;
+	esac
 done
 
-shift $((OPTIND-1))
-if [ -z "${g}" ] || [ -z "${r}" ] ; then
-    usage
+shift $((OPTIND - 1))
+if [ -z "${g}" ] || [ -z "${r}" ]; then
+	usage
 fi
 
 set -e
@@ -49,7 +52,7 @@ mkdir -p data/logs
 export RUN_SUMPATH=./data/logs/ca-${ORG}.log
 
 # Initialize the root CA
-if [ ${r} -eq 1 ] ; then
+if [ ${r} -eq 1 ]; then
 	rm -rf ${FABRIC_CA_SERVER_HOME}/*
 	cp -R ${DATA}/rca-${g}-home/* ${FABRIC_CA_SERVER_HOME}/
 else
@@ -77,4 +80,5 @@ fi
 
 logr "Start CA server"
 
-fabric-ca-server start --ca.certfile $FABRIC_CA_SERVER_TLS_CERTFILE --ca.keyfile $FABRIC_CA_SERVER_TLS_KEYFILE -b $BOOTSTRAP_USER_PASS -d 2>&1 | tee -a  $RUN_SUMPATH
+fabric-ca-server start --ca.certfile $FABRIC_CA_SERVER_TLS_CERTFILE --ca.keyfile $FABRIC_CA_SERVER_TLS_KEYFILE -b $BOOTSTRAP_USER_PASS >$RUN_SUMPATH 2>&1 &
+echo "Success see in $RUN_SUMPATH"

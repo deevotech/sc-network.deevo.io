@@ -44,4 +44,4 @@ echo $(ls config/keys)
 
 mkdir -p /tmp/logs
 ./startReplica.sh ${n} > /tmp/logs/replica.out 2>&1 &
-sleep 1
+echo "Success see in /tmp/logs/replica.out"

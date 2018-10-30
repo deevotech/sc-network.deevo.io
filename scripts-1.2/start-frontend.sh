@@ -44,4 +44,4 @@ echo $(ls config/keys)
 
 mkdir -p /tmp/logs
 ./startFrontend.sh 1000 10 9999 > /tmp/logs/frontend.out 2>&1 &
-sleep 1
+echo "Success see in /tmp/logs/frontend.out"
