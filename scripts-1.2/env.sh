@@ -102,14 +102,15 @@ function initOrgVars() {
 	ORG_ADMIN_CERT=${ORG_MSP_DIR}/admincerts/cert.pem
 	# ORG_ADMIN_HOME=${DATA}/orgs/$ORG/admin
 
-	CA_NAME=$ROOT_CA_NAME
-	CA_HOST=$ROOT_CA_HOST
-	CA_CHAINFILE=$ROOT_CA_CERTFILE
-	CA_ADMIN_USER_PASS=$ROOT_CA_ADMIN_USER_PASS
-	ENROLLMENT_URL=https://rca-${ORG}-admin:rca-${ORG}-adminpw@rca.${ORG}.deevo.io:7054
+	export CA_NAME=$ROOT_CA_NAME
+	export CA_HOST=$ROOT_CA_HOST
+	export CA_CHAINFILE=$ROOT_CA_CERTFILE
+	export CA_ADMIN_USER_PASS=$ROOT_CA_ADMIN_USER_PASS
+	export ENROLLMENT_URL=https://rca-${ORG}-admin:rca-${ORG}-adminpw@rca.${ORG}.deevo.io:7054
 
 	export USER_CERT_DIR=$ORG_HOME/user
 	export ADMIN_CERT_DIR=$ORG_HOME/admin
+	export FABRIC_CFG_PATH=$DATA
 }
 
 # initPeerVars <ORG> <NUM>
@@ -122,9 +123,9 @@ function initPeerVars() {
 	NUM=$2
 
 	initOrgVars $1
-	PEER_HOST=peer${NUM}.${ORG}.deevo.io
-	PEER_NAME=peer${NUM}.${ORG}.deevo.io
-	PEER_PASS=${PEER_NAME}pw
+	export PEER_HOST=peer${NUM}.${ORG}.deevo.io
+	export PEER_NAME=peer${NUM}.${ORG}.deevo.io
+	export PEER_PASS=${PEER_NAME}pw
 
 	export PEER_CERT_DIR=$ORG_HOME/$PEER_NAME
 	export FABRIC_CA_CLIENT_HOME=$DATA/ca-client
@@ -133,16 +134,21 @@ function initPeerVars() {
 	export CORE_PEER_ADDRESS=$PEER_HOST:7051
 	export CORE_PEER_LOCALMSPID=$ORG_MSP_ID
 	export CORE_PEER_MSPCONFIGPATH=$ORG_MSP_DIR
-	export CORE_LOGGING_LEVEL=DEBUG
+	export CORE_LOGGING_LEVEL=debug
 	export CORE_PEER_TLS_ENABLED=true
 	export CORE_PEER_TLS_CLIENTAUTHREQUIRED=true
 	export CORE_PEER_TLS_ROOTCERT_FILE=$CA_CHAINFILE
 	export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
+	export CORE_PEER_TLS_CLIENTROOTCAS_FILES=$CA_CHAINFILE
+	export PEER_GOSSIP_SKIPHANDSHAKE=true
 
 	PEER_TLS_DIR=$PEER_CERT_DIR/tls
+	export CORE_PEER_TLS_KEY_FILE=$PEER_TLS_DIR/server.key
+	export CORE_PEER_TLS_CERT_FILE=$PEER_TLS_DIR/server.crt
 
-	export CORE_PEER_TLS_CLIENTCERT_FILE=$PEER_TLS_DIR/server.crt
-	export CORE_PEER_TLS_CLIENTKEY_FILE=$PEER_TLS_DIR/server.key
+	ADMIN_TLS_DIR=$ADMIN_CERT_DIR/tls
+	export CORE_PEER_TLS_CLIENTCERT_FILE=$ADMIN_TLS_DIR/server.crt
+	export CORE_PEER_TLS_CLIENTKEY_FILE=$ADMIN_TLS_DIR/server.key
 
 	export CORE_PEER_PROFILE_ENABLED=true
 	# gossip variables
@@ -152,7 +158,14 @@ function initPeerVars() {
 	if [ $NUM -gt 1 ]; then
 		# Point the non-anchor peers to the anchor peer, which is always the 1st peer
 		export CORE_PEER_GOSSIP_BOOTSTRAP=peer1.${ORG}.deevo.io:7051
+		export CORE_PEER_ADDRESSAUTODETECT=true
 	fi
+
+	export ORDERER_ORG=org0
+	export ORDERER_HOST=orderer1.${ORDERER_ORG}.deevo.io
+	export ORDERER_TLS_CA=$DATA/ca/rca.${ORDERER_ORG}.deevo.io.pem
+	export ORDERER_PORT_ARGS="-o $ORDERER_HOST:7050 --tls --cafile $ORDERER_TLS_CA --clientauth"
+
 	export ORDERER_CONN_ARGS="$ORDERER_PORT_ARGS --keyfile $CORE_PEER_TLS_CLIENTKEY_FILE --certfile $CORE_PEER_TLS_CLIENTCERT_FILE"
 }
 
@@ -164,10 +177,10 @@ function initOrdererVars() {
 	fi
 	initOrgVars $1
 	NUM=$2
-	ORDERER_HOST=orderer${NUM}.${ORG}.deevo.io
-	ORDERER_NAME=orderer${NUM}.${ORG}.deevo.io
-	ORDERER_PASS=${ORDERER_NAME}pw
-	ORDERER_NAME_PASS=${ORDERER_NAME}:${ORDERER_PASS}
+	export ORDERER_HOST=orderer${NUM}.${ORG}.deevo.io
+	export ORDERER_NAME=orderer${NUM}.${ORG}.deevo.io
+	export ORDERER_PASS=${ORDERER_NAME}pw
+	export ORDERER_NAME_PASS=${ORDERER_NAME}:${ORDERER_PASS}
 
 	export ORDERER_CERT_DIR=$ORG_HOME/$ORDERER_NAME
 
@@ -181,12 +194,14 @@ function initOrdererVars() {
 	export ORDERER_GENERAL_LOCALMSPDIR=$ORG_MSP_DIR
 	# enabled TLS
 	export ORDERER_GENERAL_TLS_ENABLED=true
-	TLSDIR=$ORDERER_CERT_DIR/tls
+	export TLSDIR=$ORDERER_CERT_DIR/tls
 	export ORDERER_GENERAL_TLS_PRIVATEKEY=$TLSDIR/server.key
 	export ORDERER_GENERAL_TLS_CERTIFICATE=$TLSDIR/server.crt
 	export ORDERER_GENERAL_TLS_ROOTCAS=[$CA_CHAINFILE]
 	export ORDERER_GENERAL_TLS_CLIENTROOTCAS=[$CA_CHAINFILE]
 	export ORDERER_HOME=${DATA}/orderer
+	export ORDERER_GENERAL_TLS_CLIENTAUTHREQUIRED=true
+	export ORDERER_FILELEDGER_LOCATION=/var/hyperledger/production/orderer
 }
 
 # Switch to the current org's admin identity.  Enroll if not previously enrolled.

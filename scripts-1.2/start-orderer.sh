@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-usage() { echo "Usage: $0 [-g <orgname>] [-n <numberpeer>]" 1>&2; exit 1; }
+usage() { echo "Usage: $0 [-g <orgname>] [-n <number>]" 1>&2; exit 1; }
 while getopts ":g:n:" o; do
     case "${o}" in
         g)
@@ -25,33 +25,19 @@ fi
 
 ORG=${g}
 NUMBER=${n}
-DATA=/home/ubuntu/hyperledgerconfig/data
-export ORDERER_GENERAL_LOCALMSPDIR=${DATA}/orderer/msp
-export ORDERER_GENERAL_GENESISFILE=${DATA}/genesis.block
-export ORDERER_GENERAL_LOCALMSPID=${ORG}MSP
-export ORDERER_GENERAL_TLS_ROOTCAS=[${DATA}/${ORG}-ca-cert.pem]
-export ORDERER_GENERAL_TLS_CLIENTROOTCAS=[${DATA}/${ORG}-ca-cert.pem]
-export ORDERER_HOST=orderer${NUMBER}.${ORG}.deevo.io
-export ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
-export ORDERER_GENERAL_TLS_PRIVATEKEY=${DATA}/orderer/tls/server.key
-export ORDERER_GENERAL_TLS_CLIENTAUTHREQUIRED=true
-export ORDERER_GENERAL_LOGLEVEL=info
-export ORDERER_GENERAL_GENESISMETHOD=file
-#export ORDERER_DEBUG_BROADCASTTRACEDIR=/hyperledgerconfig/data/logs
-export ORDERER_GENERAL_TLS_CERTIFICATE=${DATA}/orderer/tls/server.crt
-export ORDERER_GENERAL_TLS_ENABLED=true
-export ORDERER_HOME=${DATA}/orderer
-export FABRIC_CFG_PATH=${DATA}/
-export ORDERER_FILELEDGER_LOCATION=/var/hyperledger/production/orderer
-rm -rf /var/hyperledger/production/*
+
+source $(dirname "$0")/env.sh
+initOrdererVars ${ORG} ${n}
+
+rm -rf ORDERER_FILELEDGER_LOCATION
 mkdir -p data
 mkdir -p data/logs
 if [ -f ./data/logs/orderer.out ] ; then
 rm ./data/logs/orderer.out
 fi
 
-cp ../config/orderer.yaml ${DATA}/
-cp ../config/core-orderer.yaml ${DATA}/core.yaml
+cp ../config-1.2/orderer.yaml ${FABRIC_CFG_PATH}/
+cp ../config-1.2/core.yaml ${FABRIC_CFG_PATH}/core.yaml
 $GOPATH/src/github.com/hyperledger/fabric/build/bin/orderer start > ./data/logs/orderer.out 2>&1 &
 echo "done see /data/logs/orderer"
 
