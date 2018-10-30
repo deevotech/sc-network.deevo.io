@@ -10,16 +10,13 @@ while getopts ":g:n:" o; do
         g)
             g=${OPTARG}
             ;;
-        n)
-            n=${OPTARG}
-            ;;
         *)
             usage
             ;;
     esac
 done
 shift $((OPTIND-1))
-if [ -z "${g}" ] || [ -z "${n}" ] ; then
+if [ -z "${g}" ] ; then
     usage
 fi
 
