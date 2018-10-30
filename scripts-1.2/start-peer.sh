@@ -51,7 +51,7 @@ fi
 sudo mkdir /opt/couchdb
 sudo mkdir /opt/couchdb/data
 sudo chmod 777 -R /opt/couchdb
-sudo cp ./local.ini /home/couchdb/etc/local.ini
+sudo cp ../config-1.2/local.ini /home/couchdb/etc/local.ini
 rm -rf /ect/sv/couchdb/log/*
 
 docker image prune -a
