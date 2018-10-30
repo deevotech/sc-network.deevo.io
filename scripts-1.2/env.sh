@@ -37,7 +37,7 @@ NUM_ORDERERS=1
 
 # The volume mount to share data between containers
 DATA=$HOME/hyperledgerconfig/data
-export FABRIC_CFG_PATH=$DATA
+export FABRIC_CFG_PATH=$GOPATH/src/github.com/hyperledger/fabric
 
 # The path to the genesis block
 GENESIS_BLOCK_FILE=$DATA/genesis.block
@@ -133,7 +133,7 @@ function initPeerVars() {
 	export CORE_PEER_ID=$PEER_HOST
 	export CORE_PEER_ADDRESS=$PEER_HOST:7051
 	export CORE_PEER_LOCALMSPID=$ORG_MSP_ID
-	export CORE_PEER_MSPCONFIGPATH=$ORG_MSP_DIR
+	export CORE_PEER_MSPCONFIGPATH=$PEER_CERT_DIR/msp
 	export CORE_LOGGING_LEVEL=debug
 	export CORE_PEER_TLS_ENABLED=true
 	export CORE_PEER_TLS_CLIENTAUTHREQUIRED=true
@@ -191,7 +191,7 @@ function initOrdererVars() {
 	export ORDERER_GENERAL_GENESISMETHOD=file
 	export ORDERER_GENERAL_GENESISFILE=$GENESIS_BLOCK_FILE
 	export ORDERER_GENERAL_LOCALMSPID=$ORG_MSP_ID
-	export ORDERER_GENERAL_LOCALMSPDIR=$ORG_MSP_DIR
+	export ORDERER_GENERAL_LOCALMSPDIR=$ORDERER_CERT_DIR/msp
 	# enabled TLS
 	export ORDERER_GENERAL_TLS_ENABLED=true
 	export TLSDIR=$ORDERER_CERT_DIR/tls
