@@ -2,7 +2,6 @@
 #set -e
 
 source $(dirname "$0")/env.sh
-export FABRIC_CFG_PATH=$DATA
 cp ../config-1.2/configtx.yaml ${FABRIC_CFG_PATH}/
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/configtxgen -profile SampleSingleMSPBFTsmart -outputBlock $GENESIS_BLOCK_FILE
 if [ "$?" -ne 0 ]; then
