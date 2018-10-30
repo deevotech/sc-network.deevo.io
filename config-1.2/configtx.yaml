@@ -27,7 +27,7 @@ Organizations:
         ID: org0MSP
 
         # MSPDir is the filesystem path which contains the MSP configuration.
-        MSPDir: /etc/hyperledger/fabric/crypto-config/orgs/org0/msp
+        MSPDir: ~/hyperledgerconfig/data/orgs/org0/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -52,7 +52,7 @@ Organizations:
     - &replicas
         Name: replicas
         ID: replicasMSP
-        MSPDir: /etc/hyperledger/fabric/crypto-config/orgs/replicas/msp
+        MSPDir: ~/hyperledgerconfig/data/orgs/replicas/msp
         Policies:
             Readers:
                 Type: Signature
@@ -66,7 +66,7 @@ Organizations:
     - &org1
         Name: org1
         ID: org1MSP
-        MSPDir: /etc/hyperledger/fabric/crypto-config/orgs/org1/msp
+        MSPDir: ~/hyperledgerconfig/data/orgs/org1/msp
         Policies: &org1Policies
             Readers:
                 Type: Signature
@@ -86,7 +86,7 @@ Organizations:
     - &org2
         Name: org2
         ID: org2MSP
-        MSPDir: /etc/hyperledger/fabric/crypto-config/orgs/org2/msp
+        MSPDir: ~/hyperledgerconfig/data/orgs/org2/msp
         Policies: &org2Policies
             Readers:
                 Type: Signature
@@ -103,7 +103,7 @@ Organizations:
     - &org3
         Name: org3
         ID: org3MSP
-        MSPDir: /etc/hyperledger/fabric/crypto-config/orgs/org3/msp
+        MSPDir: ~/hyperledgerconfig/data/orgs/org3/msp
         Policies: &org3Policies
             Readers:
                 Type: Signature
@@ -120,7 +120,7 @@ Organizations:
     - &org4
         Name: org4
         ID: org4MSP
-        MSPDir: /etc/hyperledger/fabric/crypto-config/orgs/org4/msp
+        MSPDir: ~/hyperledgerconfig/data/orgs/org4/msp
         Policies: &org4Policies
             Readers:
                 Type: Signature
@@ -137,7 +137,7 @@ Organizations:
     - &org5
         Name: org5
         ID: org5MSP
-        MSPDir: /etc/hyperledger/fabric/crypto-config/orgs/org5/msp
+        MSPDir: ~/hyperledgerconfig/data/orgs/org5/msp
         Policies: &org5Policies
             Readers:
                 Type: Signature
