@@ -197,11 +197,13 @@ function initOrdererVars() {
 	export TLSDIR=$ORDERER_CERT_DIR/tls
 	export ORDERER_GENERAL_TLS_PRIVATEKEY=$TLSDIR/server.key
 	export ORDERER_GENERAL_TLS_CERTIFICATE=$TLSDIR/server.crt
-	export ORDERER_GENERAL_TLS_ROOTCAS=[$CA_CHAINFILE]
-	export ORDERER_GENERAL_TLS_CLIENTROOTCAS=[$CA_CHAINFILE]
+	# export ORDERER_GENERAL_TLS_ROOTCAS=[$CA_CHAINFILE]
+	# export ORDERER_GENERAL_TLS_CLIENTROOTCAS=[$CA_CHAINFILE]
 	export ORDERER_HOME=${DATA}/orderer
 	export ORDERER_GENERAL_TLS_CLIENTAUTHREQUIRED=true
 	export ORDERER_FILELEDGER_LOCATION=/var/hyperledger/production/orderer
+
+	export ORDERER_GENERAL_TLS_ROOTCAS=[$DATA/ca/rca.org0.deevo.io.pem,$DATA/ca/rca.org1.deevo.io.pem,$DATA/ca/rca.org2.deevo.io.pem,$DATA/ca/rca.replicas.deevo.io.pem]
 }
 
 # Switch to the current org's admin identity.  Enroll if not previously enrolled.
