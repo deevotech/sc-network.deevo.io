@@ -33,7 +33,7 @@ cd juds
 ./autoconf.sh
 ./configure
 make
-make install
+sudo make install
 
 mkdir -p $GOPATH/src/github.com/hyperledger
 rm -rf $GOPATH/src/github.com/hyperledger/fabric-orderingservice
@@ -56,7 +56,7 @@ go get github.com/AlekSi/gocov-xml
 
 # Clone the Hyperledger Fabric code and cp sample config files
 cd $GOPATH/src/github.com/hyperledger
-git clone https://github.com/deevotech/fabric -brelease-1.2-deevo
+git clone https://github.com/deevotech/fabric -b release-1.2-deevo
 
 FABRIC_ROOT=$GOPATH/src/github.com/hyperledger/fabric
 
