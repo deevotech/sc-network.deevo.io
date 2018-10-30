@@ -40,11 +40,11 @@ CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 
 QUERY_TIMEOUT=30
 
-$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode list --installed -C $CHANNEL_NAME
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode list --installed -C $CHANNEL_NAME
 
 # instantiate chaincode
 ORG=${g}
 initPeerVars ${ORG} 1
 echo $ORDERER_CONN_ARGS
 echo '{"Args":["getObject","'${i}'","'${t}'"]}'
-$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode query -C $CHANNEL_NAME -n ${n} -v ${v}  -c '{"Args":["getObject","'${i}'","'${t}'"]}' $ORDERER_CONN_ARGS
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode query -C $CHANNEL_NAME -n ${n} -v ${v}  -c '{"Args":["getObject","'${i}'","'${t}'"]}' $ORDERER_CONN_ARGS

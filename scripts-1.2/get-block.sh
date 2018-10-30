@@ -63,4 +63,4 @@ echo $ORDERER_CONN_ARGS
 echo "Instantiating chaincode on $PEER_HOST ..."
 export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.io:7050 --tls --cafile $DATA/org0-ca-cert.pem --clientauth"
 export ORDERER_CONN_ARGS="$ORDERER_PORT_ARGS --keyfile $CORE_PEER_TLS_CLIENTKEY_FILE --certfile $CORE_PEER_TLS_CLIENTCERT_FILE"
-$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer channel fetch ${n} ${f} -c $CHANNEL_NAME $ORDERER_CONN_ARGS
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer channel fetch ${n} ${f} -c $CHANNEL_NAME $ORDERER_CONN_ARGS

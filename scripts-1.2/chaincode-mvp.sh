@@ -45,14 +45,14 @@ for ORG in $PEER_ORGS; do
 	initPeerVars $ORG 1
 	echo "Install for $PEER_HOST ..."
 	echo $ORDERER_CONN_ARGS
-	$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode install -n $n -v $v -p github.com/deevotech/sc-chaincode.deevo.io/food-supplychain
+	$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode install -n $n -v $v -p github.com/deevotech/sc-chaincode.deevo.io/food-supplychain
 done
 
-$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode list --installed -C $CHANNEL_NAME
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode list --installed -C $CHANNEL_NAME
 
 # instantiate chaincode
 
 initPeerVars ${PEER_ORGS[1]} 1
 echo $ORDERER_CONN_ARGS
 echo "Instantiating chaincode on $PEER_HOST ..."
-$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer chaincode instantiate -C $CHANNEL_NAME -n ${n} -v ${v} -c '{"Args":["init"]}' $ORDERER_CONN_ARGS
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode instantiate -C $CHANNEL_NAME -n ${n} -v ${v} -c '{"Args":["init"]}' $ORDERER_CONN_ARGS

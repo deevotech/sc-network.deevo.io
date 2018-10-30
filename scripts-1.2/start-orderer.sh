@@ -38,6 +38,6 @@ fi
 
 cp ../config-1.2/orderer.yaml ${FABRIC_CFG_PATH}/
 cp ../config-1.2/core.yaml ${FABRIC_CFG_PATH}/core.yaml
-$GOPATH/src/github.com/hyperledger/fabric/build/bin/orderer start > ./data/logs/orderer.out 2>&1 &
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/orderer start > ./data/logs/orderer.out 2>&1 &
 echo "done see /data/logs/orderer"
 

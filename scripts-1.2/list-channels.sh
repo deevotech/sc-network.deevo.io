@@ -27,4 +27,4 @@ initPeerVars ${ORG} ${n}
 
 QUERY_TIMEOUT=10
 
-$GOPATH/src/github.com/hyperledger/fabric/build/bin/peer channel list $ORDERER_CONN_ARGS --logging-level $l
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer channel list $ORDERER_CONN_ARGS --logging-level $l
