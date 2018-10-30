@@ -47,7 +47,7 @@ initPeerVars ${PEER_ORGS[0]} 1
 echo "Creating channel '$CHANNEL_NAME' on $ORDERER_HOST ..."
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer channel create --logging-level=DEBUG -c $CHANNEL_NAME -f $CHANNEL_TX_FILE $ORDERER_CONN_ARGS
 
-#sleep 5
+sleep 10
 # All peers join the channel
 echo "ALL peers join the channel"
 for ORG in ${PEER_ORGS[*]}; do
