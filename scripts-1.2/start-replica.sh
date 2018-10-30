@@ -25,6 +25,7 @@ fi
 
 source $(dirname "$0")/env.sh
 initOrgVars ${g}
+source ~/.profile
 echo $GOPATH
 REPLICA_ROOT_DIR=${GOPATH}/src/github.com/hyperledger/fabric-orderingservice
 cp ../config-1.2/hosts.config $REPLICA_ROOT_DIR/config/hosts.config
