@@ -85,7 +85,7 @@ function main() {
 	cp $USER_CERT_DIR/msp/signcerts/* $USER_CERT_DIR/tls/client.crt
 	cp $USER_CERT_DIR/msp/keystore/* $USER_CERT_DIR/tls/client.key
 
-	if [ $ADMINCERTS ]; then
+	if [ $n -eq 1 ]; then
 		logr "Generate client TLS cert and key pair for the peer CLI"
 		genMSPCerts $CORE_PEER_ID $ADMIN_NAME $ADMIN_PASS $ORG $CA_HOST $ADMIN_CERT_DIR/msp
 
