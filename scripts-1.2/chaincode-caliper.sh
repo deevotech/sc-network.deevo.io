@@ -38,7 +38,7 @@ CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 QUERY_TIMEOUT=30
 
 # install chaincode on peer1-org1, peer1-org2
-for ORG in $PEER_ORGS; do
+for ORG in ${PEER_ORGS[*]}; do
 	initPeerVars $ORG 1
 	echo $ORDERER_CONN_ARGS
 	$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode install -n $n -v $v -p github.com/hyperledger/caliper/src/contract/fabric/simple/go

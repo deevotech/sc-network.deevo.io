@@ -29,7 +29,7 @@ if [ "$?" -ne 0 ]; then
 echo "Failed to generate channel configuration transaction"
   fi
 
-for ORG in $PEER_ORGS; do
+for ORG in ${PEER_ORGS[*]}; do
     ANCHOR_TX_FILE=$DATA/orgs/$ORG/anchors.tx
     echo  "Generating anchor peer update transaction for $ORG at $ANCHOR_TX_FILE"
  $GOPATH/src/github.com/hyperledger/fabric/build/bin/configtxgen -profile SampleSingleMSPChannel -outputAnchorPeersUpdate $ANCHOR_TX_FILE -channelID $CHANNEL_NAME -asOrg $ORG

@@ -460,7 +460,7 @@ function generateChannelArtifacts() {
     fatal "Failed to generate channel configuration transaction"
   fi
 
-  for ORG in $PEER_ORGS; do
+  for ORG in ${PEER_ORGS[*]}; do
      initOrgVars $ORG
      log "Generating anchor peer update transaction for $ORG at $ANCHOR_TX_FILE"
      $GOPATH/src/github.com/hyperledger/fabric/build/bin/configtxgen -profile SampleSingleMSPChannel -outputAnchorPeersUpdate $ANCHOR_TX_FILE \

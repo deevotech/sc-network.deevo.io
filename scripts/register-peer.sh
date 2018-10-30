@@ -53,7 +53,7 @@ function registerIdentities {
 
 # Register any identities associated with a peer
 function registerPeerIdentities {
-   #for ORG in $PEER_ORGS; do
+   #for ORG in ${PEER_ORGS[*]}; do
       initOrgVars $ORG
       enrollCAAdmin
       #while [[ "$COUNT" -le $NUM_PEERS ]]; do

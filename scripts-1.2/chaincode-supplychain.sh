@@ -32,7 +32,7 @@ CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 QUERY_TIMEOUT=30
 
 # install chaincode on peer1-org1, peer1-org2
-for ORG in $PEER_ORGS; do
+for ORG in ${PEER_ORGS[*]}; do
 	initPeerVars $ORG 1
 	echo "Install for $PEER_HOST ..."
 	echo $ORDERER_CONN_ARGS
