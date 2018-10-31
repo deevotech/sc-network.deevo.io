@@ -25,11 +25,6 @@ if [ -z "${c}" ] || [ -z "${n}" ] || [ -z "${v}" ]; then
 fi
 echo "create channel channelID ${c} chaincodeName ${n} chaincodeVersion ${v}"
 
-# clone sourecode
-cd $GOPATH/src/github.com/deevotech
-rm -rf sc-chaincode.deevo.io
-git clone https://github.com/deevotech/sc-chaincode.deevo.io
-
 # init config
 source $(dirname "$0")/env.sh
 
@@ -39,6 +34,11 @@ CHANNEL_NAME=${c}
 CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 
 QUERY_TIMEOUT=30
+
+# clone sourecode
+cd $GOPATH/src/github.com/deevotech
+rm -rf sc-chaincode.deevo.io
+git clone https://github.com/deevotech/sc-chaincode.deevo.io
 
 # install chaincode on peer1-org1, peer1-org2
 for ORG in ${PEER_ORGS[*]}; do
