@@ -26,6 +26,7 @@ NUM_PEERS=5
 CHANNEL_NAME=${c}
 CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 
+rm $CHANNEL_TX_FILE
 echo "Generating channel configuration transaction at $CHANNEL_TX_FILE"
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/configtxgen -profile SampleSingleMSPChannel -outputCreateChannelTx $CHANNEL_TX_FILE -channelID $CHANNEL_NAME
 if [ "$?" -ne 0 ]; then
