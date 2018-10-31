@@ -31,7 +31,7 @@ fi
 ORG=${g}
 mkdir -p ${DATA}
 mkdir -p data/logs
-export RUN_SUMPATH=data/logs/orderer-${g}-${n}.log
+export RUN_SUMPATH=data/logs/orderer${n}-${g}.log
 
 initOrdererVars $ORG ${n}
 
