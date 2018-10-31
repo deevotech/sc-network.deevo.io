@@ -59,23 +59,23 @@ sleep 10
 initPeerVars ${PEER_ORGS[4]} 1
 echo $ORDERER_CONN_ARGS
 echo "Instantiating chaincode on $PEER_HOST ..."
-$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -v ${v} -c '{"Args":["open","aaabbbccc","10000"]}' $ORDERER_CONN_ARGS
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -c '{"Args":["open","aaabbbccc","10000"]}' $ORDERER_CONN_ARGS
 
 # test query org4
 initPeerVars ${PEER_ORGS[3]} 1
 echo $ORDERER_CONN_ARGS
 echo "Instantiating chaincode on $PEER_HOST ..."
-$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -v ${v} -c '{"Args":["open","aaabbbddd","10000"]}' $ORDERER_CONN_ARGS
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -c '{"Args":["open","aaabbbddd","10000"]}' $ORDERER_CONN_ARGS
 
 # test query org3
 initPeerVars ${PEER_ORGS[2]} 1
 echo $ORDERER_CONN_ARGS
 echo "Instantiating chaincode on $PEER_HOST ..."
-$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -v ${v} -c '{"Args":["open","aaabbbeee","10000"]}' $ORDERER_CONN_ARGS
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -c '{"Args":["open","aaabbbeee","10000"]}' $ORDERER_CONN_ARGS
 
 # test query org2
 initPeerVars ${PEER_ORGS[1]} 1
 echo $ORDERER_CONN_ARGS
 echo "Instantiating chaincode on $PEER_HOST ..."
-$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -v ${v} -c '{"Args":["open","aaabbbfff","10000"]}' $ORDERER_CONN_ARGS
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -c '{"Args":["open","aaabbbfff","10000"]}' $ORDERER_CONN_ARGS
 echo "done"
