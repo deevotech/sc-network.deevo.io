@@ -37,7 +37,7 @@ NUM_ORDERERS=1
 
 # The volume mount to share data between containers
 DATA=$HOME/hyperledgerconfig/data
-export FABRIC_CFG_PATH=$GOPATH/src/github.com/hyperledger/fabric
+export FABRIC_CFG_PATH=$DATA
 
 # The path to the genesis block
 GENESIS_BLOCK_FILE=$DATA/genesis.block
@@ -111,6 +111,7 @@ function initOrgVars() {
 
 	export USER_CERT_DIR=$ORG_HOME/user
 	export ADMIN_CERT_DIR=$ORG_HOME/admin
+	export FABRIC_CFG_PATH=$DATA
 }
 
 # initPeerVars <ORG> <NUM>
