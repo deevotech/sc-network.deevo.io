@@ -148,8 +148,8 @@ function initPeerVars() {
 	export CORE_PEER_TLS_CERT_FILE=$PEER_TLS_DIR/server.crt
 
 	ADMIN_TLS_DIR=$ADMIN_CERT_DIR/tls
-	export CORE_PEER_TLS_CLIENTCERT_FILE=$ADMIN_TLS_DIR/server.crt
-	export CORE_PEER_TLS_CLIENTKEY_FILE=$ADMIN_TLS_DIR/server.key
+	export CORE_PEER_TLS_CLIENTCERT_FILE=$PEER_TLS_DIR/server.crt
+	export CORE_PEER_TLS_CLIENTKEY_FILE=$PEER_TLS_DIR/server.key
 
 	export CORE_PEER_PROFILE_ENABLED=true
 	# gossip variables
