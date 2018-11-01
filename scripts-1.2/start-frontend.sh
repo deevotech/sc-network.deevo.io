@@ -40,5 +40,5 @@ cp $ORG_HOME/keys/cert1000.key config/keys/keystore.pem
 echo $(ls config/keys)
 
 mkdir -p /tmp/logs
-./startFrontend.sh 1000 10 9999 > /tmp/logs/frontend.out 2>&1 &
+./startFrontend.sh 1000 20 9999 > /tmp/logs/frontend.out 2>&1 &
 echo "Success see in /tmp/logs/frontend.out"
