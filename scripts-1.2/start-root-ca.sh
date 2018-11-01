@@ -41,7 +41,6 @@ export BOOTSTRAP_USER_PASS=rca-${g}-admin:rca-${g}-adminpw
 export FABRIC_CA_SERVER_CA_NAME=rca.${g}.deevo.io
 export FABRIC_ORGS="replicas org0 org1 org2 org3 org4 org5"
 export FABRIC_CA_SERVER_TLS_CERTFILE=$DATA/ca/rca.${g}.deevo.io.pem
-export FABRIC_CA_SERVER_TLS_KEYFILE=$DATA/ca/rca.${g}.deevo.io.key
 
 rm -rf $HOME/fabric-ca/*
 rm -rf $DATA/*
@@ -73,12 +72,12 @@ else
 		$FABRIC_CA_SERVER_HOME/fabric-ca-server-config.yaml
 
 	fabric-ca-server init -b $BOOTSTRAP_USER_PASS
-	cp $FABRIC_CA_SERVER_HOME/ca-cert.pem $FABRIC_CA_SERVER_TLS_KEYFILE
 fi
 
 # Start the root CA
 
 logr "Start CA server"
 
-fabric-ca-server start --ca.certfile $FABRIC_CA_SERVER_TLS_CERTFILE --ca.keyfile $FABRIC_CA_SERVER_TLS_KEYFILE -b $BOOTSTRAP_USER_PASS >$RUN_SUMPATH 2>&1 &
+fabric-ca-server start --ca.certfile $FABRIC_CA_SERVER_TLS_CERTFILE -b $BOOTSTRAP_USER_PASS >$RUN_SUMPATH 2>&1 &
+cp $FABRIC_CA_SERVER_HOME/ca-cert.pem $FABRIC_CA_SERVER_TLS_CERTFILE
 echo "Success see in $RUN_SUMPATH"
