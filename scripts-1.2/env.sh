@@ -107,7 +107,8 @@ function initOrgVars() {
 
 	export CA_NAME=$ROOT_CA_NAME
 	export CA_HOST=$ROOT_CA_HOST
-	export CA_CHAINFILE=$ROOT_TLS_CERTFILE
+	#export CA_CHAINFILE=$ROOT_TLS_CERTFILE
+	export CA_CHAINFILE=$ROOT_CA_CERTFILE
 	export CA_ADMIN_USER_PASS=$ROOT_CA_ADMIN_USER_PASS
 	export ENROLLMENT_URL=https://rca-${ORG}-admin:rca-${ORG}-adminpw@rca.${ORG}.deevo.io:7054
 
