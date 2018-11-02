@@ -180,6 +180,26 @@ bccsp:
         filekeystore:
             # The directory used for the software file-based keystore
             keystore: msp/keystore
+
+cacount:
+
+cafiles:
+
+intermediate:
+  parentserver:
+    url:
+    caname:
+
+  enrollment:
+    hosts:
+    profile:
+    label:
+
+  tls:
+    certfiles:
+    client:
+      certfile:
+      keyfile:
 " >> $FABRIC_CA_SERVER_HOME/fabric-ca-server-config.yaml
 	fabric-ca-server init -b $BOOTSTRAP_USER_PASS
 fi
