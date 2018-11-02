@@ -40,7 +40,7 @@ function enrollCAAdmin() {
 	rm -rf FABRIC_CA_CLIENT_HOME/*
 	
 	logr "Enrolling with $ENROLLMENT_URL as bootstrap identity ..."
-	fabric-ca-client enroll -d -u $ENROLLMENT_URL --enrollment.profile ca
+	fabric-ca-client enroll -d -u $ENROLLMENT_URL
 }
 
 # Register any identities associated with a peer
