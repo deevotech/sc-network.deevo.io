@@ -93,6 +93,7 @@ function initOrgVars() {
 	ROOT_CA_ADMIN_USER_PASS=rca-admin:rca-adminpw
 
 	ROOT_CA_CERTFILE=$DATA/ca/rca.${ORG}.deevo.io.pem
+	export ROOT_TLS_CERTFILE=$DATA/ca/tls.rca.${ORG}.deevo.io.pem
 
 	ORG_HOME=$DATA/orgs/${ORG}
 	mkdir -p $ORG_HOME
@@ -105,7 +106,7 @@ function initOrgVars() {
 
 	export CA_NAME=$ROOT_CA_NAME
 	export CA_HOST=$ROOT_CA_HOST
-	export CA_CHAINFILE=$ROOT_CA_CERTFILE
+	export CA_CHAINFILE=$ROOT_TLS_CERTFILE
 	export CA_ADMIN_USER_PASS=$ROOT_CA_ADMIN_USER_PASS
 	export ENROLLMENT_URL=https://rca-${ORG}-admin:rca-${ORG}-adminpw@rca.${ORG}.deevo.io:7054
 
@@ -365,13 +366,9 @@ function genMSPCerts() {
 	echo $MSP_DIR
 	echo $ORG
 
-	fabric-ca-client enroll -d --enrollment.profile tls -u https://$NAME:$PASSWORD@$CA_HOST_NAME:7054 -M $MSP_DIR --csr.hosts $HOST_NAME --csr.names C=US,ST="California",O=${ORG},OU=COP
+	fabric-ca-client enroll -d --enrollment.profile ca -u https://$NAME:$PASSWORD@$CA_HOST_NAME:7054 -M $MSP_DIR --csr.hosts $HOST_NAME --csr.names C=US,ST=California,O=${ORG},OU=COP
 
-	# Copy CA certs
-	mkdir -p $MSP_DIR/tlscacerts
-	mkdir -p $MSP_DIR/cacerts
-	cp $ORG_MSP_DIR/cacerts/* $MSP_DIR/tlscacerts
-	cp $ORG_MSP_DIR/cacerts/* $MSP_DIR/cacerts
+	fabric-ca-client enroll -d --enrollment.profile tls -u https://$NAME:$PASSWORD@$CA_HOST_NAME:7054 -M $MSP_DIR --csr.hosts $HOST_NAME --csr.names C=US,ST=California,O=${ORG},OU=COP
 }
 
 function logr() {

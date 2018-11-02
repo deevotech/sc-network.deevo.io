@@ -100,11 +100,11 @@ function getCACerts() {
 	mkdir -p $ORG_MSP_DIR
 	fabric-ca-client getcacert -d -u $ENROLLMENT_URL -M $ORG_MSP_DIR
 	mkdir -p $ORG_MSP_DIR/tlscacerts
-	cp $ORG_MSP_DIR/cacerts/* $ORG_MSP_DIR/tlscacerts
+	cp $ROOT_TLS_CERTFILE  $ORG_MSP_DIR/tlscacerts
 
 	# Copy CA cert
 	mkdir -p $FABRIC_CA_CLIENT_HOME/msp/tlscacerts
-	cp $ORG_MSP_DIR/cacerts/* $FABRIC_CA_CLIENT_HOME/msp/tlscacerts
+	cp $ROOT_TLS_CERTFILE  $FABRIC_CA_CLIENT_HOME/msp/tlscacerts
 }
 
 function main() {
