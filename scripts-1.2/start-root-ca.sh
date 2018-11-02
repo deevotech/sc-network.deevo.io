@@ -91,7 +91,6 @@ registry:
         hf.Registrar.Roles: \"*\"
         hf.Registrar.DelegateRoles: \"*\"
         hf.Revoker: true
-        hf.IntermediateCA: true
         hf.GenCRL: true
         hf.Registrar.Attributes: \"*\"
         hf.AffiliationMgr: true
