@@ -38,6 +38,7 @@ NUM_ORDERERS=1
 # The volume mount to share data between containers
 DATA=$HOME/hyperledgerconfig/data
 export FABRIC_CFG_PATH=$DATA
+export FABRIC_CA_SERVER_HOME=$HOME/fabric-ca
 
 # The path to the genesis block
 GENESIS_BLOCK_FILE=$DATA/genesis.block
