@@ -47,7 +47,7 @@ function enrollCAAdmin() {
 function registerOrdererIdentities() {
 	enrollCAAdmin
 
-	fabric-ca-client register -d --id.name $ORDERER_NAME --id.secret $ORDERER_PASS --id.type orderer --id.affiliation $ORG
+	fabric-ca-client register -d --id.name $ORDERER_NAME --id.secret $ORDERER_PASS --id.type orderer --id.affiliation $ORG --id.attrs "hf.IntermediateCA=false"
 
 	logr "Registering admin identity with $ADMIN_NAME:$ADMIN_PASS"
 	# The admin identity has the "admin" attribute which is added to ECert by default
