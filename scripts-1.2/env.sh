@@ -369,7 +369,7 @@ function genMSPCerts() {
 	echo $ORG
 
 	#fabric-ca-client enroll -d --enrollment.profile ca -u https://$NAME:$PASSWORD@$CA_HOST_NAME:7054 -M $MSP_DIR --csr.hosts $HOST_NAME --csr.names C=US,ST=California,O=${ORG},OU=COP
-	#fabric-ca-client enroll -d --enrollment.profile ca -u https://$NAME:$PASSWORD@$CA_HOST_NAME:7054 -M $MSP_DIR --csr.hosts $PEER_HOST
+	fabric-ca-client enroll -d --enrollment.profile ca -u https://$NAME:$PASSWORD@$CA_HOST_NAME:7054 -M $MSP_DIR --csr.hosts $PEER_HOST --id.attrs 'hf.IntermediateCA=false'
 
 	#fabric-ca-client enroll -d --enrollment.profile tls -u https://$NAME:$PASSWORD@$CA_HOST_NAME:7054 -M $MSP_DIR --csr.hosts $HOST_NAME --csr.names C=US,ST=California,O=${ORG},OU=COP
 	fabric-ca-client enroll -d --enrollment.profile tls -u https://$NAME:$PASSWORD@$CA_HOST_NAME:7054 -M $MSP_DIR --csr.hosts $HOST_NAME
