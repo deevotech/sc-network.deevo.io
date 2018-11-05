@@ -65,7 +65,7 @@ sudo rm -f /home/couchdb/bin/couchdb
 sudo cp ./couchdb /home/couchdb/bin/
 #sudo runsv /etc/service/couchdb
 sudo sv start /etc/service/couchdb
-
+echo $FABRIC_CFG_PATH
 sleep 5
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer node start >data/logs/${PEER_NAME}.out 2>&1 &
 echo "Success see in data/logs/${PEER_NAME}.out"
