@@ -29,11 +29,11 @@ if [ -z "${g}" ] || [ -z "${n}" ] ; then
 fi
 
 function enrollCAAdmin() {
-	mkdir -p FABRIC_CA_CLIENT_HOME
-	rm -rf FABRIC_CA_CLIENT_HOME/*
+	mkdir -p $FABRIC_CA_CLIENT_HOME
+	rm -rf $FABRIC_CA_CLIENT_HOME/*
 	
 	logr "Enrolling with $ENROLLMENT_URL as bootstrap identity ..."
-	fabric-ca-client enroll -d -u $ENROLLMENT_URL
+	fabric-ca-client enroll -d -u $ENROLLMENT_URL --enrollment.profile tls
 }
 
 # Register any identities associated with a peer
@@ -54,18 +54,14 @@ function getCACerts() {
 	logr "Getting CA certificates ..."
 	logr "Getting CA certs for organization $ORG and storing in $ORG_MSP_DIR"
 	mkdir -p $ORG_MSP_DIR
-	fabric-ca-client getcacert -d -u $ENROLLMENT_URL -M $ORG_MSP_DIR
-	mkdir -p $ORG_MSP_DIR/tlscacerts
-	cp $ROOT_TLS_CERTFILE  $ORG_MSP_DIR/tlscacerts
+	fabric-ca-client getcacert -d -u $ENROLLMENT_URL -M $ORG_MSP_DIR --enrollment.profile tls
+	cp $ROOT_CA_CERTFILE $ORG_MSP_DIR/cacerts
 
 	# Copy CA cert
-	mkdir -p $FABRIC_CA_CLIENT_HOME/msp/tlscacerts
-	cp $ROOT_TLS_CERTFILE  $FABRIC_CA_CLIENT_HOME/msp/tlscacerts
+	cp $ROOT_CA_CERTFILE $FABRIC_CA_CLIENT_HOME/msp/cacerts
 }
 
 function main() {
-	mkdir -p FABRIC_CA_CLIENT_HOME
-
 	registerPeerIdentities
 	getCACerts
 	logr "Finished create certificates"
@@ -74,6 +70,7 @@ function main() {
 	mkdir -p $PEER_CERT_DIR
 	logr "Generate server TLS cert and key pair for the peer"
 	genMSPCerts $CORE_PEER_ID $CORE_PEER_ID $PEER_PASS $ORG $CA_HOST $PEER_CERT_DIR/msp
+	cp $ROOT_CA_CERTFILE $PEER_CERT_DIR/msp/cacerts
 
 	mkdir -p $PEER_CERT_DIR/tls
 	cp $PEER_CERT_DIR/msp/signcerts/* $PEER_CERT_DIR/tls/server.crt
@@ -81,6 +78,7 @@ function main() {
 
 	logr "Generate client TLS cert and key pair for the user client"
 	genMSPCerts $CORE_PEER_ID $USER_NAME $USER_PASS $ORG $CA_HOST $USER_CERT_DIR/msp
+	cp $ROOT_CA_CERTFILE $USER_CERT_DIR/msp/cacerts
 
     mkdir -p $USER_CERT_DIR/tls
 	cp $USER_CERT_DIR/msp/signcerts/* $USER_CERT_DIR/tls/client.crt
@@ -89,6 +87,7 @@ function main() {
 	if [ $n -eq 1 ]; then
 		logr "Generate client TLS cert and key pair for the peer CLI"
 		genMSPCerts $CORE_PEER_ID $ADMIN_NAME $ADMIN_PASS $ORG $CA_HOST $ADMIN_CERT_DIR/msp
+		cp $ROOT_CA_CERTFILE $ADMIN_CERT_DIR/msp/cacerts
 
         mkdir -p $ADMIN_CERT_DIR/tls
 		cp $ADMIN_CERT_DIR/msp/signcerts/* $ADMIN_CERT_DIR/tls/server.crt

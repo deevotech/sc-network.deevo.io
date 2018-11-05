@@ -93,7 +93,7 @@ function initOrgVars() {
 	# Root CA admin identity
 	ROOT_CA_ADMIN_USER_PASS=rca-${ORG}-admin:rca-${ORG}-adminpw
 
-	ROOT_CA_CERTFILE=$DATA/ca/rca.${ORG}.deevo.io.pem
+	export ROOT_CA_CERTFILE=$DATA/ca/rca.${ORG}.deevo.io.pem
 	export ROOT_TLS_CERTFILE=$DATA/ca/tls.rca.${ORG}.deevo.io.pem
 
 	ORG_HOME=$DATA/orgs/${ORG}

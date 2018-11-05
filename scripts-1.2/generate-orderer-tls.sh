@@ -36,11 +36,11 @@ export RUN_SUMPATH=data/logs/orderer${n}-${g}.log
 initOrdererVars $ORG ${n}
 
 function enrollCAAdmin() {
-	mkdir -p FABRIC_CA_CLIENT_HOME
-	rm -rf FABRIC_CA_CLIENT_HOME/*
+	mkdir -p $FABRIC_CA_CLIENT_HOME
+	rm -rf $FABRIC_CA_CLIENT_HOME/*
 	
 	logr "Enrolling with $ENROLLMENT_URL as bootstrap identity ..."
-	fabric-ca-client enroll -d -u $ENROLLMENT_URL
+	fabric-ca-client enroll -d -u $ENROLLMENT_URL --enrollment.profile tls
 }
 
 # Register any identities associated with a peer
@@ -58,13 +58,11 @@ function getCACerts() {
 	logr "Getting CA certificates ..."
 	logr "Getting CA certs for organization $ORG and storing in $ORG_MSP_DIR"
 	mkdir -p $ORG_MSP_DIR
-	fabric-ca-client getcacert -d -u $ENROLLMENT_URL -M $ORG_MSP_DIR
-	mkdir -p $ORG_MSP_DIR/tlscacerts
-	cp $ROOT_TLS_CERTFILE $ORG_MSP_DIR/tlscacerts
+	fabric-ca-client getcacert -d -u $ENROLLMENT_URL -M $ORG_MSP_DIR --enrollment.profile tls
+	cp $ROOT_CA_CERTFILE $ORG_MSP_DIR/cacerts
 
 	# Copy CA cert
-	mkdir -p $FABRIC_CA_CLIENT_HOME/msp/tlscacerts
-	cp $ROOT_TLS_CERTFILE  $FABRIC_CA_CLIENT_HOME/msp/tlscacerts
+	cp $ROOT_CA_CERTFILE $FABRIC_CA_CLIENT_HOME/msp/cacerts
 }
 
 function main() {
@@ -75,6 +73,7 @@ function main() {
 
 	logr "Enroll again to get the orderer's enrollment certificate (default profile)"
 	genMSPCerts $ORDERER_HOST $ORDERER_NAME $ORDERER_PASS $ORG $CA_HOST $ORDERER_CERT_DIR/msp
+	cp $ROOT_CA_CERTFILE $ORDERER_CERT_DIR/msp/cacerts
 
 	mkdir -p $ORDERER_CERT_DIR/tls
 	cp $ORDERER_CERT_DIR/msp/signcerts/* $ORDERER_CERT_DIR/tls/server.crt
@@ -83,10 +82,11 @@ function main() {
 	if [ $ADMINCERTS ]; then
 		logr "Generate client TLS cert and key pair for the peer CLI"
 		genMSPCerts $ORDERER_HOST $ADMIN_NAME $ADMIN_PASS $ORG $CA_HOST $ADMIN_CERT_DIR/msp
+		cp $ROOT_CA_CERTFILE $ADMIN_CERT_DIR/msp/cacerts
 
         mkdir -p $ADMIN_CERT_DIR/tls
-		cp $ADMIN_CERT_DIR/msp/signcerts/* $ADMIN_CERT_DIR/tls/client.crt
-		cp $ADMIN_CERT_DIR/msp/keystore/* $ADMIN_CERT_DIR/tls/client.key
+		cp $ADMIN_CERT_DIR/msp/signcerts/* $ADMIN_CERT_DIR/tls/server.crt
+		cp $ADMIN_CERT_DIR/msp/keystore/* $ADMIN_CERT_DIR/tls/server.key
 
 		mkdir -p $ADMIN_CERT_DIR/msp/admincerts
 		cp $ADMIN_CERT_DIR/msp/signcerts/* $ADMIN_CERT_DIR/msp/admincerts/cert.pem

@@ -48,7 +48,7 @@ function initVars() {
 
 function enrollCAAdmin() {
 	logr "Enrolling with $ENROLLMENT_URL as bootstrap identity ..."
-	fabric-ca-client enroll -d -u $ENROLLMENT_URL
+	fabric-ca-client enroll -d -u $ENROLLMENT_URL --enrollment.profile tls
 }
 
 function registerNodesIdentities() {
@@ -99,12 +99,10 @@ function getCACerts() {
 	logr "Getting CA certs for organization $ORG and storing in $ORG_MSP_DIR"
 	mkdir -p $ORG_MSP_DIR
 	fabric-ca-client getcacert -d -u $ENROLLMENT_URL -M $ORG_MSP_DIR
-	mkdir -p $ORG_MSP_DIR/tlscacerts
-	cp $ROOT_TLS_CERTFILE  $ORG_MSP_DIR/tlscacerts
+	cp $ROOT_CA_CERTFILE $ORG_MSP_DIR/cacerts
 
 	# Copy CA cert
-	mkdir -p $FABRIC_CA_CLIENT_HOME/msp/tlscacerts
-	cp $ROOT_TLS_CERTFILE  $FABRIC_CA_CLIENT_HOME/msp/tlscacerts
+	cp $ROOT_CA_CERTFILE $FABRIC_CA_CLIENT_HOME/cacerts
 }
 
 function main() {
