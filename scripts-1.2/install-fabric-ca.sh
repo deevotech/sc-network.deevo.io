@@ -1,6 +1,7 @@
 #!/bin/bash
 
 rm -rf $GOPATH/src/github.com/hyperledger/fabric-ca
+mkdir -p $GOPATH/src/github.com/hyperledger
 sudo apt-get update
 sudo apt-get install -y libtool libltdl-dev unzip
 sudo rm -rf /var/cache/apt
