@@ -50,6 +50,8 @@ sudo chown -R couchdb:couchdb /home/couchdb
 sudo find /home/couchdb -type d -exec chmod 0770 {} \;
 sudo sh -c 'chmod 0644 /home/couchdb/etc/*'
 
+cd ..
+
 if [ -d /opt/couchdb ] ;  then
 sudo rm -rf /opt/couchdb
 fi
