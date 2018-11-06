@@ -52,12 +52,13 @@ mkdir -p data
 mkdir -p data/logs
 export RUN_SUMPATH=./data/logs/ca-${ORG}.log
 
+mkdir -p ${FABRIC_CA_SERVER_HOME}
+rm -rf ${FABRIC_CA_SERVER_HOME}/*
+
 # Initialize the root CA
 if [ ${r} -eq 1 ]; then
-	rm -rf ${FABRIC_CA_SERVER_HOME}/*
 	cp -R ${DATA}/rca-${g}-home/* ${FABRIC_CA_SERVER_HOME}/
 else
-	rm -rf $FABRIC_CA_SERVER_HOME/*
 
 	echo "# Version of config file
 version: 1.2.0
