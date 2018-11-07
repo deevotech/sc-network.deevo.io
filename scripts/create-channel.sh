@@ -47,7 +47,7 @@ PEER_NAME=peer0.org1.deevo.com
 PEER_HOST=$PEER_NAME
 export FABRIC_CA_CLIENT=$DATA/$PEER_NAME/
 export CORE_PEER_ID=peer0.org1.deevo.com
-export CORE_PEER_ADDRESS=peer1-org1:7051
+export CORE_PEER_ADDRESS=peer0-org1:7051
 export CORE_PEER_LOCALMSPID=org1MSP
 export CORE_LOGGING_LEVEL=DEBUG
 export CORE_PEER_TLS_ENABLED=true
@@ -77,7 +77,7 @@ for ORG in ${PEER_ORGS[*]}; do
      #while [[ "$COUNT" -le $NUM_PEERS ]]; do
          #initPeerVars $ORG $COUNT
          PEER_HOST=peer0.${ORG}.deevo.com
-         #PEER_HOST=peer1-${ORG}
+         #PEER_HOST=peer0-${ORG}
          PEER_NAME=${PEER_HOST}
          ORG_ADMIN_HOME=$DATA/orgs/$ORG/admin
          CA_CHAINFILE=${DATA}/${ORG}-ca-cert.pem

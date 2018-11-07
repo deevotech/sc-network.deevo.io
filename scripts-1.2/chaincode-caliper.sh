@@ -37,9 +37,9 @@ CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 
 QUERY_TIMEOUT=30
 
-# install chaincode on peer1-org1, peer1-org2
+# install chaincode on peer0-org1, peer0-org2
 for ORG in ${PEER_ORGS[*]}; do
-	initPeerVars $ORG 1
+	initPeerVars $ORG 0
 	echo $ORDERER_CONN_ARGS
 	$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode install -n $n -v $v -p github.com/hyperledger/caliper/src/contract/fabric/simple/go
 done
@@ -48,7 +48,7 @@ sleep 3
 
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode list --installed -C $CHANNEL_NAME
 
-initPeerVars ${PEER_ORGS[0]} 1
+initPeerVars ${PEER_ORGS[0]} 0
 echo $ORDERER_CONN_ARGS
 echo "Instantiating chaincode on $PEER_HOST ..."
 POLICY="OR('org1MSP.member', 'org2MSP.member', 'org3MSP.member', 'org4MSP.member', 'org5MSP.member')"
@@ -56,25 +56,25 @@ $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode instantiate 
 sleep 10
 
 # test query org5
-initPeerVars ${PEER_ORGS[4]} 1
+initPeerVars ${PEER_ORGS[4]} 0
 echo $ORDERER_CONN_ARGS
 echo "Instantiating chaincode on $PEER_HOST ..."
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -c '{"Args":["open","aaabbbccc","10000"]}' $ORDERER_CONN_ARGS
 
 # test query org4
-initPeerVars ${PEER_ORGS[3]} 1
+initPeerVars ${PEER_ORGS[3]} 0
 echo $ORDERER_CONN_ARGS
 echo "Instantiating chaincode on $PEER_HOST ..."
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -c '{"Args":["open","aaabbbddd","10000"]}' $ORDERER_CONN_ARGS
 
 # test query org3
-initPeerVars ${PEER_ORGS[2]} 1
+initPeerVars ${PEER_ORGS[2]} 0
 echo $ORDERER_CONN_ARGS
 echo "Instantiating chaincode on $PEER_HOST ..."
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -c '{"Args":["open","aaabbbeee","10000"]}' $ORDERER_CONN_ARGS
 
 # test query org2
-initPeerVars ${PEER_ORGS[1]} 1
+initPeerVars ${PEER_ORGS[1]} 0
 echo $ORDERER_CONN_ARGS
 echo "Instantiating chaincode on $PEER_HOST ..."
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -c '{"Args":["open","aaabbbfff","10000"]}' $ORDERER_CONN_ARGS

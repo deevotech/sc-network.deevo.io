@@ -159,14 +159,14 @@ function initPeerVars() {
 	export CORE_PEER_GOSSIP_USELEADERELECTION=true
 	export CORE_PEER_GOSSIP_ORGLEADER=false
 	export CORE_PEER_GOSSIP_EXTERNALENDPOINT=$PEER_HOST:7051
-	if [ $NUM -gt 1 ]; then
+	if [ $NUM -gt 0 ]; then
 		# Point the non-anchor peers to the anchor peer, which is always the 1st peer
-		export CORE_PEER_GOSSIP_BOOTSTRAP=peer1.${ORG}.deevo.io:7051
+		export CORE_PEER_GOSSIP_BOOTSTRAP=peer0.${ORG}.deevo.io:7051
 		export CORE_PEER_ADDRESSAUTODETECT=true
 	fi
 
 	export ORDERER_ORG=org0
-	export ORDERER_HOST=orderer1.${ORDERER_ORG}.deevo.io
+	export ORDERER_HOST=orderer0.${ORDERER_ORG}.deevo.io
 	export ORDERER_TLS_CA=$DATA/ca/rca.${ORDERER_ORG}.deevo.io.pem
 	export ORDERER_PORT_ARGS="-o $ORDERER_HOST:7050 --tls --cafile $ORDERER_TLS_CA --clientauth"
 

@@ -44,7 +44,7 @@ $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode list --insta
 
 # instantiate chaincode
 ORG=${g}
-initPeerVars ${ORG} 1
+initPeerVars ${ORG} 0
 echo $ORDERER_CONN_ARGS
 echo '{"Args":["getObject","'${i}'","'${t}'"]}'
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode query -C $CHANNEL_NAME -n ${n} -v ${v}  -c '{"Args":["getObject","'${i}'","'${t}'"]}' $ORDERER_CONN_ARGS

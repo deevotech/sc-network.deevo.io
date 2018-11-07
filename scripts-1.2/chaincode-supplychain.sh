@@ -31,9 +31,9 @@ CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 
 QUERY_TIMEOUT=30
 
-# install chaincode on peer1-org1, peer1-org2
+# install chaincode on peer0-org1, peer0-org2
 for ORG in ${PEER_ORGS[*]}; do
-	initPeerVars $ORG 1
+	initPeerVars $ORG 0
 	echo "Install for $PEER_HOST ..."
 	echo $ORDERER_CONN_ARGS
 	$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode install -n $n -v 1.0 -p github.com/deevotech/sc-chaincode.deevo.io/supplychain/go
@@ -43,7 +43,7 @@ done
 
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode list --installed -C $CHANNEL_NAME
 
-initPeerVars ${PORGS[1]} 1
+initPeerVars ${PORGS[1]} 0
 echo $ORDERER_CONN_ARGS
 echo "Instantiating chaincode on $PEER_HOST ..."
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode instantiate -C $CHANNEL_NAME -n ${n} -v 1.0 -c '{"Args":["init"]}' $ORDERER_CONN_ARGS

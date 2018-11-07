@@ -40,9 +40,9 @@ cd $GOPATH/src/github.com/deevotech
 rm -rf sc-chaincode.deevo.io
 git clone https://github.com/deevotech/sc-chaincode.deevo.io
 
-# install chaincode on peer1-org1, peer1-org2
+# install chaincode on peer0-org1, peer0-org2
 for ORG in ${PEER_ORGS[*]}; do
-	initPeerVars $ORG 1
+	initPeerVars $ORG 0
 
 	echo "Install for $PEER_HOST ..."
 	echo $ORDERER_CONN_ARGS
@@ -52,7 +52,7 @@ done
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode list --installed -C $CHANNEL_NAME
 
 # instantiate chaincode
-initPeerVars ${PEER_ORGS[0]} 1
+initPeerVars ${PEER_ORGS[0]} 0
 echo $ORDERER_CONN_ARGS
 
 echo "Instantiating chaincode on $PEER_HOST ..."

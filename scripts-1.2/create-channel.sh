@@ -43,7 +43,7 @@ for ORG in ${PEER_ORGS[*]}; do
 done
 
 echo "join channel to chain"
-initPeerVars ${PEER_ORGS[0]} 1
+initPeerVars ${PEER_ORGS[0]} 0
 
 echo "Creating channel '$CHANNEL_NAME' on $ORDERER_HOST ..."
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer channel create --logging-level=DEBUG -c $CHANNEL_NAME -f $CHANNEL_TX_FILE $ORDERER_CONN_ARGS
@@ -52,7 +52,7 @@ sleep 10
 # All peers join the channel
 echo "ALL peers join the channel"
 for ORG in ${PEER_ORGS[*]}; do
-    initPeerVars ${ORG} 1
+    initPeerVars ${ORG} 0
 
 	C=1
 	MAX_RETRY=10
@@ -75,7 +75,7 @@ done
 sleep 5
 # Update the anchor peers
 for ORG in ${PEER_ORGS[*]}; do
-	initPeerVars $ORG 1
+	initPeerVars $ORG 0
 
 	$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer channel update -c $CHANNEL_NAME -f $ANCHOR_TX_FILE $ORDERER_CONN_ARGS
 	sleep 2

@@ -36,7 +36,7 @@ ORDERER_HOST=orderer0.org0.deevo.com
 export ORDERER_PORT_ARGS=" -o orderer0.org0.deevo.com:7050 --tls --cafile $CA_CHAINFILE --clientauth"
 QUERY_TIMEOUT=30
 
-# install chaincode on peer1-org1, peer1-org2
+# install chaincode on peer0-org1, peer0-org2
 for ORG in ${PEER_ORGS[*]}; do
     #initPeerVars $ORG 1
     PEER_HOST=peer0.${ORG}.deevo.com

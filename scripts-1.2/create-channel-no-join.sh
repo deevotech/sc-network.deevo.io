@@ -34,7 +34,7 @@ if [ "$?" -ne 0 ]; then
 fi
 
 for ORG in ${PEER_ORGS[*]}; do
-	initPeerVars ${ORG} 1
+	initPeerVars ${ORG} 0
 	echo "Generating anchor peer update transaction for $ORG at $ANCHOR_TX_FILE"
 	$GOPATH/src/github.com/hyperledger/fabric/.build/bin/configtxgen -profile SampleSingleMSPChannel -outputAnchorPeersUpdate $ANCHOR_TX_FILE -channelID $CHANNEL_NAME -asOrg $ORG
 	if [ "$?" -ne 0 ]; then
@@ -44,7 +44,7 @@ done
 
 echo "join channel to chain"
 
-initPeerVars ${PEER_ORGS[0]} 1
+initPeerVars ${PEER_ORGS[0]} 0
 
 echo "Creating channel '$CHANNEL_NAME' on $ORDERER_HOST ... $ORDERER_CONN_ARGS"
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer channel create --logging-level=DEBUG -c $CHANNEL_NAME -f $CHANNEL_TX_FILE $ORDERER_CONN_ARGS

@@ -30,7 +30,7 @@ NUMBER=${n}
 
 source $(dirname "$0")/env.sh
 initPeerVars ${ORG} ${NUMBER}
-# cp /home/ubuntu/hyperledgerconfig/data/ca/rca.${g}.deevo.io.pem /home/ubuntu/hyperledgerconfig/data/orgs/${g}/peer1.${g}.deevo.io/msp/cacerts/
+
 cp ../config-1.2/configtx.yaml ${FABRIC_CFG_PATH}/configtx.yaml
 cp ../config-1.2/core.yaml ${FABRIC_CFG_PATH}/core.yaml
 mkdir -p data

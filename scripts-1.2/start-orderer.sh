@@ -39,7 +39,7 @@ echo $ORDERER_GENERAL_LOCALMSPDIR
 cp ../config-1.2/configtx.yaml ${FABRIC_CFG_PATH}/configtx.yaml
 cp ../config-1.2/core.yaml ${FABRIC_CFG_PATH}/core.yaml
 cp ../config-1.2/orderer.yaml ${FABRIC_CFG_PATH}/orderer.yaml
-# cp /home/ubuntu/hyperledgerconfig/data/ca/rca.${ORG}.deevo.io.pem /home/ubuntu/hyperledgerconfig/data/orgs/${ORG}/orderer1.${ORG}.deevo.io/msp/cacerts
+
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/orderer start > ./data/logs/orderer.out 2>&1 &
 echo "done see data/logs/orderer"
 

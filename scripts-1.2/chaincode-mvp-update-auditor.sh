@@ -33,7 +33,7 @@ $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode list --insta
 # instantiate chaincode
 
 ORG=org1
-initPeerVars ${ORG} 1
+initPeerVars ${ORG} 0
 echo $ORDERER_CONN_ARGS
 
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -c '{"Args":["updateAuditor", "{\"objectType\":\"auditor\",\"id\":\"Auditor_1\",\"name\":\"Auditor 2\",\"content\":\"\"}"]}' $ORDERER_CONN_ARGS
