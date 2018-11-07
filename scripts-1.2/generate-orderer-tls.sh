@@ -9,23 +9,26 @@ set -e
 source $(dirname "$0")/env.sh
 
 # Wait for setup to complete sucessfully
-usage() { echo "Usage: $0 [-g <orgname>] [-n <numberorderer>]" 1>&2; exit 1; }
+usage() {
+	echo "Usage: $0 [-g <orgname>] [-n <numberorderer>]" 1>&2
+	exit 1
+}
 while getopts ":g:n:" o; do
-    case "${o}" in
-        g)
-            g=${OPTARG}
-            ;;
-        n)
-            n=${OPTARG}
-            ;;
-        *)
-            usage
-            ;;
-    esac
+	case "${o}" in
+	g)
+		g=${OPTARG}
+		;;
+	n)
+		n=${OPTARG}
+		;;
+	*)
+		usage
+		;;
+	esac
 done
-shift $((OPTIND-1))
-if [ -z "${g}" ] || [ -z "${n}" ] ; then
-    usage
+shift $((OPTIND - 1))
+if [ -z "${g}" ] || [ -z "${n}" ]; then
+	usage
 fi
 
 ORG=${g}
@@ -38,7 +41,7 @@ initOrdererVars $ORG ${n}
 function enrollCAAdmin() {
 	mkdir -p $FABRIC_CA_CLIENT_HOME
 	rm -rf $FABRIC_CA_CLIENT_HOME/*
-	
+
 	logr "Enrolling with $ENROLLMENT_URL as bootstrap identity ..."
 	fabric-ca-client enroll -d -u $ENROLLMENT_URL --enrollment.profile tls
 }
@@ -49,9 +52,11 @@ function registerOrdererIdentities() {
 
 	fabric-ca-client register -d --id.name $ORDERER_NAME --id.secret $ORDERER_PASS --id.type orderer --id.affiliation $ORG
 
-	logr "Registering admin identity with $ADMIN_NAME:$ADMIN_PASS"
-	# The admin identity has the "admin" attribute which is added to ECert by default
-	fabric-ca-client register -d --id.name $ADMIN_NAME --id.secret $ADMIN_PASS --id.attrs "admin=true:ecert" --id.affiliation $ORG
+	if [ $n -eq 0 ]; then
+		logr "Registering admin identity with $ADMIN_NAME:$ADMIN_PASS"
+		# The admin identity has the "admin" attribute which is added to ECert by default
+		fabric-ca-client register -d --id.name $ADMIN_NAME --id.secret $ADMIN_PASS --id.attrs "admin=true:ecert" --id.affiliation $ORG
+	fi
 }
 
 function getCACerts() {
@@ -79,12 +84,12 @@ function main() {
 	cp $ORDERER_CERT_DIR/msp/signcerts/* $ORDERER_CERT_DIR/tls/server.crt
 	cp $ORDERER_CERT_DIR/msp/keystore/* $ORDERER_CERT_DIR/tls/server.key
 
-	if [ $ADMINCERTS ]; then
-		logr "Generate client TLS cert and key pair for the peer CLI"
+	if [ $n -eq 0 ]; then
+		logr "Generate client TLS cert and key pair for the admin of org"
 		genMSPCerts $ORDERER_HOST $ADMIN_NAME $ADMIN_PASS $ORG $CA_HOST $ADMIN_CERT_DIR/msp
 		cp $ROOT_CA_CERTFILE $ADMIN_CERT_DIR/msp/cacerts
 
-        mkdir -p $ADMIN_CERT_DIR/tls
+		mkdir -p $ADMIN_CERT_DIR/tls
 		cp $ADMIN_CERT_DIR/msp/signcerts/* $ADMIN_CERT_DIR/tls/server.crt
 		cp $ADMIN_CERT_DIR/msp/keystore/* $ADMIN_CERT_DIR/tls/server.key
 

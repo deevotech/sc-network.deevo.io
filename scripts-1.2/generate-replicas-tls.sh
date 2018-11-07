@@ -79,7 +79,7 @@ function registerNodesIdentities() {
 
 	# create users for ordering nodes
 	for ((c = 0; c < $n; c++)); do
-		NODE_HOST_NAME="bft.node.${c}"
+		NODE_HOST_NAME="node${c}.deevo.io"
 		NODE_USER="node-${c}"
 		NODE_PASS="node-${c}-pw"
 		fabric-ca-client register -d --id.name $NODE_USER --id.secret $NODE_PASS --id.affiliation $ORG

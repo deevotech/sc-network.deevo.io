@@ -9,29 +9,32 @@ set -e
 
 source $(dirname "$0")/env.sh
 
-usage() { echo "Usage: $0 [-g <orgname>] [-n <numberpeer>]" 1>&2; exit 1; }
+usage() {
+	echo "Usage: $0 [-g <orgname>] [-n <numberpeer>]" 1>&2
+	exit 1
+}
 while getopts ":g:n:" o; do
-    case "${o}" in
-        g)
-            g=${OPTARG}
-            ;;
-        n)
-            n=${OPTARG}
-            ;;
-        *)
-            usage
-            ;;
-    esac
+	case "${o}" in
+	g)
+		g=${OPTARG}
+		;;
+	n)
+		n=${OPTARG}
+		;;
+	*)
+		usage
+		;;
+	esac
 done
-shift $((OPTIND-1))
-if [ -z "${g}" ] || [ -z "${n}" ] ; then
-    usage
+shift $((OPTIND - 1))
+if [ -z "${g}" ] || [ -z "${n}" ]; then
+	usage
 fi
 
 function enrollCAAdmin() {
 	mkdir -p $FABRIC_CA_CLIENT_HOME
 	rm -rf $FABRIC_CA_CLIENT_HOME/*
-	
+
 	logr "Enrolling with $ENROLLMENT_URL as bootstrap identity ..."
 	fabric-ca-client enroll -d -u $ENROLLMENT_URL --enrollment.profile tls
 }
@@ -43,11 +46,13 @@ function registerPeerIdentities() {
 	fabric-ca-client register -d --id.name $PEER_NAME --id.secret $PEER_PASS --id.type peer --id.affiliation $ORG --id.attrs 'admin=true:ecert'
 	# fabric-ca-client register -d --id.name $PEER_NAME --id.secret $PEER_PASS --id.type peer --id.affiliation $ORG
 
-	logr "Registering admin identity with $ADMIN_NAME:$ADMIN_PASS"
-	# The admin identity has the "admin" attribute which is added to ECert by default
-	fabric-ca-client register -d --id.name $ADMIN_NAME --id.secret $ADMIN_PASS --id.affiliation $ORG --id.attrs '"hf.Registrar.Roles=user"' --id.attrs '"hf.Registrar.Attributes=*"' --id.attrs 'hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,mycc.init=true:ecert'
-	logr "Registering user identity with $USER_NAME:$USER_PASS"
-	fabric-ca-client register -d --id.name $USER_NAME --id.secret $USER_PASS --id.affiliation $ORG --id.attrs '"hf.Registrar.Roles=user"'
+	if [ $n -eq 0 ]; then
+		logr "Registering admin identity with $ADMIN_NAME:$ADMIN_PASS"
+		# The admin identity has the "admin" attribute which is added to ECert by default
+		fabric-ca-client register -d --id.name $ADMIN_NAME --id.secret $ADMIN_PASS --id.affiliation $ORG --id.attrs '"hf.Registrar.Roles=user"' --id.attrs '"hf.Registrar.Attributes=*"' --id.attrs 'hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,mycc.init=true:ecert'
+		logr "Registering user identity with $USER_NAME:$USER_PASS"
+		fabric-ca-client register -d --id.name $USER_NAME --id.secret $USER_PASS --id.affiliation $ORG --id.attrs '"hf.Registrar.Roles=user"'
+	fi
 }
 
 function getCACerts() {
@@ -80,16 +85,16 @@ function main() {
 	genMSPCerts $CORE_PEER_ID $USER_NAME $USER_PASS $ORG $CA_HOST $USER_CERT_DIR/msp
 	cp $ROOT_CA_CERTFILE $USER_CERT_DIR/msp/cacerts
 
-    mkdir -p $USER_CERT_DIR/tls
+	mkdir -p $USER_CERT_DIR/tls
 	cp $USER_CERT_DIR/msp/signcerts/* $USER_CERT_DIR/tls/client.crt
 	cp $USER_CERT_DIR/msp/keystore/* $USER_CERT_DIR/tls/client.key
 
-	if [ $n -eq 1 ]; then
-		logr "Generate client TLS cert and key pair for the peer CLI"
+	if [ $n -eq 0 ]; then
+		logr "Generate client TLS cert and key pair for the admin of org"
 		genMSPCerts $CORE_PEER_ID $ADMIN_NAME $ADMIN_PASS $ORG $CA_HOST $ADMIN_CERT_DIR/msp
 		cp $ROOT_CA_CERTFILE $ADMIN_CERT_DIR/msp/cacerts
 
-        mkdir -p $ADMIN_CERT_DIR/tls
+		mkdir -p $ADMIN_CERT_DIR/tls
 		cp $ADMIN_CERT_DIR/msp/signcerts/* $ADMIN_CERT_DIR/tls/server.crt
 		cp $ADMIN_CERT_DIR/msp/keystore/* $ADMIN_CERT_DIR/tls/server.key
 		mkdir -p $ADMIN_CERT_DIR/msp/admincerts

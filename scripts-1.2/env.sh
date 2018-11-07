@@ -30,7 +30,7 @@ NUM_PEERS=5
 ORGS="$ORDERER_ORGS $PEER_ORGS"
 
 # Set to true to populate the "admincerts" folder of MSPs
-ADMINCERTS=true
+# ADMINCERTS=true
 
 # Number of orderer nodes
 NUM_ORDERERS=1
@@ -211,60 +211,60 @@ function initOrdererVars() {
 }
 
 # Switch to the current org's admin identity.  Enroll if not previously enrolled.
-function switchToAdminIdentity() {
-	if [ ! -d $ORG_ADMIN_HOME ]; then
-		#dowait "$CA_NAME to start" 60 $CA_LOGFILE $CA_CHAINFILE
-		log "Enrolling admin '$ADMIN_NAME' with $CA_HOST ..."
-		export FABRIC_CA_CLIENT_HOME=$ORG_ADMIN_HOME
-		export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
-		$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d -u https://$ADMIN_NAME:$ADMIN_PASS@$CA_HOST:7054
-		# If admincerts are required in the MSP, copy the cert there now and to my local MSP also
-		if [ $ADMINCERTS ]; then
-			mkdir -p $(dirname "${ORG_ADMIN_CERT}")
-			cp $ORG_ADMIN_HOME/msp/signcerts/* $ORG_ADMIN_CERT
-			mkdir $ORG_ADMIN_HOME/msp/admincerts
-			cp $ORG_ADMIN_HOME/msp/signcerts/* $ORG_ADMIN_HOME/msp/admincerts
-		fi
-	fi
-	export CORE_PEER_MSPCONFIGPATH=$ORG_ADMIN_HOME/msp
-}
+# function switchToAdminIdentity() {
+# 	if [ ! -d $ORG_ADMIN_HOME ]; then
+# 		#dowait "$CA_NAME to start" 60 $CA_LOGFILE $CA_CHAINFILE
+# 		log "Enrolling admin '$ADMIN_NAME' with $CA_HOST ..."
+# 		export FABRIC_CA_CLIENT_HOME=$ORG_ADMIN_HOME
+# 		export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
+# 		$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client enroll -d -u https://$ADMIN_NAME:$ADMIN_PASS@$CA_HOST:7054
+# 		# If admincerts are required in the MSP, copy the cert there now and to my local MSP also
+# 		if [ $ADMINCERTS ]; then
+# 			mkdir -p $(dirname "${ORG_ADMIN_CERT}")
+# 			cp $ORG_ADMIN_HOME/msp/signcerts/* $ORG_ADMIN_CERT
+# 			mkdir $ORG_ADMIN_HOME/msp/admincerts
+# 			cp $ORG_ADMIN_HOME/msp/signcerts/* $ORG_ADMIN_HOME/msp/admincerts
+# 		fi
+# 	fi
+# 	export CORE_PEER_MSPCONFIGPATH=$ORG_ADMIN_HOME/msp
+# }
 
 # Switch to the current org's user identity.  Enroll if not previously enrolled.
-function switchToUserIdentity() {
-	export FABRIC_CA_CLIENT_HOME=/etc/hyperledger/fabric/orgs/$ORG/user
-	export CORE_PEER_MSPCONFIGPATH=$FABRIC_CA_CLIENT_HOME/msp
-	if [ ! -d $FABRIC_CA_CLIENT_HOME ]; then
-		#dowait "$CA_NAME to start" 60 $CA_LOGFILE $CA_CHAINFILE
-		log "Enrolling user for organization $ORG with home directory $FABRIC_CA_CLIENT_HOME ..."
-		export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
-		fabric-ca-client enroll -d -u https://$USER_NAME:$USER_PASS@$CA_HOST:7054
-		# Set up admincerts directory if required
-		if [ $ADMINCERTS ]; then
-			ACDIR=$CORE_PEER_MSPCONFIGPATH/admincerts
-			mkdir -p $ACDIR
-			cp $ORG_ADMIN_HOME/msp/signcerts/* $ACDIR
-		fi
-	fi
-}
+# function switchToUserIdentity() {
+# 	export FABRIC_CA_CLIENT_HOME=/etc/hyperledger/fabric/orgs/$ORG/user
+# 	export CORE_PEER_MSPCONFIGPATH=$FABRIC_CA_CLIENT_HOME/msp
+# 	if [ ! -d $FABRIC_CA_CLIENT_HOME ]; then
+# 		#dowait "$CA_NAME to start" 60 $CA_LOGFILE $CA_CHAINFILE
+# 		log "Enrolling user for organization $ORG with home directory $FABRIC_CA_CLIENT_HOME ..."
+# 		export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
+# 		fabric-ca-client enroll -d -u https://$USER_NAME:$USER_PASS@$CA_HOST:7054
+# 		# Set up admincerts directory if required
+# 		if [ $ADMINCERTS ]; then
+# 			ACDIR=$CORE_PEER_MSPCONFIGPATH/admincerts
+# 			mkdir -p $ACDIR
+# 			cp $ORG_ADMIN_HOME/msp/signcerts/* $ACDIR
+# 		fi
+# 	fi
+# }
 
 # Revokes the fabric user
-function revokeFabricUserAndGenerateCRL() {
-	switchToAdminIdentity
-	export FABRIC_CA_CLIENT_HOME=$ORG_ADMIN_HOME
-	logr "Revoking the user '$USER_NAME' of the organization '$ORG' with Fabric CA Client home directory set to $FABRIC_CA_CLIENT_HOME and generating CRL ..."
-	export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
-	$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client revoke -d --revoke.name $USER_NAME --gencrl
-}
+# function revokeFabricUserAndGenerateCRL() {
+# 	switchToAdminIdentity
+# 	export FABRIC_CA_CLIENT_HOME=$ORG_ADMIN_HOME
+# 	logr "Revoking the user '$USER_NAME' of the organization '$ORG' with Fabric CA Client home directory set to $FABRIC_CA_CLIENT_HOME and generating CRL ..."
+# 	export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
+# 	$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client revoke -d --revoke.name $USER_NAME --gencrl
+# }
 
 # Generates a CRL that contains serial numbers of all revoked enrollment certificates.
 # The generated CRL is placed in the crls folder of the admin's MSP
-function generateCRL() {
-	switchToAdminIdentity
-	export FABRIC_CA_CLIENT_HOME=$ORG_ADMIN_HOME
-	logr "Generating CRL for the organization '$ORG' with Fabric CA Client home directory set to $FABRIC_CA_CLIENT_HOME ..."
-	export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
-	$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client gencrl -d
-}
+# function generateCRL() {
+# 	switchToAdminIdentity
+# 	export FABRIC_CA_CLIENT_HOME=$ORG_ADMIN_HOME
+# 	logr "Generating CRL for the organization '$ORG' with Fabric CA Client home directory set to $FABRIC_CA_CLIENT_HOME ..."
+# 	export FABRIC_CA_CLIENT_TLS_CERTFILES=$CA_CHAINFILE
+# 	$GOPATH/src/github.com/hyperledger/fabric-ca/cmd/fabric-ca-client/fabric-ca-client gencrl -d
+# }
 
 function awaitSetup() {
 	dowait "the 'setup' container to finish registering identities, creating the genesis block and other artifacts" $SETUP_TIMEOUT $SETUP_LOGFILE /$SETUP_SUCCESS_FILE
