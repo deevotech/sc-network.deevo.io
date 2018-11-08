@@ -1,9 +1,9 @@
 #!/bin/bash
 usage() {
-	echo "Usage: $0 [-c <channelname>] -n [chaincodename]" 1>&2
+	echo "Usage: $0 [-c <channel name>] [-g <orgs of peers>] [-n <chaincode name>]" 1>&2
 	exit 1
 }
-while getopts ":c:n:" o; do
+while getopts ":c:n:g:" o; do
 	case "${o}" in
 	c)
 		c=${OPTARG}
@@ -11,21 +11,23 @@ while getopts ":c:n:" o; do
 	n)
 		n=${OPTARG}
 		;;
+	g)
+		g=${OPTARG}
+		;;
 	*)
 		usage
 		;;
 	esac
 done
 shift $((OPTIND - 1))
-if [ -z "${c}" ] || [ -z "${n}" ]; then
+if [ -z "${c}" ] || [ -z "${n}" ] || [ -z "${g}" ]; then
 	usage
 fi
 echo "create channel channelID ${c} chaincodeName ${n} "
 
 source $(dirname "$0")/env.sh
 
-PEER_ORGS=("org1" "org2" "org3" "org4" "org5")
-NUM_PEERS=5
+PEER_ORGS=($g)
 CHANNEL_NAME=${c}
 CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 

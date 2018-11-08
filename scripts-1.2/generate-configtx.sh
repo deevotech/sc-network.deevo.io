@@ -26,7 +26,7 @@ if [ -z "${o}" ] || [ -z "${g}" ] || [ -z "${r}" ]; then
 	usage
 fi
 
-CONFIGTX_FILE=../config-1.2/text.yaml
+CONFIGTX_FILE=../config-1.2/configtx.yaml
 
 if [ -f $CONFIGTX_FILE ]; then
 	rm $CONFIGTX_FILE

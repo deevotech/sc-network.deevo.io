@@ -33,8 +33,6 @@ fi
 # init config
 source $(dirname "$0")/env.sh
 
-PEER_ORGS=("org1" "org2" "org3" "org4" "org5")
-NUM_PEERS=5
 CHANNEL_NAME=${c}
 CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 

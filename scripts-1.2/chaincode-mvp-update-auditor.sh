@@ -1,12 +1,15 @@
 #!/bin/bash
-usage() { echo "Usage: $0 [-c <channelname>] -n [chaincodename]" 1>&2; exit 1; }
-while getopts ":c:n:v:" o; do
+usage() { echo "Usage: $0 [-c <channelname>] -n [chaincodename] -g [org]" 1>&2; exit 1; }
+while getopts ":c:n:v:g:" o; do
     case "${o}" in
         c)
             c=${OPTARG}
             ;;
         n)
             n=${OPTARG}
+            ;;
+        g)
+            g=${OPTARG}
             ;;
         *)
             usage
@@ -21,8 +24,6 @@ fi
 # init config
 source $(dirname "$0")/env.sh
 
-PEER_ORGS=("org1" "org2" "org3" "org4" "org5")
-NUM_PEERS=5
 CHANNEL_NAME=${c}
 CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 
@@ -32,7 +33,7 @@ $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode list --insta
 
 # instantiate chaincode
 
-ORG=org1
+ORG=${g}
 initPeerVars ${ORG} 0
 echo $ORDERER_CONN_ARGS
 

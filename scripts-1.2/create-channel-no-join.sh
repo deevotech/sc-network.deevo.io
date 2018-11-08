@@ -1,12 +1,15 @@
 #!/bin/bash
 usage() {
-	echo "Usage: $0 [-c <channelname>]" 1>&2
+	echo "Usage: $0 [-c <channel name>] [-g <orgs of peers>]" 1>&2
 	exit 1
 }
-while getopts ":c:" o; do
+while getopts ":c:g:" o; do
 	case "${o}" in
 	c)
 		c=${OPTARG}
+		;;
+	g)
+		g=${OPTARG}
 		;;
 	*)
 		usage
@@ -14,15 +17,14 @@ while getopts ":c:" o; do
 	esac
 done
 shift $((OPTIND - 1))
-if [ -z "${c}" ]; then
+if [ -z "${c}" ] || [ -z "${g}" ]; then
 	usage
 fi
 echo "create channel"
 
 source $(dirname "$0")/env.sh
 
-PEER_ORGS=("org1" "org2" "org3" "org4" "org5")
-NUM_PEERS=5
+PEER_ORGS=($g)
 CHANNEL_NAME=${c}
 CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 
