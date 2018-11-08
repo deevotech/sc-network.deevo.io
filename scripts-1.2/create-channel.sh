@@ -77,6 +77,7 @@ done
 sleep 5
 # Update the anchor peers
 for ORG in ${PEER_ORGS[*]}; do
+	echo "Update the anchor peers of $PEER_HOST"
 	initPeerVars $ORG 0
 
 	$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer channel update -c $CHANNEL_NAME -f $ANCHOR_TX_FILE $ORDERER_CONN_ARGS

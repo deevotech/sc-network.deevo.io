@@ -117,7 +117,10 @@ for org in $g; do
                 Rule: \"OR('${org}MSP.member')\"
             Admins:
                 Type: Signature
-                Rule: \"OR('${org}MSP.admin')\"" >> $CONFIGTX_FILE
+                Rule: \"OR('${org}MSP.admin')\"
+        AnchorPeers:
+            - Host: peer0.${org}.deevo.io
+              Port: 7051" >> $CONFIGTX_FILE
 done
 
 echo "
