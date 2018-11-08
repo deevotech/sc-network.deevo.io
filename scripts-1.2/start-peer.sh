@@ -31,7 +31,7 @@ NUMBER=${n}
 source $(dirname "$0")/env.sh
 initPeerVars ${ORG} ${NUMBER}
 
-cp ../config-1.2/configtx.yaml ${FABRIC_CFG_PATH}/configtx.yaml
+# cp ../config-1.2/configtx.yaml ${FABRIC_CFG_PATH}/configtx.yaml
 cp ../config-1.2/core.yaml ${FABRIC_CFG_PATH}/core.yaml
 mkdir -p data
 mkdir -p data/logs
