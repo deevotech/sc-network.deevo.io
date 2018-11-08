@@ -28,7 +28,10 @@ PEER_ORGS=($g)
 CHANNEL_NAME=${c}
 CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 
-rm $CHANNEL_TX_FILE
+if [ -f $CHANNEL_TX_FILE ]; then
+	rm $CHANNEL_TX_FILE
+fi
+
 echo "Generating channel configuration transaction at $CHANNEL_TX_FILE"
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/configtxgen -profile SampleSingleMSPChannel -outputCreateChannelTx $CHANNEL_TX_FILE -channelID $CHANNEL_NAME
 if [ "$?" -ne 0 ]; then
