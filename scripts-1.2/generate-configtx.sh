@@ -1,4 +1,38 @@
-# Copyright IBM Corp. All Rights Reserved.
+#!/bin/bash
+set -e
+usage() {
+	echo "Usage: $0 [-o <orgs of orderers>] -g [orgs of peers] -r [orgs of replicas]" 1>&2
+	exit 1
+}
+
+while getopts ":o:g:r:" x; do
+	case "${x}" in
+	o)
+		o=${OPTARG}
+		;;
+	g)
+		g=${OPTARG}
+		;;
+	r)
+		r=${OPTARG}
+		;;
+	*)
+		usage
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+if [ -z "${o}" ] || [ -z "${g}" ] || [ -z "${r}" ]; then
+	usage
+fi
+
+CONFIGTX_FILE=../config-1.2/text.yaml
+
+if [ -f $CONFIGTX_FILE ]; then
+	rm $CONFIGTX_FILE
+fi
+
+echo "# Copyright IBM Corp. All Rights Reserved.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -12,95 +46,81 @@
 #   in the configuration profiles.
 #
 ################################################################################
-Organizations:
+Organizations:" >> $CONFIGTX_FILE
 
-    # SampleOrg defines an MSP using the sampleconfig. It should never be used
-    # in production but may be used as a template for other definitions.
-    - &org0
+for org in $o; do
+    echo "
+    - &${org}
         # Name is the key by which this org will be referenced in channel
         # configuration transactions.
         # Name can include alphanumeric characters as well as dots and dashes.
-        Name: org0
+        Name: ${org}
 
         # ID is the key by which this org's MSP definition will be referenced.
         # ID can include alphanumeric characters as well as dots and dashes.
-        ID: org0MSP
+        ID: ${org}MSP
 
         # MSPDir is the filesystem path which contains the MSP configuration.
-        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/org0/msp
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/${org}/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
         #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
-        Policies: &org0Policies
+        Policies: &${org}Policies
             Readers:
                 Type: Signature
-                Rule: "OR('org0MSP.member')"
+                Rule: \"OR('${org}MSP.member')\"
                 # If your MSP is configured with the new NodeOUs, you might
                 # want to use a more specific rule like the following:
-                # Rule: "OR('SampleOrg.admin', 'SampleOrg.peer', 'SampleOrg.client')"
+                # Rule: \"OR('SampleOrg.admin', 'SampleOrg.peer', 'SampleOrg.client')\"
             Writers:
                 Type: Signature
-                Rule: "OR('org0MSP.member')"
+                Rule: \"OR('${org}MSP.member')\"
                 # If your MSP is configured with the new NodeOUs, you might
                 # want to use a more specific rule like the following:
-                # Rule: "OR('SampleOrg.admin', 'SampleOrg.client')"
+                # Rule: \"OR('SampleOrg.admin', 'SampleOrg.client')\"
             Admins:
                 Type: Signature
-                Rule: "OR('org0MSP.admin')"
+                Rule: \"OR('${org}MSP.admin')\"" >> $CONFIGTX_FILE
+done
 
-    - &replicas
-        Name: replicas
-        ID: replicasMSP
-        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/replicas/msp
+for org in $r; do
+    echo "
+    - &${org}
+        Name: ${org}
+        ID: ${org}MSP
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/${org}/msp
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('replicasMSP.member')"
+                Rule: \"OR('${org}MSP.member')\"
             Writers:
                 Type: Signature
-                Rule: "AND('replicasMSP.member','replicasMSP.member')"
+                Rule: \"AND('${org}MSP.member','${org}MSP.member')\"
             Admins:
                 Type: Signature
-                Rule: "OR('replicasMSP.admin')"
-    - &org1
-        Name: org1
-        ID: org1MSP
-        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/org1/msp
-        Policies: &org1Policies
-            Readers:
-                Type: Signature
-                Rule: "OR('org1MSP.member')"
-            Writers:
-                Type: Signature
-                Rule: "OR('org1MSP.member')"
-            Admins:
-                Type: Signature
-                Rule: "OR('org1MSP.admin')"
-        # AnchorPeers defines the location of peers which can be used for
-        # cross-org gossip communication. Note, this value is only encoded in
-        # the genesis block in the Application section context.
-        AnchorPeers:
-            - Host: peer0.org1.deevo.io
-              Port: 7051
-    - &org2
-        Name: org2
-        ID: org2MSP
-        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/org2/msp
-        Policies: &org2Policies
-            Readers:
-                Type: Signature
-                Rule: "OR('org2MSP.member')"
-            Writers:
-                Type: Signature
-                Rule: "OR('org2MSP.member')"
-            Admins:
-                Type: Signature
-                Rule: "OR('org2MSP.admin')"
-        AnchorPeers:
-            - Host: peer0.org2.deevo.io
-              Port: 7051
+                Rule: \"OR('${org}MSP.admin')\"" >> $CONFIGTX_FILE
+done
 
+for org in $g; do
+    echo "
+    - &${org}
+        Name: ${org}
+        ID: ${org}MSP
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/${org}/msp
+        Policies: &${org}Policies
+            Readers:
+                Type: Signature
+                Rule: \"OR('${org}MSP.member')\"
+            Writers:
+                Type: Signature
+                Rule: \"OR('${org}MSP.member')\"
+            Admins:
+                Type: Signature
+                Rule: \"OR('${org}MSP.admin')\"" >> $CONFIGTX_FILE
+done
+
+echo "
 ################################################################################
 #
 #   CAPABILITIES
@@ -163,16 +183,20 @@ Capabilities:
 Orderer: &OrdererDefaults
 
     # Orderer Type: The orderer implementation to start.
-    # Available types are "solo" and "kafka".
+    # Available types are \"solo\" and \"kafka\".
     OrdererType: bftsmart
 
     # Addresses here is a nonexhaustive list of orderers the peers and clients can
     # connect to. Adding/removing nodes from this list has no impact on their
     # participation in ordering.
     # NOTE: In the solo case, this should be a one-item list.
-    Addresses:
-        - orderer0.org0.deevo.io:7050
+    Addresses:" >> $CONFIGTX_FILE
 
+for org in $o; do
+echo "        - orderer0.${org}.deevo.io:7050" >> $CONFIGTX_FILE
+done
+
+echo "
     # Batch Timeout: The amount of time to wait before creating a batch.
     BatchTimeout: 2s
 
@@ -183,10 +207,6 @@ Orderer: &OrdererDefaults
         # batch.
         MaxMessageCount: 10
 
-        # Absolute Max Bytes: The absolute maximum number of bytes allowed for
-        # the serialized messagesdocker rm $(docker ps -a -q)n a batch. If the "kafka" OrdererType is
-        # selected, set 'message.docker rm $(docker ps -a -q)x.bytes' and 'replica.fetch.max.bytes' on
-        # the Kafka brokers to a docker rm $(docker ps -a -q)lue that is larger than this one.
         AbsoluteMaxBytes: 99 MB
 
         # Preferred Max Bytes: The preferred maximum number of bytes allowed
@@ -227,18 +247,18 @@ Orderer: &OrdererDefaults
     Policies:
         Readers:
             Type: ImplicitMeta
-            Rule: "ANY Readers"
+            Rule: \"ANY Readers\"
         Writers:
             Type: ImplicitMeta
-            Rule: "ANY Writers"
+            Rule: \"ANY Writers\"
         Admins:
             Type: ImplicitMeta
-            Rule: "MAJORITY Admins"
+            Rule: \"MAJORITY Admins\"
         # BlockValidation specifies what signatures must be included in the block
         # from the orderer for the peer to validate it.
         BlockValidation:
             Type: ImplicitMeta
-            Rule: "ANY Writers"
+            Rule: \"ANY Writers\"
 
     # Capabilities describes the orderer level capabilities, see the
     # dedicated Capabilities section elsewhere in this file for a full
@@ -257,8 +277,8 @@ Orderer: &OrdererDefaults
 Application: &ApplicationDefaults
     ACLs: &ACLsDefault
         # This section provides defaults for policies for various resources
-        # in the system. These "resources" could be functions on system chaincodes
-        # (e.g., "GetBlockByNumber" on the "qscc" system chaincode) or other resources
+        # in the system. These \"resources\" could be functions on system chaincodes
+        # (e.g., \"GetBlockByNumber\" on the \"qscc\" system chaincode) or other resources
         # (e.g.,who can receive Block events). This section does NOT specify the resource's
         # definition or API, but just the ACL policy for it.
         #
@@ -267,44 +287,44 @@ Application: &ApplicationDefaults
 
         #---Lifecycle System Chaincode (lscc) function to policy mapping for access control---#
 
-        # ACL policy for lscc's "getid" function
+        # ACL policy for lscc's \"getid\" function
         lscc/ChaincodeExists: /Channel/Application/Readers
 
-        # ACL policy for lscc's "getdepspec" function
+        # ACL policy for lscc's \"getdepspec\" function
         lscc/GetDeploymentSpec: /Channel/Application/Readers
 
-        # ACL policy for lscc's "getccdata" function
+        # ACL policy for lscc's \"getccdata\" function
         lscc/GetChaincodeData: /Channel/Application/Readers
 
-        # ACL Policy for lscc's "getchaincodes" function
+        # ACL Policy for lscc's \"getchaincodes\" function
         lscc/GetInstantiatedChaincodes: /Channel/Application/Readers
 
         #---Query System Chaincode (qscc) function to policy mapping for access control---#
 
-        # ACL policy for qscc's "GetChainInfo" function
+        # ACL policy for qscc's \"GetChainInfo\" function
         qscc/GetChainInfo: /Channel/Application/Readers
 
-        # ACL policy for qscc's "GetBlockByNumber" function
+        # ACL policy for qscc's \"GetBlockByNumber\" function
         qscc/GetBlockByNumber: /Channel/Application/Readers
 
-        # ACL policy for qscc's  "GetBlockByHash" function
+        # ACL policy for qscc's  \"GetBlockByHash\" function
         qscc/GetBlockByHash: /Channel/Application/Readers
 
-        # ACL policy for qscc's "GetTransactionByID" function
+        # ACL policy for qscc's \"GetTransactionByID\" function
         qscc/GetTransactionByID: /Channel/Application/Readers
 
-        # ACL policy for qscc's "GetBlockByTxID" function
+        # ACL policy for qscc's \"GetBlockByTxID\" function
         qscc/GetBlockByTxID: /Channel/Application/Readers
 
         #---Configuration System Chaincode (cscc) function to policy mapping for access control---#
 
-        # ACL policy for cscc's "GetConfigBlock" function
+        # ACL policy for cscc's \"GetConfigBlock\" function
         cscc/GetConfigBlock: /Channel/Application/Readers
 
-        # ACL policy for cscc's "GetConfigTree" function
+        # ACL policy for cscc's \"GetConfigTree\" function
         cscc/GetConfigTree: /Channel/Application/Readers
 
-        # ACL policy for cscc's "SimulateConfigTreeUpdate" function
+        # ACL policy for cscc's \"SimulateConfigTreeUpdate\" function
         cscc/SimulateConfigTreeUpdate: /Channel/Application/Readers
 
         #---Miscellanesous peer function to policy mapping for access control---#
@@ -333,13 +353,13 @@ Application: &ApplicationDefaults
     Policies: &ApplicationDefaultPolicies
         Readers:
             Type: ImplicitMeta
-            Rule: "ANY Readers"
+            Rule: \"ANY Readers\"
         Writers:
             Type: ImplicitMeta
-            Rule: "ANY Writers"
+            Rule: \"ANY Writers\"
         Admins:
             Type: ImplicitMeta
-            Rule: "MAJORITY Admins"
+            Rule: \"MAJORITY Admins\"
 
     # Capabilities describes the application level capabilities, see the
     # dedicated Capabilities section elsewhere in this file for a full
@@ -364,15 +384,15 @@ Channel: &ChannelDefaults
         # Who may invoke the 'Deliver' API
         Readers:
             Type: ImplicitMeta
-            Rule: "ANY Readers"
+            Rule: \"ANY Readers\"
         # Who may invoke the 'Broadcast' API
         Writers:
             Type: ImplicitMeta
-            Rule: "ANY Writers"
+            Rule: \"ANY Writers\"
         # By default, who may modify elements at this config level
         Admins:
             Type: ImplicitMeta
-            Rule: "MAJORITY Admins"
+            Rule: \"MAJORITY Admins\"
 
 
     # Capabilities describes the channel level capabilities, see the
@@ -404,20 +424,27 @@ Profiles:
         Orderer:
             <<: *OrdererDefaults
             OrdererType: bftsmart
-            Organizations:
-                - *replicas
-                - *org0
-        Application:
-            <<: *ApplicationDefaults
-            Organizations:
-                - *org1
-                - *org2
-        Consortiums:
-            SampleConsortium:
-                Organizations:
-                    - *org1
-                    - *org2
+            Organizations:" >> $CONFIGTX_FILE
 
+for org in $o; do
+    echo "                - *${org}" >> $CONFIGTX_FILE
+done
+for org in $r; do
+    echo "                - *${org}" >> $CONFIGTX_FILE
+done
+echo "        Application:
+            <<: *ApplicationDefaults
+            Organizations:" >> $CONFIGTX_FILE
+for org in $g; do
+    echo "                - *${org}" >> $CONFIGTX_FILE
+done
+echo "        Consortiums:
+            SampleConsortium:
+                Organizations:" >> $CONFIGTX_FILE
+for org in $g; do
+    echo "                    - *${org}" >> $CONFIGTX_FILE
+done
+echo "
     # SampleSingleMSPChannel defines a channel with only the sample org as a
     # member. It is designed to be used in conjunction with SampleSingleMSPSolo
     # and SampleSingleMSPKafka orderer profiles.
@@ -425,6 +452,7 @@ Profiles:
         Consortium: SampleConsortium
         Application:
             <<: *ApplicationDefaults
-            Organizations:
-                - *org1
-                - *org2
+            Organizations:" >> $CONFIGTX_FILE
+for org in $g; do
+    echo "                - *${org}" >> $CONFIGTX_FILE
+done
