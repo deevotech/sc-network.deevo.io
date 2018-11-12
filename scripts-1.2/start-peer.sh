@@ -36,9 +36,9 @@ source $(dirname "$0")/env.sh
 initPeerVars ${ORG} ${NUMBER}
 
 # cp ../config-1.2/configtx.yaml ${FABRIC_CFG_PATH}/configtx.yaml
-if [ ${SYSACCOUNT} -eq 1 ] ; then
+if [ ${SYSACCOUNT} -eq 0 ] ; then
 	cp ../config-1.2/core-account.yaml ${FABRIC_CFG_PATH}/core.yaml
-elif
+else
 	cp ../config-1.2/core.yaml ${FABRIC_CFG_PATH}/core.yaml
 fi
 
