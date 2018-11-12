@@ -50,9 +50,35 @@ echo "Query on $PEER_HOST ..."
 # -----END PUBLIC KEY-----
 #`,
 # Balance: 1000,
+
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -c '{"Args":["initAcc","-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEUkaGIAmlbgE9lfFz2wdMlZSMyTyh\nKnVw7s2wQEgkCA7yrKr8iEXxtGflsBLtqLH7LE071/G3lXn0+tjhlv1Uww==\n-----END PUBLIC KEY-----","113yvjFhnmGYN2PaXfD5XT9TDHGbRUyTykiBJ7X3fFG9CMsMCXkr4JksWG2oRy7rpWLkGTM48HhHKLPyDNv8jXoh7jjSYy9zLS9sJw1X2vE2P4Pc66hJtoirwxN8j", "1000"]}' $ORDERER_CONN_ARGS
-# test query org5
+initPeerVars ${PEER_ORGS[0]} 0
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -c '{"Args":["initAcc","-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE0pMl4REOfV+19c8+QFLAco5EnM6I\n+kamXYuxYj9fulZidArnsVBD3WoHkSxESuyTpdCGB3YCNxXeaR9wI1gWgg==\n-----END PUBLIC KEY-----","113yvjFhnmGYN2PaXfD5XT9TDHGbRUyTykj3GWqqgK4rJFFrtswbE7xghrX9GRkqVPaYpf4GsSh3jGDeW8MFvubXzAzEEmLbZqvDoueLf8oPv8p5iNEFnsgSA9MeM", "2000"]}' $ORDERER_CONN_ARGS
+sleep 3
+# test query org0
 initPeerVars ${PEER_ORGS[0]} 0
 echo $ORDERER_CONN_ARGS
 echo "Query on $PEER_HOST ..."
-$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -c '{"Args":["getBalance","113yvjFhnmGYN2PaXfD5XT9TDHGbRUyTykiBJ7X3fFG9CMsMCXkr4JksWG2oRy7rpWLkGTM48HhHKLPyDNv8jXoh7jjSYy9zLS9sJw1X2vE2P4Pc66hJtoirwxN8j"]}' $ORDERER_CONN_ARGS
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode query -C $CHANNEL_NAME -n ${n} -c '{"Args":["getBalance","113yvjFhnmGYN2PaXfD5XT9TDHGbRUyTykiBJ7X3fFG9CMsMCXkr4JksWG2oRy7rpWLkGTM48HhHKLPyDNv8jXoh7jjSYy9zLS9sJw1X2vE2P4Pc66hJtoirwxN8j"]}' $ORDERER_CONN_ARGS
+# test query org0
+initPeerVars ${PEER_ORGS[1]} 0
+echo $ORDERER_CONN_ARGS
+echo "Query on $PEER_HOST ..."
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode query -C $CHANNEL_NAME -n ${n} -c '{"Args":["getBalance","113yvjFhnmGYN2PaXfD5XT9TDHGbRUyTykj3GWqqgK4rJFFrtswbE7xghrX9GRkqVPaYpf4GsSh3jGDeW8MFvubXzAzEEmLbZqvDoueLf8oPv8p5iNEFnsgSA9MeM"]}' $ORDERER_CONN_ARGS
+sleep 3
+# test query org0
+initPeerVars ${PEER_ORGS[1]} 0
+echo $ORDERER_CONN_ARGS
+echo "Transfer on $PEER_HOST ..."
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode invoke -C $CHANNEL_NAME -n ${n} -c '{"Args":["transfer","500", "113yvjFhnmGYN2PaXfD5XT9TDHGbRUyTykj3GWqqgK4rJFFrtswbE7xghrX9GRkqVPaYpf4GsSh3jGDeW8MFvubXzAzEEmLbZqvDoueLf8oPv8p5iNEFnsgSA9MeM1002018-11-10 12:17:29.014634", "29978764154139864880696030835938256737287232151003611159021314956225371873730", "75348994682775390770944787851125569805092606536265710298111367961967701172281", "113yvjFhnmGYN2PaXfD5XT9TDHGbRUyTykiBJ7X3fFG9CMsMCXkr4JksWG2oRy7rpWLkGTM48HhHKLPyDNv8jXoh7jjSYy9zLS9sJw1X2vE2P4Pc66hJtoirwxN8j", "113yvjFhnmGYN2PaXfD5XT9TDHGbRUyTykj3GWqqgK4rJFFrtswbE7xghrX9GRkqVPaYpf4GsSh3jGDeW8MFvubXzAzEEmLbZqvDoueLf8oPv8p5iNEFnsgSA9MeM"]}' $ORDERER_CONN_ARGS
+# test query org0
+sleep 5
+initPeerVars ${PEER_ORGS[0]} 0
+echo $ORDERER_CONN_ARGS
+echo "Query on $PEER_HOST ..."
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode query -C $CHANNEL_NAME -n ${n} -c '{"Args":["getBalance","113yvjFhnmGYN2PaXfD5XT9TDHGbRUyTykiBJ7X3fFG9CMsMCXkr4JksWG2oRy7rpWLkGTM48HhHKLPyDNv8jXoh7jjSYy9zLS9sJw1X2vE2P4Pc66hJtoirwxN8j"]}' $ORDERER_CONN_ARGS
+# test query org0
+initPeerVars ${PEER_ORGS[1]} 0
+echo $ORDERER_CONN_ARGS
+echo "Query on $PEER_HOST ..."
+$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode query -C $CHANNEL_NAME -n ${n} -c '{"Args":["getBalance","113yvjFhnmGYN2PaXfD5XT9TDHGbRUyTykj3GWqqgK4rJFFrtswbE7xghrX9GRkqVPaYpf4GsSh3jGDeW8MFvubXzAzEEmLbZqvDoueLf8oPv8p5iNEFnsgSA9MeM"]}' $ORDERER_CONN_ARGS
