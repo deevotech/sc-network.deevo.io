@@ -38,11 +38,6 @@ CHANNEL_NAME=${c}
 CHANNEL_TX_FILE=$DATA/$CHANNEL_NAME.tx
 
 QUERY_TIMEOUT=30
-initPeerVars ${PEER_ORGS[0]} 0
-echo $ORDERER_CONN_ARGS
-echo "Instantiating chaincode on $PEER_HOST ..."
-$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode instantiate -C $CHANNEL_NAME -n ${n} -v ${v} -c '{"Args":["init"]}' $ORDERER_CONN_ARGS
-sleep 10
 # test query org1
 initPeerVars ${PEER_ORGS[0]} 0
 echo $ORDERER_CONN_ARGS
