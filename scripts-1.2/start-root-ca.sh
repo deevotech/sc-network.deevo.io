@@ -126,10 +126,6 @@ signing:
     default:
       usage:
         - digital signature
-        - cert sign
-        - crl sign
-        - digital signature
-        - key encipherment
       expiry: 8760h
     profiles:
       ca:
