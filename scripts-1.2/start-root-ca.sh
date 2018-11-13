@@ -87,7 +87,7 @@ registry:
     - name: ${BOOTSTRAP_USER}
       pass: ${BOOTSTRAP_PASS}
       type: client
-      affiliation: ""
+      affiliation: \"\"
       attrs:
         hf.Registrar.Roles: \"*\"
         hf.Registrar.DelegateRoles: \"*\"
