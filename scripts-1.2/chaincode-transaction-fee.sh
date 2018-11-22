@@ -43,7 +43,7 @@ QUERY_TIMEOUT=30
 for ORG in ${PEER_ORGS[*]}; do
 	initPeerVars $ORG 0
 	echo $ORDERER_CONN_ARGS
-	$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode install -n $n -v $v -p github.com/sc-chaincode.deevo.io/transaction-fee
+	$GOPATH/src/github.com/hyperledger/fabric/.build/bin/peer chaincode install -n $n -v $v -p github.com/deevotech/sc-chaincode.deevo.io/transaction-fee
 done
 
 sleep 3
