@@ -2,7 +2,7 @@
 #set -e
 
 source $(dirname "$0")/env.sh
-cp ../config-1.2/configtx.yaml ${FABRIC_CFG_PATH}/
+cp ../config/configtx.yaml ${FABRIC_CFG_PATH}/
 
 if [ -f $GENESIS_BLOCK_FILE ]; then
 	rm $GENESIS_BLOCK_FILE

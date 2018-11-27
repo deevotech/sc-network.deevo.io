@@ -28,9 +28,9 @@ initOrgVars ${g}
 source ~/.profile
 echo $GOPATH
 REPLICA_ROOT_DIR=${GOPATH}/src/github.com/hyperledger/fabric-orderingservice
-cp ../config-1.2/hosts.config $REPLICA_ROOT_DIR/config/hosts.config
-cp ../config-1.2/node.config $REPLICA_ROOT_DIR/config/node.config
-cp ../config-1.2/system.config $REPLICA_ROOT_DIR/config/system.config
+cp ../config/hosts.config $REPLICA_ROOT_DIR/config/hosts.config
+cp ../config/node.config $REPLICA_ROOT_DIR/config/node.config
+cp ../config/system.config $REPLICA_ROOT_DIR/config/system.config
 
 cd $GOPATH/src/github.com/hyperledger/fabric-orderingservice
 rm -rf config/currentView
