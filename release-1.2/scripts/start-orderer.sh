@@ -36,9 +36,9 @@ if [ -f ./data/logs/orderer.out ] ; then
 rm ./data/logs/orderer.out
 fi
 echo $ORDERER_GENERAL_LOCALMSPDIR
-cp ../config-1.2/configtx.yaml ${FABRIC_CFG_PATH}/configtx.yaml
-cp ../config-1.2/core.yaml ${FABRIC_CFG_PATH}/core.yaml
-cp ../config-1.2/orderer.yaml ${FABRIC_CFG_PATH}/orderer.yaml
+cp ../config/configtx.yaml ${FABRIC_CFG_PATH}/configtx.yaml
+cp ../config/core.yaml ${FABRIC_CFG_PATH}/core.yaml
+cp ../config/orderer.yaml ${FABRIC_CFG_PATH}/orderer.yaml
 
 $GOPATH/src/github.com/hyperledger/fabric/.build/bin/orderer start > ./data/logs/orderer.out 2>&1 &
 echo "done see data/logs/orderer"

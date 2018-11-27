@@ -35,11 +35,11 @@ SYSACCOUNT=${s}
 source $(dirname "$0")/env.sh
 initPeerVars ${ORG} ${NUMBER}
 
-# cp ../config-1.2/configtx.yaml ${FABRIC_CFG_PATH}/configtx.yaml
+# cp ../config/configtx.yaml ${FABRIC_CFG_PATH}/configtx.yaml
 if [ ${SYSACCOUNT} -eq 1 ] ; then
-	cp ../config-1.2/core-account.yaml ${FABRIC_CFG_PATH}/core.yaml
+	cp ../config/core-account.yaml ${FABRIC_CFG_PATH}/core.yaml
 else
-	cp ../config-1.2/core.yaml ${FABRIC_CFG_PATH}/core.yaml
+	cp ../config/core.yaml ${FABRIC_CFG_PATH}/core.yaml
 fi
 
 mkdir -p data
@@ -61,7 +61,7 @@ fi
 sudo mkdir /opt/couchdb
 sudo mkdir /opt/couchdb/data
 sudo chmod 777 -R /opt/couchdb
-sudo cp ../config-1.2/local.ini /home/couchdb/etc/local.ini
+sudo cp ../config/local.ini /home/couchdb/etc/local.ini
 rm -rf /ect/sv/couchdb/log/*
 
 docker image prune -af
