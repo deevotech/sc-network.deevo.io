@@ -1,0 +1,327 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+---
+################################################################################
+#
+#   ORGANIZATIONS
+#
+#   This section defines the organizational identities that can be referenced
+#   in the configuration profiles.
+#
+################################################################################
+Organizations:
+
+    - &org0
+        Name: org0
+        ID: org0MSP
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/org0/msp
+        Policies: &org0Policies
+            Readers:
+                Type: Signature
+                Rule: "OR('org0MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('org0MSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('org0MSP.admin')"
+
+    - &replicas
+        Name: replicas
+        ID: replicasMSP
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/replicas/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('replicasMSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "AND('replicasMSP.member','replicasMSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('replicasMSP.admin')"
+    - &org1
+        Name: org1
+        ID: org1MSP
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/org1/msp
+        Policies: &org1Policies
+            Readers:
+                Type: Signature
+                Rule: "OR('org1MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('org1MSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('org1MSP.admin')"
+        AnchorPeers:
+            - Host: peer0.org1.deevo.io
+              Port: 7051
+    - &org2
+        Name: org2
+        ID: org2MSP
+        MSPDir: /home/ubuntu/hyperledgerconfig/data/orgs/org2/msp
+        Policies: &org2Policies
+            Readers:
+                Type: Signature
+                Rule: "OR('org2MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('org2MSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('org2MSP.admin')"
+        AnchorPeers:
+            - Host: peer0.org2.deevo.io
+              Port: 7051
+
+################################################################################
+#
+#   CAPABILITIES
+#
+################################################################################
+Capabilities:
+    Channel: &ChannelCapabilities
+        V1_1: true
+
+    Orderer: &OrdererCapabilities
+        V1_1: true
+
+    Application: &ApplicationCapabilities
+        V1_2: true
+        V1_1: false
+
+################################################################################
+#
+#   ORDERER
+#
+################################################################################
+Orderer: &OrdererDefaults
+
+    # Orderer Type: The orderer implementation to start.
+    # Available types are "solo" and "kafka".
+    OrdererType: bftsmart
+
+    Addresses:
+        - orderer0.org0.deevo.io:7050
+
+    # Batch Timeout: The amount of time to wait before creating a batch.
+    BatchTimeout: 2s
+
+    # Batch Size: Controls the number of messages batched into a block.
+    BatchSize:
+
+        # Max Message Count: The maximum number of messages to permit in a
+        # batch.
+        MaxMessageCount: 10
+
+        # Absolute Max Bytes: The absolute maximum number of bytes allowed for
+        AbsoluteMaxBytes: 99 MB
+
+        PreferredMaxBytes: 512 KB
+
+    # Max Channels is the maximum number of channels to allow on the ordering
+    # network. When set to 0, this implies no maximum number of channels.
+    MaxChannels: 0
+
+    Kafka:
+        Brokers:
+            - kafka0:9092
+            - kafka1:9092
+            - kafka2:9092
+
+    #JCS: BFT-SMaRt options
+    BFTsmart:
+
+        # ConnectionPoolSize: The size of the connection pool that links the golang component to the java component.
+        ConnectionPoolSize: 20
+
+        # RecvPort: The localhost TCP port from which the java component sends blocks to the golang component.
+        RecvPort: 9999
+
+    # Organizations lists the orgs participating on the orderer side of the
+    # network.
+    Organizations:
+
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        # BlockValidation specifies what signatures must be included in the block
+        # from the orderer for the peer to validate it.
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+
+    Capabilities:
+        <<: *OrdererCapabilities
+
+################################################################################
+#
+#   APPLICATION
+#
+#   This section defines the values to encode into a config transaction or
+#   genesis block for application-related parameters.
+#
+################################################################################
+Application: &ApplicationDefaults
+    ACLs: &ACLsDefault
+
+        #---Lifecycle System Chaincode (lscc) function to policy mapping for access control---#
+
+        # ACL policy for lscc's "getid" function
+        lscc/ChaincodeExists: /Channel/Application/Readers
+
+        # ACL policy for lscc's "getdepspec" function
+        lscc/GetDeploymentSpec: /Channel/Application/Readers
+
+        # ACL policy for lscc's "getccdata" function
+        lscc/GetChaincodeData: /Channel/Application/Readers
+
+        # ACL Policy for lscc's "getchaincodes" function
+        lscc/GetInstantiatedChaincodes: /Channel/Application/Readers
+
+        #---Query System Chaincode (qscc) function to policy mapping for access control---#
+
+        # ACL policy for qscc's "GetChainInfo" function
+        qscc/GetChainInfo: /Channel/Application/Readers
+
+        # ACL policy for qscc's "GetBlockByNumber" function
+        qscc/GetBlockByNumber: /Channel/Application/Readers
+
+        # ACL policy for qscc's  "GetBlockByHash" function
+        qscc/GetBlockByHash: /Channel/Application/Readers
+
+        # ACL policy for qscc's "GetTransactionByID" function
+        qscc/GetTransactionByID: /Channel/Application/Readers
+
+        # ACL policy for qscc's "GetBlockByTxID" function
+        qscc/GetBlockByTxID: /Channel/Application/Readers
+
+        #---Configuration System Chaincode (cscc) function to policy mapping for access control---#
+
+        # ACL policy for cscc's "GetConfigBlock" function
+        cscc/GetConfigBlock: /Channel/Application/Readers
+
+        # ACL policy for cscc's "GetConfigTree" function
+        cscc/GetConfigTree: /Channel/Application/Readers
+
+        # ACL policy for cscc's "SimulateConfigTreeUpdate" function
+        cscc/SimulateConfigTreeUpdate: /Channel/Application/Readers
+
+        #---Miscellanesous peer function to policy mapping for access control---#
+
+        # ACL policy for invoking chaincodes on peer
+        peer/Propose: /Channel/Application/Writers
+
+        # ACL policy for chaincode to chaincode invocation
+        peer/ChaincodeToChaincode: /Channel/Application/Readers
+
+        #---Events resource to policy mapping for access control###---#
+
+        # ACL policy for sending block events
+        event/Block: /Channel/Application/Readers
+
+        # ACL policy for sending filtered block events
+        event/FilteredBlock: /Channel/Application/Readers
+
+    # Organizations lists the orgs participating on the application side of the
+    # network.
+    Organizations:
+
+    # Policies defines the set of policies at this level of the config tree
+    # For Application policies, their canonical path is
+    #   /Channel/Application/<PolicyName>
+    Policies: &ApplicationDefaultPolicies
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+
+    # Capabilities describes the application level capabilities, see the
+    # dedicated Capabilities section elsewhere in this file for a full
+    # description
+    Capabilities:
+        <<: *ApplicationCapabilities
+
+
+################################################################################
+#
+#   CHANNEL
+#
+#   This section defines the values to encode into a config transaction or
+#   genesis block for channel related parameters.
+#
+################################################################################
+Channel: &ChannelDefaults
+    Policies:
+        # Who may invoke the 'Deliver' API
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        # Who may invoke the 'Broadcast' API
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        # By default, who may modify elements at this config level
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+
+    Capabilities:
+        <<: *ChannelCapabilities
+
+################################################################################
+#
+#   PROFILES
+#
+################################################################################
+Profiles:
+
+    # JCS: my profile
+    # SampleSingleMSPBFTsmart defines a configuration which uses the bftsmart orderer,
+    # and contains a single MSP definition (the MSP sampleconfig).
+    # The Consortium SampleConsortium has only a single member, SampleOrg
+    SampleSingleMSPBFTsmart:
+        <<: *ChannelDefaults
+        Orderer:
+            <<: *OrdererDefaults
+            OrdererType: bftsmart
+            Organizations:
+                - *replicas
+                - *org0
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *org1
+                - *org2
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *org1
+                    - *org2
+
+    # SampleSingleMSPChannel defines a channel with only the sample org as a
+    # member. It is designed to be used in conjunction with SampleSingleMSPSolo
+    # and SampleSingleMSPKafka orderer profiles.
+    SampleSingleMSPChannel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *org1
+                - *org2
