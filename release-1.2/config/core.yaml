@@ -34,7 +34,7 @@ logging:
     # Default for all modules running within the scope of a peer.
     # Note: this value is only used when --logging-level or CORE_LOGGING_LEVEL
     #       are not set
-    level:       info
+    level:       error
 
     # The overall default values mentioned above can be overridden for the
     # specific components listed in the override section below.

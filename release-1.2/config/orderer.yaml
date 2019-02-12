@@ -51,7 +51,7 @@ General:
 
     # Log Level: The level at which to log. This accepts logging specifications
     # per: fabric/docs/Setup/logging-control.md
-    LogLevel: info
+    LogLevel: error
 
     # Log Format:  The format string to use when logging.  Especially useful to disable color logging
     LogFormat: '%{color}%{time:2006-01-02 15:04:05.000 MST} [%{module}] %{shortfunc} -> %{level:.4s} %{id:03x}%{color:reset} %{message}'
