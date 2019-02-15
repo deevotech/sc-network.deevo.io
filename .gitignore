@@ -1,1 +1,5 @@
 release-1.2/scripts/data
+release-1.2/scripts/couchdb
+
+release-1.4/scripts/data
+release-1.4/scripts/couchdb
